@@ -1,4 +1,8 @@
-import { Cartesian3, Cartesian2, Color, HeightReference, HorizontalOrigin, LabelStyle as cLabelStyle, VerticalOrigin } from 'cesium';
+import { Cartesian2 as cCartesian2, Cartesian3 as cCartesian3, Color, HeightReference, HorizontalOrigin,
+         LabelStyle as cLabelStyle, VerticalOrigin } from 'cesium';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
+import { Cartesian2 } from '../../angular-cesium/models/cartesian2';
+
 
 export interface LabelStyle {
   show?: boolean;
@@ -51,7 +55,7 @@ export interface LabelProps {
 
 export const defaultLabelProps: LabelProps = {
   backgroundColor: new Color(0.165, 0.165, 0.165, 0.7),
-  backgroundPadding: new Cartesian2(25, 20),
+  backgroundPadding: new cCartesian2(25, 20),
   distanceDisplayCondition: undefined,
   fillColor: Color.WHITE,
   font: '30px sans-serif',
@@ -59,7 +63,7 @@ export const defaultLabelProps: LabelProps = {
   horizontalOrigin: HorizontalOrigin.LEFT,
   outlineColor: Color.BLACK,
   outlineWidth: 1.0,
-  pixelOffset: Cartesian2.ZERO,
+  pixelOffset: cCartesian2.ZERO,
   pixelOffsetScaleByDistance: undefined,
   scale: 1.0,
   scaleByDistance: undefined,
@@ -69,6 +73,6 @@ export const defaultLabelProps: LabelProps = {
   text: '',
   translucencyByDistance: undefined,
   verticalOrigin: VerticalOrigin.BASELINE,
-  eyeOffset: Cartesian3.ZERO,
+  eyeOffset: cCartesian3.ZERO,
   disableDepthTestDistance: 0,
 };

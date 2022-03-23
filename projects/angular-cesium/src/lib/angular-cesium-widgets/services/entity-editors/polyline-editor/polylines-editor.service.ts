@@ -1,6 +1,6 @@
 import { publish, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Color, ClassificationType, sampleTerrain, Cartographic, HeightReference, Cartesian3 } from 'cesium';
+import { Color, ClassificationType, sampleTerrain, Cartographic, HeightReference } from 'cesium';
 import { MapEventsManagerService } from '../../../../angular-cesium/services/map-events-mananger/map-events-manager';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CesiumEvent } from '../../../../angular-cesium/services/map-events-mananger/consts/cesium-event.enum';
@@ -11,6 +11,7 @@ import { DisposableObservable } from '../../../../angular-cesium/services/map-ev
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { EditPoint } from '../../../models/edit-point';
 import { CameraService } from '../../../../angular-cesium/services/camera/camera.service';
+import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { PolylinesManagerService } from './polylines-manager.service';
 import { ClampTo3DOptions, PolylineEditOptions, PolylineProps } from '../../../models/polyline-edit-options';
 import { PointProps } from '../../../models/point-edit-options';

@@ -1,7 +1,8 @@
-import { Cartesian3, Math as cMath, CallbackProperty } from 'cesium';
+import { Math as cMath, Cartesian3 as cCartesian3, CallbackProperty } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
 import { EditPoint } from './edit-point';
 import { AcLayerComponent } from '../../angular-cesium/components/ac-layer/ac-layer.component';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { CoordinateConverter } from '../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { PointProps } from './point-edit-options';
 import { HippodromeEditOptions, HippodromeProps } from './hippodrome-edit-options';
@@ -136,8 +137,11 @@ export class EditableHippodrome extends AcEntity {
 
     const firstP = this.getRealPoints()[0];
     const secP = this.getRealPoints()[1];
-
-    const midPointCartesian3 = Cartesian3.lerp(firstP.getPosition(), secP.getPosition(), 0.5, new Cartesian3());
+    const p1 = firstP.getPosition();
+    const cP1 = new cCartesian3(p1.x, p1.y, p1.z);
+    const p2 = secP.getPosition();
+    const cP2 = new cCartesian3(p2.x, p2.y, p2.z);
+    const midPointCartesian3 = cCartesian3.lerp(cP1, cP2, 0.5, new cCartesian3());
     const bearingDeg = this.coordinateConverter.bearingToCartesian(firstP.getPosition(), secP.getPosition());
 
     const upAzimuth = cMath.toRadians(bearingDeg) - Math.PI / 2;
@@ -172,7 +176,11 @@ export class EditableHippodrome extends AcEntity {
   private changeWidthByNewPoint(toPosition: Cartesian3) {
     const firstP = this.getRealPoints()[0];
     const secP = this.getRealPoints()[1];
-    const midPointCartesian3 = Cartesian3.lerp(firstP.getPosition(), secP.getPosition(), 0.5, new Cartesian3());
+    const p1 = firstP.getPosition();
+    const cP1 = new cCartesian3(p1.x, p1.y, p1.z);
+    const p2 = secP.getPosition();
+    const cP2 = new cCartesian3(p2.x, p2.y, p2.z);
+    const midPointCartesian3 = cCartesian3.lerp(cP1, cP2, 0.5, new cCartesian3());
 
     const bearingDeg = this.coordinateConverter.bearingToCartesian(midPointCartesian3, toPosition);
     let normalizedBearingDeb = bearingDeg;

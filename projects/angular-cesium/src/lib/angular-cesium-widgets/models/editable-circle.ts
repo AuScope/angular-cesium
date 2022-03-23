@@ -1,8 +1,8 @@
-import { CallbackProperty, Cartesian3 } from 'cesium';
+import { CallbackProperty } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
 import { EditPoint } from './edit-point';
 import { AcLayerComponent } from '../../angular-cesium/components/ac-layer/ac-layer.component';
-//import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { GeoUtilsService } from '../../angular-cesium/services/geo-utils/geo-utils.service';
 import { EditArc } from './edit-arc';
 import { CircleEditOptions } from './circle-edit-options';

@@ -1,6 +1,6 @@
-import { Cartesian3 } from 'cesium';
 import { EditPoint } from './edit-point';
 import { BasicEditUpdate } from './basic-edit-update';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { PolygonEditOptions } from './polygon-edit-options';
 
 export interface PolygonEditUpdate extends BasicEditUpdate<PolygonEditUpdate> {

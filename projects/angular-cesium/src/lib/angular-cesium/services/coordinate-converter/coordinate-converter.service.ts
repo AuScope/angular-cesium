@@ -1,8 +1,9 @@
 import { Injectable, Optional } from '@angular/core';
-import { Cartographic, Math as cMath, Cartesian3, SceneTransforms, Cartesian2 } from 'cesium';
+import { Cartographic, Math as cMath, Cartesian3 as cCartesian3, Cartesian2 as cCartesian2, SceneTransforms } from 'cesium';
 import { CesiumService } from '../cesium/cesium.service';
 import * as geodesy from 'geodesy';
 import { hemisphere, LatLon, LatLonEllipsoidal, Utm } from 'geodesy';
+import { Cartesian3 } from '../../models/cartesian3';
 
 const LatLonVectors = geodesy['LatLonVectors']; // doesnt exists on typings
 
@@ -39,7 +40,7 @@ export class CoordinateConverter {
   }
 
   static cartesian3ToLatLon(cartesian3: Cartesian3, ellipsoid?: any): {lon: number, lat: number; height: number} {
-    const cart = Cartographic.fromCartesian(cartesian3, ellipsoid);
+    const cart = Cartographic.fromCartesian(new cCartesian3(cartesian3.x, cartesian3.y, cartesian3.z), ellipsoid);
     return {
       lon: cMath.toDegrees(cart.longitude),
       lat: cMath.toDegrees(cart.latitude),
@@ -69,7 +70,7 @@ export class CoordinateConverter {
   }
 
   cartesian3ToCartographic(cartesian: Cartesian3, ellipsoid?: any) {
-    return Cartographic.fromCartesian(cartesian, ellipsoid);
+    return Cartographic.fromCartesian(new cCartesian3(cartesian.x, cartesian.y, cartesian.z), ellipsoid);
   }
 
   degreesToCartographic(longitude: number, latitude: number, height?: number) {
@@ -107,15 +108,15 @@ export class CoordinateConverter {
     const secondPoint = new LatLonVectors(toDeg(second.latitude), toDeg(second.longitude));
     const middlePoint: any = firstPoint.midpointTo(secondPoint);
 
-    return Cartesian3.fromDegrees(middlePoint.lon, middlePoint.lat);
+    return cCartesian3.fromDegrees(middlePoint.lon, middlePoint.lat);
   }
 
   middlePointByScreen(position0: Cartesian3, position1: Cartesian3): Cartesian3 {
     const scene = this.cesiumService.getScene();
-    const screenPosition1 = SceneTransforms.wgs84ToWindowCoordinates(scene, position0);
-    const screenPosition2 = SceneTransforms.wgs84ToWindowCoordinates(scene, position1);
+    const screenPosition1 = SceneTransforms.wgs84ToWindowCoordinates(scene, new cCartesian3(position0.x, position0.y, position0.z));
+    const screenPosition2 = SceneTransforms.wgs84ToWindowCoordinates(scene, new cCartesian3(position1.x, position1.y, position1.z));
     const middleScreenPoint =
-      new Cartesian2((screenPosition2.x + screenPosition1.x) / 2.0, (screenPosition2.y + screenPosition1.y) / 2.0);
+      new cCartesian2((screenPosition2.x + screenPosition1.x) / 2.0, (screenPosition2.y + screenPosition1.y) / 2.0);
     return scene.pickPosition(middleScreenPoint);
   }
 
@@ -140,9 +141,9 @@ export class CoordinateConverter {
    *
    * @return bearing in degrees
    */
-  bearingToCartesian(firstCartesian3: Cartesian3, secondCartesian3: Cartesian3) {
-    const firstCart = Cartographic.fromCartesian(firstCartesian3);
-    const secondCart = Cartographic.fromCartesian(secondCartesian3);
+  bearingToCartesian(firstCart3: Cartesian3, secondCart3: Cartesian3) {
+    const firstCart = Cartographic.fromCartesian(new cCartesian3(firstCart3.x, firstCart3.y, firstCart3.z));
+    const secondCart = Cartographic.fromCartesian(new cCartesian3(secondCart3.x, secondCart3.y, secondCart3.z));
 
     return this.bearingTo(firstCart, secondCart);
   }

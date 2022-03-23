@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Color, Cartesian2, Cartesian3 } from 'cesium';
+import { Color, Cartesian2 as cCartesian2, Cartesian3 as cCartesian3 } from 'cesium';
 import { CoordinateConverter } from '../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { EditActions } from '../../models/edit-actions.enum';
 import { PolylineEditorObservable } from '../../models/polyline-editor-observable';
@@ -96,7 +96,8 @@ export class RangeAndBearingComponent {
             if (index !== 0) {
               const previousPosition = array[index - 1];
               const bearing = this.coordinateConverter.bearingToCartesian(previousPosition, position);
-              const distance = Cartesian3.distance(previousPosition, position) / 1000;
+              const distance = cCartesian3.distance(new cCartesian3(previousPosition.x, previousPosition.y, previousPosition.z),
+                                                    new cCartesian3(position.x, position.y, position.z)) / 1000;
               labels.push(
                 {
                   text:
@@ -105,8 +106,8 @@ export class RangeAndBearingComponent {
                     `${bearing.toFixed(2)}°`,
                   scale: 0.2,
                   font: '80px Helvetica',
-                  pixelOffset: new Cartesian2(-20, -8),
-                  position: new Cartesian3(
+                  pixelOffset: new cCartesian2(-20, -8),
+                  position: new cCartesian3(
                     (position.x + previousPosition.x) / 2,
                     (position.y + previousPosition.y) / 2,
                     (position.z + previousPosition.z) / 2,
@@ -126,7 +127,7 @@ export class RangeAndBearingComponent {
                     `${(totalDistance + distance).toFixed(2)} Km`,
                   scale: 0.2,
                   font: '80px Helvetica',
-                  pixelOffset: new Cartesian2(-35, -8),
+                  pixelOffset: new cCartesian2(-35, -8),
                   position: position,
                   fillColor: Color.WHITE,
                   outlineColor: Color.WHITE,
@@ -148,7 +149,7 @@ export class RangeAndBearingComponent {
               text: (distanceStringFn && distanceStringFn(0)) || (this.distanceStringFn && this.distanceStringFn(0)) || `0 Km`,
               scale: 0.2,
               font: '80px Helvetica',
-              pixelOffset: new Cartesian2(-20, -8),
+              pixelOffset: new cCartesian2(-20, -8),
               position: positions[0],
               fillColor: Color.WHITE,
               outlineColor: Color.WHITE,

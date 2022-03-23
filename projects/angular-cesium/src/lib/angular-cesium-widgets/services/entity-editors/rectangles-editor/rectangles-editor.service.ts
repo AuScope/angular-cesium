@@ -1,6 +1,6 @@
 import { publish, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { Color, ClassificationType, HeightReference, Cartesian3 } from 'cesium';
+import { Color, ClassificationType, HeightReference } from 'cesium';
 import { CesiumService } from '../../../../angular-cesium/services/cesium/cesium.service';
 import { MapEventsManagerService } from '../../../../angular-cesium/services/map-events-mananger/map-events-manager';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
@@ -13,6 +13,7 @@ import { DisposableObservable } from '../../../../angular-cesium/services/map-ev
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { EditPoint } from '../../../models/edit-point';
 import { CameraService } from '../../../../angular-cesium/services/camera/camera.service';
+import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { RectanglesManagerService } from './rectangles-manager.service';
 import { RectangleEditorObservable } from '../../../models/rectangle-editor-observable';
 import { EditableRectangle } from '../../../models/editable-rectangle';

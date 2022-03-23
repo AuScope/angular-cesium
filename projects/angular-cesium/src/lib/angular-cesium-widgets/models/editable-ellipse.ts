@@ -1,7 +1,8 @@
-import { Cartesian3, CallbackProperty, Math as cMath } from 'cesium';
+import { Cartesian3 as cCartesian3, CallbackProperty, Math as cMath } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
 import { EditPoint } from './edit-point';
 import { AcLayerComponent } from '../../angular-cesium/components/ac-layer/ac-layer.component';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { GeoUtilsService } from '../../angular-cesium/services/geo-utils/geo-utils.service';
 import { EllipseEditOptions, EllipseProps } from './ellipse-edit-options';
 import { PointProps } from './point-edit-options';
@@ -45,18 +46,22 @@ export class EditableEllipse extends AcEntity {
       return;
     }
     this._labels = labels.map((label, index) => {
+      const c = this.getCenter();
+      const cCentre = new cCartesian3(c.x, c.y, c.z);
+      const p = this._majorRadiusPoint.getPosition();
+      const cPoint = new cCartesian3(p.x, p.y, p.z);
       if (!label.position) {
         if (index === 0) {
           label.position = this._center.getPosition();
         } else if (index === 1) {
           label.position = this._majorRadiusPoint
-            ? Cartesian3.midpoint(this.getCenter(), this._majorRadiusPoint.getPosition(), new Cartesian3())
-            : new Cartesian3();
+            ? cCartesian3.midpoint(cCentre, cPoint, new cCartesian3())
+            : new cCartesian3();
         } else if (index === 2) {
           label.position =
             this._minorRadiusPoints.length > 0 && this._minorRadius
-              ? Cartesian3.midpoint(this.getCenter(), this.getMinorRadiusPointPosition(), new Cartesian3())
-              : new Cartesian3();
+              ? cCartesian3.midpoint(cCentre, cPoint, new cCartesian3())
+              : new cCartesian3();
         }
       }
 
@@ -269,8 +274,8 @@ export class EditableEllipse extends AcEntity {
       return;
     }
     if (this._minorRadiusPoints.length === 0) {
-      this._minorRadiusPoints.push(new EditPoint(this.id, new Cartesian3(), this.pointProps, true));
-      this._minorRadiusPoints.push(new EditPoint(this.id, new Cartesian3(), this.pointProps, true));
+      this._minorRadiusPoints.push(new EditPoint(this.id, new cCartesian3(), this.pointProps, true));
+      this._minorRadiusPoints.push(new EditPoint(this.id, new cCartesian3(), this.pointProps, true));
     }
 
     this._minorRadiusPoints[0].setPosition(

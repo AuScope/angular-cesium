@@ -1,4 +1,4 @@
-import { Cartesian3 } from 'cesium';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { EditPoint } from './edit-point';
 import { BasicEditUpdate } from './basic-edit-update';
 import { HippodromeEditOptions } from './hippodrome-edit-options';

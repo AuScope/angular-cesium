@@ -1,6 +1,6 @@
-import { CallbackProperty, Cartesian3 } from 'cesium';
+import { CallbackProperty } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
-//import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { PointProps } from './point-edit-options';
 
 export class EditPoint extends AcEntity {

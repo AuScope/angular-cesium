@@ -1,9 +1,10 @@
-import { Cartesian3, Cartographic, CallbackProperty, Rectangle } from 'cesium';
+import { Cartesian3 as cCartesian3, Rectangle as cRectangle, Cartographic, CallbackProperty } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
 import { EditPoint } from './edit-point';
 import { AcLayerComponent } from '../../angular-cesium/components/ac-layer/ac-layer.component';
+import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
+import { Rectangle } from '../../angular-cesium/models/rectangle';
 import { CoordinateConverter } from '../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
-import { GeoUtilsService } from '../../angular-cesium/services/geo-utils/geo-utils.service';
 import { RectangleEditOptions, RectangleProps } from './rectangle-edit-options';
 import { PointProps } from './point-edit-options';
 import { defaultLabelProps, LabelProps } from './label-props';
@@ -140,13 +141,17 @@ export class EditableRectangle extends AcEntity {
       this.lastDraggedToPosition = startMovingPosition;
     }
 
-    const lastDraggedCartographic = Cartographic.fromCartesian(this.lastDraggedToPosition);
-    const draggedToPositionCartographic = Cartographic.fromCartesian(draggedToPosition);
+    const lastDraggedP = new cCartesian3(this.lastDraggedToPosition.x, this.lastDraggedToPosition.y, this.lastDraggedToPosition.z);
+    const lastDraggedCartographic = Cartographic.fromCartesian(lastDraggedP);
+    const draggedP = new cCartesian3(draggedToPosition.x, draggedToPosition.y, draggedToPosition.z);
+    const draggedToPositionCartographic = Cartographic.fromCartesian(draggedP);
     this.getRealPoints().forEach(point => {
-      const cartographic = Cartographic.fromCartesian(point.getPosition());
+      const p = point.getPosition();
+      const cP = new cCartesian3(p.x, p.y, p.z);
+      const cartographic = Cartographic.fromCartesian(cP);
       cartographic.longitude += (draggedToPositionCartographic.longitude - lastDraggedCartographic.longitude);
       cartographic.latitude += (draggedToPositionCartographic.latitude - lastDraggedCartographic.latitude);
-      point.setPosition(Cartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0));
+      point.setPosition(cCartesian3.fromRadians(cartographic.longitude, cartographic.latitude, 0));
     });
 
     this.updatePointsLayer(...this.positions);
@@ -198,11 +203,11 @@ export class EditableRectangle extends AcEntity {
   }
 
   getRectangle(): Rectangle {
-    const cartographics = this.getPositions().map(cartesian => Cartographic.fromCartesian(cartesian));
+    const cartographics = this.getPositions().map(cartesian => Cartographic.fromCartesian(new cCartesian3(cartesian.x, cartesian.y, cartesian.z)));
     const longitudes = cartographics.map(position => position.longitude);
     const latitudes = cartographics.map(position =>  position.latitude);
 
-    return new Rectangle(
+    return new cRectangle(
       Math.min(...longitudes),
       Math.min(...latitudes),
       Math.max(...longitudes),
