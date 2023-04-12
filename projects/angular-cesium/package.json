@@ -1,6 +1,6 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "14.0.0",
+  "version": "15.0.0",
   "license": "MIT",
   "description": "Angular v14 library for working with Cesium, fork of https://github.com/articodeltd/angular-cesium.",
   "repository": {
@@ -14,8 +14,8 @@
     "Angular Cesium"
   ],
   "peerDependencies": {
-    "@angular/common": "^14.3.0",
-    "@angular/core": "^14.3.0",
+    "@angular/common": "^15.2.6",
+    "@angular/core": "^15.2.6",
     "lodash": "^4.17.21",
     "cesium": ">= 1.93.0"
   },
