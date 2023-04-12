@@ -276,6 +276,5 @@
         }
       }
     }
-  },
-  "defaultProject": "angular-cesium-demo"
+  }
 }
