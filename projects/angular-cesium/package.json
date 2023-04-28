@@ -2,7 +2,7 @@
   "name": "@auscope/angular-cesium",
   "version": "15.0.0",
   "license": "MIT",
-  "description": "Angular v14 library for working with Cesium, fork of https://github.com/articodeltd/angular-cesium.",
+  "description": "Angular v15 library for working with Cesium, fork of https://github.com/articodeltd/angular-cesium.",
   "repository": {
     "type": "git",
     "url": "https://github.com/AuScope/angular-cesium.git",
@@ -20,7 +20,7 @@
     "cesium": ">= 1.93.0"
   },
   "dependencies": {
-    "@auscope/angular2parse": "^2.0.4",
+    "@auscope/angular2parse": "^4.0.0",
     "geodesy": "^1.1.3",
     "@types/geodesy": "^1.1.3",
     "json-string-mapper": "^1.0.0",
