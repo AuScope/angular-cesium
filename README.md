@@ -3,7 +3,9 @@
 
 [![npm version](https://img.shields.io/npm/v/angular-cesium.svg?style=flat-square)](https://www.npmjs.com/package/@auscope/angular-cesium)
 
-**This is a fork of Articode's "angular-cesium", adapted for Angular v13 [Angular Cesium](https://github.com/articodeltd/angular-cesium)**
+**This is a fork of Articode's "angular-cesium", adapted for Angular v15 [Angular Cesium](https://github.com/articodeltd/angular-cesium)**
+
+**NB: Building schematics will fail because @compodoc/compodoc v1.1.19 only supports Angular v13, but the latest unreleased code changes do support v15.**
 
 Create amazing mapping applications using Cesium and Angular components.
 Angular-Cesium is focused on high performance and simple usage.
