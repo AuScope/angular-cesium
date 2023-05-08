@@ -1,6 +1,6 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "15.0.0",
+  "version": "15.0.1",
   "license": "MIT",
   "description": "Angular v15 library for working with Cesium, fork of https://github.com/articodeltd/angular-cesium.",
   "repository": {
@@ -17,7 +17,8 @@
     "@angular/common": "^15.2.6",
     "@angular/core": "^15.2.6",
     "lodash": "^4.17.21",
-    "cesium": ">= 1.93.0"
+    "cesium": "1.93.0",
+    "rxjs": "~6.6.7"
   },
   "dependencies": {
     "@auscope/angular2parse": "^4.0.0",

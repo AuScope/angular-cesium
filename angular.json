@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-	    "preserveSymlinks": true,
+	          "preserveSymlinks": true,
             "outputPath": "dist/angular-cesium-demo",
             "index": "projects/demo/src/index.html",
             "main": "projects/demo/src/main.ts",
@@ -38,7 +38,24 @@
             ],
             "allowedCommonJsDependencies": [
               "geodesy",
-              "util"
+              "util",
+              "json-string-mapper",
+              "lodash",
+              "primitive-primitives",
+              "when",
+              "dompurify",
+              "protobufjs/dist/minimal/protobuf.js",
+              "mersenne-twister",
+              "earcut",
+              "rbush",
+              "urijs",
+              "bitmap-sdf",
+              "grapheme-splitter",
+              "nosleep.js",
+              "http",
+              "https",
+              "url",
+              "zlib"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
