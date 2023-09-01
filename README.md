@@ -3,7 +3,7 @@
 
 [![npm version](https://img.shields.io/npm/v/angular-cesium.svg?style=flat-square)](https://www.npmjs.com/package/@auscope/angular-cesium)
 
-**This is a fork of Articode's "angular-cesium", adapted for Angular v13 [Angular Cesium](https://github.com/articodeltd/angular-cesium)**
+**This is a fork of Articode's "angular-cesium", adapted for Angular v15 [Angular Cesium](https://github.com/articodeltd/angular-cesium)**
 
 Create amazing mapping applications using Cesium and Angular components.
 Angular-Cesium is focused on high performance and simple usage.
