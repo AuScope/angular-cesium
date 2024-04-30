@@ -1383,11 +1383,6 @@
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@esbuild/win32-x64@0.17.8":
-  version "0.17.8"
-  resolved "https://registry.npmjs.org/@esbuild/win32-x64/-/win32-x64-0.17.8.tgz"
-  integrity sha512-1iuezdyDNngPnz8rLRDO2C/ZZ/emJLb72OsZeqQ6gL6Avko/XCXZw+NuxBSNhBAP13Hie418V7VMt9et1FMvpg==
-
 "@foliojs-fork/fontkit@^1.9.1":
   version "1.9.1"
   resolved "https://registry.npmjs.org/@foliojs-fork/fontkit/-/fontkit-1.9.1.tgz"
@@ -9605,7 +9600,9 @@ zone.js@~0.10.2, zone.js@~0.10.3:
   resolved "https://registry.npmjs.org/zone.js/-/zone.js-0.10.3.tgz"
   integrity sha512-LXVLVEq0NNOqK/fLJo3d0kfzd4sxwn2/h67/02pjCjfKDxgx1i9QqpvtHD8CrBnSSwMw5+dy11O7FRX5mkO7Cg==
 
-zone.js@~0.11.4, "zone.js@~0.11.4 || ~0.12.0 || ~0.13.0":
-  version "0.11.4"
+"zone.js@~0.11.4 || ~0.12.0 || ~0.13.0", zone.js@~0.13:
+  version "0.13.3"
+  resolved "https://registry.npmjs.org/zone.js/-/zone.js-0.13.3.tgz"
+  integrity sha512-MKPbmZie6fASC/ps4dkmIhaT5eonHkEt6eAy80K42tAm0G2W+AahLJjbfi6X9NPdciOE9GRFTTM8u2IiF6O3ww==
   dependencies:
-    tslib "^2.0.0"
+    tslib "^2.3.0"
