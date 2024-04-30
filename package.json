@@ -1,8 +1,8 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "16.0.0",
+  "version": "17.0.0",
   "license": "MIT",
-  "description": "Angular v16 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
+  "description": "Angular v17 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
   "repository": "https://github.com/AuScope/angular-cesium",
   "keywords": [
     "Angular",
