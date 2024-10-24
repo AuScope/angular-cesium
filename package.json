@@ -46,7 +46,7 @@
     "@angular/platform-browser": "^18.2.8",
     "@angular/platform-browser-dynamic": "^18.2.8",
     "@angular/router": "^18.2.8",
-    "@auscope/angular2parse": "^18.0.0",
+    "@auscope/angular2parse": "^18.0.1",
     "@fortawesome/angular-fontawesome": "~0.10.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
