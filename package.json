@@ -3,7 +3,10 @@
   "version": "18.0.0",
   "license": "MIT",
   "description": "Angular v18 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
-  "repository": "https://github.com/AuScope/angular-cesium",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AuScope/angular-cesium.git"
+  },
   "keywords": [
     "Angular",
     "Cesium",
