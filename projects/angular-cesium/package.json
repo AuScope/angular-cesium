@@ -1,6 +1,6 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "18.0.0",
+  "version": "18.0.1",
   "license": "MIT",
   "description": "Angular v18 library for working with Cesium, fork of https://github.com/articodeltd/angular-cesium.",
   "repository": {
