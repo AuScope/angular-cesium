@@ -1,8 +1,8 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "license": "MIT",
-  "description": "Angular v17 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
+  "description": "Angular v18 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
   "repository": "https://github.com/AuScope/angular-cesium",
   "keywords": [
     "Angular",
@@ -43,7 +43,7 @@
     "@angular/platform-browser": "^18.2.8",
     "@angular/platform-browser-dynamic": "^18.2.8",
     "@angular/router": "^18.2.8",
-    "@auscope/angular2parse": "^17.0.0",
+    "@auscope/angular2parse": "^18.0.0",
     "@fortawesome/angular-fontawesome": "~0.10.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -52,7 +52,7 @@
     "core-js": "^3.24.1",
     "dataloader": "^1.4.0",
     "geodesy": "^1.1.3",
-    "gh-pages": "^1.0.0",
+    "gh-pages": "^6.2.0",
     "heatmap.js": "^2.0.5",
     "json-string-mapper": "^1.0.0",
     "lodash": "^4.17.21",
