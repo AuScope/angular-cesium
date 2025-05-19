@@ -232,7 +232,7 @@
     symbol-observable "4.0.0"
     yargs "17.7.2"
 
-"@angular/common@^18.2.8", "@angular/common@^19.0.0 || ^20.0.0", "@angular/common@^19.2.11", "@angular/common@19.2.11":
+"@angular/common@^19.0.0 || ^20.0.0", "@angular/common@^19.2.11", "@angular/common@19.2.11":
   version "19.2.11"
   resolved "https://registry.npmjs.org/@angular/common/-/common-19.2.11.tgz"
   integrity sha512-/ZnF2Nfp6S6TAu3VlvUAIp4NVd81WE1Q95wuwSSuoEx2aSyXzI+1myyKWSYe/jYCyGuppmocjTciEh8mAInmOw==
@@ -260,7 +260,7 @@
   dependencies:
     tslib "^2.3.0"
 
-"@angular/core@^18.2.8", "@angular/core@^19.0.0 || ^20.0.0", "@angular/core@^19.2.11", "@angular/core@19.2.11":
+"@angular/core@^19.0.0 || ^20.0.0", "@angular/core@^19.2.11", "@angular/core@19.2.11":
   version "19.2.11"
   resolved "https://registry.npmjs.org/@angular/core/-/core-19.2.11.tgz"
   integrity sha512-kmtJQB7B5F2V1JIzy1oBPS6WrRyedSYkuge+XoX1mCSFJDef8HRNd7GopnQ0Zaz0vOTGvCCkWvvaH/+7s2lmAQ==
@@ -307,10 +307,10 @@
   dependencies:
     tslib "^2.3.0"
 
-"@auscope/angular2parse@^18.0.1":
-  version "18.0.1"
-  resolved "https://registry.npmjs.org/@auscope/angular2parse/-/angular2parse-18.0.1.tgz"
-  integrity sha512-e5BXpl2yyAuapxbjKJiGu238fXWpFT7WU+rSx2k64+IdpIVOJlOXnNU43nKf7Pywv3K/onVLYoJ5UVo/U9K48A==
+"@auscope/angular2parse@^19.0.1":
+  version "19.0.1"
+  resolved "https://registry.npmjs.org/@auscope/angular2parse/-/angular2parse-19.0.1.tgz"
+  integrity sha512-MDf1gcuu/laG/92uyYoYkggQzepqMk0fyi8PiDMJVRTGG3Hw7S2tdd6YjUDUmWwzs0TSGD7eRCRyz6IRJND66w==
   dependencies:
     tslib "^2.3.0"
 
