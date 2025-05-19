@@ -3,9 +3,10 @@ import { faBolt, faCog, faFeatherAlt, faProjectDiagram, faTools } from '@fortawe
 
 
 @Component({
-  selector: 'about',
-  templateUrl: 'about.component.html',
-  styleUrls: ['about.component.scss'],
+    selector: 'about',
+    templateUrl: 'about.component.html',
+    styleUrls: ['about.component.scss'],
+    standalone: false
 })
 export class AboutComponent {
   boltIcon = faBolt;

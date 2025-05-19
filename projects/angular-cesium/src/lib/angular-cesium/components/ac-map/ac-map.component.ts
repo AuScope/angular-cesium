@@ -38,33 +38,34 @@ import { ScreenshotService } from '../../services/screenshot/screenshot.service'
  * </ac-map>
  */
 @Component({
-  selector: 'ac-map',
-  template: `
+    selector: 'ac-map',
+    template: `
     <ac-default-plonter *ngIf="!disableDefaultPlonter"></ac-default-plonter>
     <ac-context-menu-wrapper></ac-context-menu-wrapper>
     <ng-content></ng-content>
   `,
-  providers: [
-    CesiumService,
-    BillboardDrawerService,
-    CesiumEventBuilder,
-    KeyboardControlService,
-    MapEventsManagerService,
-    PlonterService,
-    LabelDrawerService,
-    PolylineDrawerService,
-    PolylinePrimitiveDrawerService,
-    EllipseDrawerService,
-    PointDrawerService,
-    ArcDrawerService,
-    CzmlDrawerService,
-    PolygonDrawerService,
-    MapLayersService,
-    CameraService,
-    ScreenshotService,
-    ContextMenuService,
-    CoordinateConverter,
-  ],
+    providers: [
+        CesiumService,
+        BillboardDrawerService,
+        CesiumEventBuilder,
+        KeyboardControlService,
+        MapEventsManagerService,
+        PlonterService,
+        LabelDrawerService,
+        PolylineDrawerService,
+        PolylinePrimitiveDrawerService,
+        EllipseDrawerService,
+        PointDrawerService,
+        ArcDrawerService,
+        CzmlDrawerService,
+        PolygonDrawerService,
+        MapLayersService,
+        CameraService,
+        ScreenshotService,
+        ContextMenuService,
+        CoordinateConverter,
+    ],
+    standalone: false
 })
 export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   /**

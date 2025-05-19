@@ -6,8 +6,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'ellipsoid-layer-example',
-  template: `
+    selector: 'ellipsoid-layer-example',
+    template: `
     <ac-layer acFor="let entity of entities$" [context]="this" [debug]="true">
       <ac-ellipsoid-desc props="{
 														position: entity.position,
@@ -19,7 +19,8 @@ import { map } from 'rxjs/operators';
       </ac-ellipsoid-desc>
     </ac-layer>
   `,
-  providers: []
+    providers: [],
+    standalone: false
 })
 export class EllipsoidLayerExampleComponent implements OnInit {
 

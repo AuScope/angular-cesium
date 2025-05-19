@@ -23,9 +23,10 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
  * ```
  */
 @Component({
-  selector: 'ac-polyline-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcPolylineDescComponent)}],
+    selector: 'ac-polyline-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPolylineDescComponent) }],
+    standalone: false
 })
 export class AcPolylineDescComponent extends BasicDesc {
 

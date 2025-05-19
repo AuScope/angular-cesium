@@ -56,7 +56,8 @@ import { CesiumService } from '../../../../angular-cesium/services/cesium/cesium
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
-  }
+    standalone: false
+}
 )
 export class AcToolbarComponent implements OnInit, OnChanges, OnDestroy {
   @Input()

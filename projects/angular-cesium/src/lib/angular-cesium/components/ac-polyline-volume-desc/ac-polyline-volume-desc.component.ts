@@ -24,8 +24,9 @@ import { PolylineVolumeDrawerService } from '../../services/drawers/polyline-vol
  *  ```
  */
 @Component({
-  selector: 'ac-polyline-volume-desc',
-  template: ''
+    selector: 'ac-polyline-volume-desc',
+    template: '',
+    standalone: false
 })
 export class AcPolylineVolumeDescComponent extends BasicDesc {
 

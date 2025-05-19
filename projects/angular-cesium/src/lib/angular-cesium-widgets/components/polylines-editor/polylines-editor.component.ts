@@ -17,8 +17,8 @@ import { EditablePolyline } from '../../models/editable-polyline';
 import { LabelProps } from '../../models/label-props';
 
 @Component({
-  selector: 'polylines-editor',
-  template: /*html*/ `
+    selector: 'polylines-editor',
+    template: /*html*/ `
     <ac-layer #editPolylinesLayer acFor="let polyline of editPolylines$" [context]="this">
       <ac-polyline-desc
         props="{
@@ -80,8 +80,9 @@ import { LabelProps } from '../../models/label-props';
       </ac-array-desc>
     </ac-layer>
   `,
-  providers: [CoordinateConverter, PolylinesManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, PolylinesManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PolylinesEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: PolylineEditUpdate, labels: LabelProps[]) => LabelProps[];

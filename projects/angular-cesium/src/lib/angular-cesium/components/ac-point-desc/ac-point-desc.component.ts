@@ -23,9 +23,10 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
  *  ```
  */
 @Component({
-  selector: 'ac-point-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcPointDescComponent)}],
+    selector: 'ac-point-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPointDescComponent) }],
+    standalone: false
 })
 export class AcPointDescComponent extends BasicDesc {
 

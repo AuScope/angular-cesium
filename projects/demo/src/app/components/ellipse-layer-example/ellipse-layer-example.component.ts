@@ -5,9 +5,10 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'ellipse-layer-example',
-  templateUrl: 'ellipse-layer-example.component.html',
-  styleUrls: ['ellipse-layer-example.component.css'],
+    selector: 'ellipse-layer-example',
+    templateUrl: 'ellipse-layer-example.component.html',
+    styleUrls: ['ellipse-layer-example.component.css'],
+    standalone: false
 })
 export class EllipseLayerExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

@@ -6,8 +6,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'volume-layer-example',
-  template: `
+    selector: 'volume-layer-example',
+    template: `
       <ac-layer acFor="let entity of entities$" [context]="this">
           <ac-polyline-volume-desc props="{
 														positions: entity.positions,
@@ -19,7 +19,8 @@ import { map } from 'rxjs/operators';
           </ac-polyline-volume-desc>
       </ac-layer>
   `,
-  providers: []
+    providers: [],
+    standalone: false
 })
 export class VolumeLayerExampleComponent implements OnInit {
 

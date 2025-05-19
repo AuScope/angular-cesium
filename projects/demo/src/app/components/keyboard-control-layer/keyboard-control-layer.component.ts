@@ -2,8 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { KeyboardAction, KeyboardControlService } from 'angular-cesium';
 
 @Component({
-  selector: 'keyboard-control-layer',
-  template: '',
+    selector: 'keyboard-control-layer',
+    template: '',
+    standalone: false
 })
 export class KeyboardControlLayerComponent implements OnInit, OnDestroy {
   constructor(private keyboardControlService: KeyboardControlService) {

@@ -12,7 +12,8 @@ import { Cartesian2 } from 'cesium';
  * </ac-label-desc>
  */
 @Pipe({
-  name: 'pixelOffset'
+    name: 'pixelOffset',
+    standalone: false
 })
 export class PixelOffsetPipe implements PipeTransform {
 

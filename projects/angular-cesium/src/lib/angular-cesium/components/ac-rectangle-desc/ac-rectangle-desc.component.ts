@@ -24,9 +24,10 @@ import { RectangleDrawerService } from '../../services/drawers/rectangle-dawer/r
  *  ```
  */
 @Component({
-  selector: 'ac-rectangle-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcRectangleDescComponent)}],
+    selector: 'ac-rectangle-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcRectangleDescComponent) }],
+    standalone: false
 })
 export class AcRectangleDescComponent extends BasicDesc {
 

@@ -24,9 +24,10 @@ import { EllipsoidDrawerService } from '../../services/drawers/ellipoid-drawer/e
  *  ```
  */
 @Component({
-  selector: 'ac-ellipsoid-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcEllipsoidDescComponent)}],
+    selector: 'ac-ellipsoid-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcEllipsoidDescComponent) }],
+    standalone: false
 })
 export class AcEllipsoidDescComponent extends BasicDesc {
 

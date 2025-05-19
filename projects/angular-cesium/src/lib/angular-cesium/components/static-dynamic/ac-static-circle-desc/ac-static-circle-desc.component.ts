@@ -26,8 +26,9 @@ import { StaticCircleDrawerService } from '../../../services/drawers/static-dyna
  *    ```
  */
 @Component({
-  selector: 'ac-static-circle',
-  template: ''
+    selector: 'ac-static-circle',
+    template: '',
+    standalone: false
 })
 export class AcStaticCircleDescComponent extends BasicStaticPrimitiveDesc {
   constructor(staticCircleDrawer: StaticCircleDrawerService, layerService: LayerService,

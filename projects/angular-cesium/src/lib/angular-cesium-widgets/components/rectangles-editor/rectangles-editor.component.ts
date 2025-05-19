@@ -16,8 +16,8 @@ import { LabelProps } from '../../models/label-props';
 import { EditableRectangle } from '../../models/editable-rectangle';
 
 @Component({
-  selector: 'rectangles-editor',
-  template: /*html*/ `
+    selector: 'rectangles-editor',
+    template: /*html*/ `
     <ac-layer #editPointsLayer acFor="let point of editPoints$" [context]="this">
       <ac-point-desc
         props="{
@@ -80,8 +80,9 @@ import { EditableRectangle } from '../../models/editable-rectangle';
       </ac-array-desc>
     </ac-layer>
   `,
-  providers: [CoordinateConverter, RectanglesManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, RectanglesManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class RectanglesEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: RectangleEditUpdate, labels: LabelProps[]) => LabelProps[];

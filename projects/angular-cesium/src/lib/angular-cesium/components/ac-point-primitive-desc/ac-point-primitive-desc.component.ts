@@ -22,8 +22,9 @@ import { PointPrimitiveDrawerService } from '../../services/drawers/point-primit
  */
 
 @Component({
-  selector: 'ac-point-primitive-desc',
-  template: '',
+    selector: 'ac-point-primitive-desc',
+    template: '',
+    standalone: false
 })
 export class AcPointPrimitiveDescComponent extends BasicDesc {
 

@@ -24,8 +24,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-billboard',
-  template: '',
+    selector: 'ac-billboard',
+    template: '',
+    standalone: false
 })
 export class AcBillboardComponent extends EntityOnMapComponent {
 

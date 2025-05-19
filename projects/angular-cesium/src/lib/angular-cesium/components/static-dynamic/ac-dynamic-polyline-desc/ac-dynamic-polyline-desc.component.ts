@@ -23,8 +23,9 @@ import { DynamicPolylineDrawerService } from '../../../services/drawers/static-d
  * ```
  */
 @Component({
-  selector: 'ac-dynamic-polyline-desc',
-  template: ''
+    selector: 'ac-dynamic-polyline-desc',
+    template: '',
+    standalone: false
 })
 export class AcDynamicPolylineDescComponent extends BasicDesc {
 

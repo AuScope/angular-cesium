@@ -30,8 +30,9 @@ import { BasicStaticPrimitiveDesc } from '../../../services/basic-primitive-desc
  *  ```
  */
 @Component({
-  selector: 'ac-static-polyline-desc',
-  template: ''
+    selector: 'ac-static-polyline-desc',
+    template: '',
+    standalone: false
 })
 export class AcStaticPolylineDescComponent extends BasicStaticPrimitiveDesc {
   constructor(polylineDrawerService: StaticPolylineDrawerService, layerService: LayerService,

@@ -21,8 +21,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  *  ```
  */
 @Component({
-  selector: 'ac-rectangle',
-  template: ''
+    selector: 'ac-rectangle',
+    template: '',
+    standalone: false
 })
 export class AcRectangleComponent extends EntityOnMapComponent {
   constructor(rectangleDrawer: RectangleDrawerService, mapLayers: MapLayersService) {

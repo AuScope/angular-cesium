@@ -7,8 +7,9 @@ import { MockDataProviderService } from '../../services/mock-data-provider.servi
 import { interpolate, InterpolationType } from '../../utils/interpolation';
 
 @Component({
-  selector: 'ufos-layer',
-  templateUrl: './ufos-layer.component.html'
+    selector: 'ufos-layer',
+    templateUrl: './ufos-layer.component.html',
+    standalone: false
 })
 export class UFOsLayerComponent {
   private ufos$: Observable<AcNotification>;

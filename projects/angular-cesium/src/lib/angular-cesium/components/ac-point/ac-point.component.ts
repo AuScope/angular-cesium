@@ -21,8 +21,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-point',
-  template: '',
+    selector: 'ac-point',
+    template: '',
+    standalone: false
 })
 export class AcPointComponent extends EntityOnMapComponent {
 

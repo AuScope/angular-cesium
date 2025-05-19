@@ -30,8 +30,9 @@ import { StaticEllipseDrawerService } from '../../../services/drawers/static-dyn
  *  ```
  */
 @Component({
-  selector: 'ac-static-ellipse-desc',
-  template: ''
+    selector: 'ac-static-ellipse-desc',
+    template: '',
+    standalone: false
 })
 export class AcStaticEllipseDescComponent extends BasicStaticPrimitiveDesc {
   constructor(ellipseDrawer: StaticEllipseDrawerService, layerService: LayerService,

@@ -15,8 +15,8 @@ import { LabelProps } from '../../models/label-props';
 import { EditableHippodrome } from '../../models/editable-hippodrome';
 
 @Component({
-  selector: 'hippodrome-editor',
-  template: /*html*/ `
+    selector: 'hippodrome-editor',
+    template: /*html*/ `
       <ac-layer #editHippodromesLayer acFor="let hippodrome of editHippodromes$" [context]="this">
           <ac-corridor-desc props="{
             positions: hippodrome.getRealPositionsCallbackProperty(),
@@ -76,8 +76,9 @@ import { EditableHippodrome } from '../../models/editable-hippodrome';
           </ac-point-desc>
       </ac-layer>
   `,
-  providers: [CoordinateConverter, HippodromeManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, HippodromeManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HippodromeEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: HippodromeEditUpdate, labels: LabelProps[]) => LabelProps[];

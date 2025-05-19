@@ -24,9 +24,10 @@ import { BoxDrawerService } from '../../services/drawers/box-dawer/box-drawer.se
  *  ```
  */
 @Component({
-  selector: 'ac-box-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcBoxDescComponent)}],
+    selector: 'ac-box-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcBoxDescComponent) }],
+    standalone: false
 })
 export class AcBoxDescComponent extends BasicDesc {
 

@@ -11,7 +11,8 @@ export class AcHtmlContext {
 }
 
 @Directive({
-  selector: '[acHtml]',
+    selector: '[acHtml]',
+    standalone: false
 })
 export class AcHtmlDirective implements OnInit {
 

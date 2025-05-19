@@ -12,11 +12,12 @@ import {
 } from 'angular-cesium';
 
 @Component({
-  selector: 'polygons-editor-example',
-  templateUrl: 'polygons-editor-example.component.html',
-  styleUrls: ['./polygons-editor-example.component.css'],
-  providers: [PolygonsEditorService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'polygons-editor-example',
+    templateUrl: 'polygons-editor-example.component.html',
+    styleUrls: ['./polygons-editor-example.component.css'],
+    providers: [PolygonsEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PolygonsEditorExampleComponent implements OnInit {
   editing$: PolygonEditorObservable;

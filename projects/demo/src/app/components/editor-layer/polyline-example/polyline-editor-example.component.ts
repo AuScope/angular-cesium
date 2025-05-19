@@ -14,11 +14,12 @@ import {
 } from 'angular-cesium';
 
 @Component({
-  selector: 'polyline-editor-example',
-  templateUrl: 'polyline-editor-example.component.html',
-  styleUrls: ['./polyline-editor-example.component.css'],
-  providers: [PolylinesEditorService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'polyline-editor-example',
+    templateUrl: 'polyline-editor-example.component.html',
+    styleUrls: ['./polyline-editor-example.component.css'],
+    providers: [PolylinesEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PolylineEditorExampleComponent implements OnInit {
 

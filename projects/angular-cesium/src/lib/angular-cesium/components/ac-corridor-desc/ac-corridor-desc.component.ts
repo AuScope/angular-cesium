@@ -24,9 +24,10 @@ import { CorridorDrawerService } from '../../services/drawers/corridor-dawer/cor
  *  ```
  */
 @Component({
-  selector: 'ac-corridor-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcCorridorDescComponent)}],
+    selector: 'ac-corridor-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcCorridorDescComponent) }],
+    standalone: false
 })
 export class AcCorridorDescComponent extends BasicDesc {
 

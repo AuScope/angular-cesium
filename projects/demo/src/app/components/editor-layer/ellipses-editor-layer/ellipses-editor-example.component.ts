@@ -4,11 +4,12 @@ import { Color, Cartesian3 } from 'cesium';
 import { CoordinateConverter, EllipseEditorObservable, EllipseEditUpdate, EllipsesEditorService, LabelProps } from 'angular-cesium';
 
 @Component({
-  selector: 'ellipses-editor-example',
-  templateUrl: 'ellipses-editor-example.component.html',
-  styleUrls: ['./ellipses-editor-example.component.css'],
-  providers: [EllipsesEditorService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'ellipses-editor-example',
+    templateUrl: 'ellipses-editor-example.component.html',
+    styleUrls: ['./ellipses-editor-example.component.css'],
+    providers: [EllipsesEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EllipsesEditorExampleComponent implements OnInit {
   editing$: EllipseEditorObservable;

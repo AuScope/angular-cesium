@@ -25,9 +25,10 @@ import { BillboardPrimitiveDrawerService } from '../../services/drawers/billboar
  */
 
 @Component({
-  selector: 'ac-billboard-primitive-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcBillboardPrimitiveDescComponent)}],
+    selector: 'ac-billboard-primitive-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcBillboardPrimitiveDescComponent) }],
+    standalone: false
 })
 export class AcBillboardPrimitiveDescComponent extends BasicDesc {
 

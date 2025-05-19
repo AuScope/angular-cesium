@@ -27,8 +27,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-arc',
-  template: '',
+    selector: 'ac-arc',
+    template: '',
+    standalone: false
 })
 export class AcArcComponent extends EntityOnMapComponent implements OnChanges {
 

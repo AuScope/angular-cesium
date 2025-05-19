@@ -5,8 +5,8 @@ import { AcNotification, ActionType } from 'angular-cesium';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'wall-layer-example',
-  template: `
+    selector: 'wall-layer-example',
+    template: `
       <ac-layer acFor="let entity of entities$" [context]="this">
           <ac-wall-desc props="{
 														positions: entity.positions,
@@ -17,7 +17,8 @@ import { map } from 'rxjs/operators';
           </ac-wall-desc>
       </ac-layer>
   `,
-  providers: []
+    providers: [],
+    standalone: false
 })
 export class WallLayerExampleComponent implements OnInit {
 

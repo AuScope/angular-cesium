@@ -24,9 +24,10 @@ import { LabelPrimitiveDrawerService } from '../../services/drawers/label-primit
  */
 
 @Component({
-  selector: 'ac-label-primitive-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcLabelPrimitiveDescComponent)}],
+    selector: 'ac-label-primitive-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcLabelPrimitiveDescComponent) }],
+    standalone: false
 })
 export class AcLabelPrimitiveDescComponent extends BasicDesc {
 

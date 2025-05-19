@@ -23,9 +23,10 @@ import { ModelDrawerService } from '../../services/drawers/model-drawer/model-dr
  *  ```
  */
 @Component({
-  selector: 'ac-model-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcModelDescComponent)}],
+    selector: 'ac-model-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcModelDescComponent) }],
+    standalone: false
 })
 export class AcModelDescComponent extends BasicDesc implements OnInit {
 

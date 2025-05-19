@@ -26,7 +26,10 @@ import { DraggableToMapService } from '../services/draggable-to-map.service';
  * ```
  */
 
-@Directive({selector: '[draggableToMap]'})
+@Directive({
+    selector: '[draggableToMap]',
+    standalone: false
+})
 export class DraggableToMapDirective implements OnInit {
   @Input() draggableToMap: { src: string, style?: any } | string;
   private src: string;

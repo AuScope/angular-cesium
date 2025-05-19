@@ -30,15 +30,16 @@ import { AcHtmlManager } from '../../services/ac-html-manager/ac-html-manager.se
  *  ```
  */
 @Component({
-  selector: 'ac-html-desc',
-  providers: [AcHtmlManager],
-  template: `
+    selector: 'ac-html-desc',
+    providers: [AcHtmlManager],
+    template: `
       <div *acHtml="let acHtmlEntityId = id; let acHtmlContext = context">
           <div [acHtmlContainer]="acHtmlEntityId">
               <ng-template [ngTemplateOutlet]="acHtmlTemplate"
                            [ngTemplateOutletContext]="acHtmlContext"></ng-template>
           </div>
-      </div>`
+      </div>`,
+    standalone: false
 })
 export class AcHtmlDescComponent extends BasicDesc implements OnInit {
 

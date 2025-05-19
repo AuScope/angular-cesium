@@ -9,11 +9,12 @@ import { DraggableToMapService, MapLayerProviderOptions, MapsManagerService } fr
 import { DemoMapComponent } from './components/demo-map/demo-map.component';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css'],
-  providers: [ AppSettingsService],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.css'],
+    providers: [AppSettingsService],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class AppComponent implements AfterViewInit {
 

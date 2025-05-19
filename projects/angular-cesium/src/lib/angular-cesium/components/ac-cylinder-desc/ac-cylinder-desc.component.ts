@@ -24,9 +24,10 @@ import { CylinderDrawerService } from '../../services/drawers/cylinder-dawer/cyl
  *  ```
  */
 @Component({
-  selector: 'ac-cylinder-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcCylinderDescComponent)}],
+    selector: 'ac-cylinder-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcCylinderDescComponent) }],
+    standalone: false
 })
 export class AcCylinderDescComponent extends BasicDesc {
 

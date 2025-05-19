@@ -24,9 +24,10 @@ import { WallDrawerService } from '../../services/drawers/wall-dawer/wall-drawer
  *  ```
  */
 @Component({
-  selector: 'ac-wall-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcWallDescComponent)}],
+    selector: 'ac-wall-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcWallDescComponent) }],
+    standalone: false
 })
 export class AcWallDescComponent extends BasicDesc {
 

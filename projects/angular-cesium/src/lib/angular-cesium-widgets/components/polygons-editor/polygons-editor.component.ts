@@ -16,8 +16,8 @@ import { LabelProps } from '../../models/label-props';
 import { EditablePolygon } from '../../models/editable-polygon';
 
 @Component({
-  selector: 'polygons-editor',
-  template: /*html*/ `
+    selector: 'polygons-editor',
+    template: /*html*/ `
     <ac-layer #editPolylinesLayer acFor="let polyline of editPolylines$" [context]="this">
       <ac-polyline-desc
         props="{
@@ -90,8 +90,9 @@ import { EditablePolygon } from '../../models/editable-polygon';
       </ac-array-desc>
     </ac-layer>
   `,
-  providers: [CoordinateConverter, PolygonsManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, PolygonsManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PolygonsEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: PolygonEditUpdate, labels: LabelProps[]) => LabelProps[];

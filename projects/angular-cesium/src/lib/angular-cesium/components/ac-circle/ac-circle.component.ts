@@ -23,8 +23,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-circle',
-  template: '',
+    selector: 'ac-circle',
+    template: '',
+    standalone: false
 })
 export class AcCircleComponent extends EntityOnMapComponent {
 

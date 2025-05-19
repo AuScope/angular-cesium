@@ -15,8 +15,9 @@ import { MapTerrainProviderOptions } from '../../models/map-terrain-provider-opt
  *  ```
  */
 @Component({
-  selector: 'ac-map-terrain-provider',
-  template: '',
+    selector: 'ac-map-terrain-provider',
+    template: '',
+    standalone: false
 })
 export class AcMapTerrainProviderComponent implements OnInit, OnChanges, OnDestroy {
 

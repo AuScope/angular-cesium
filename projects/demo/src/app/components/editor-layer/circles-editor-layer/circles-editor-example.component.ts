@@ -4,11 +4,12 @@ import { Color, Cartesian3 } from 'cesium';
 import { CircleEditorObservable, CircleEditUpdate, CirclesEditorService, LabelProps } from 'angular-cesium';
 
 @Component({
-  selector: 'circles-editor-example',
-  templateUrl: 'circles-editor-example.component.html',
-  styleUrls: ['./circles-editor-example.component.css'],
-  providers: [CirclesEditorService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'circles-editor-example',
+    templateUrl: 'circles-editor-example.component.html',
+    styleUrls: ['./circles-editor-example.component.css'],
+    providers: [CirclesEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CirclesEditorExampleComponent implements OnInit {
 

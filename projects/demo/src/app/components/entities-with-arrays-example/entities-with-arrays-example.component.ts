@@ -5,8 +5,8 @@ import { AcLayerComponent, AcNotification, ActionType, CesiumEvent, MapEventsMan
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 
 @Component({
-  selector: 'entities-with-arrays-example',
-  template: `
+    selector: 'entities-with-arrays-example',
+    template: `
       <ac-layer acFor="let track of tracks$" [show]="show" [context]="this" [store]="true">
           <ac-point-desc props="{
                     position: track.position,
@@ -39,6 +39,7 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
       </ac-layer>
 
   `,
+    standalone: false
 })
 export class EntitiesWithArraysExampleComponent implements OnInit, OnChanges {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

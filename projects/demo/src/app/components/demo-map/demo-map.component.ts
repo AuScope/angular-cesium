@@ -4,10 +4,11 @@ import { MapLayerProviderOptions, SceneMode, ViewerConfiguration } from 'angular
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
 
 @Component({
-  selector: 'demo-map',
-  templateUrl: './demo-map.component.html',
-  providers: [ViewerConfiguration],
-  styleUrls: ['./demo-map.component.css']
+    selector: 'demo-map',
+    templateUrl: './demo-map.component.html',
+    providers: [ViewerConfiguration],
+    styleUrls: ['./demo-map.component.css'],
+    standalone: false
 })
 export class DemoMapComponent {
   sceneMode = SceneMode.SCENE3D;

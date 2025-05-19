@@ -36,7 +36,8 @@ import { CoordinateConverter } from '../../services/coordinate-converter/coordin
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
     providers: [CoordinateConverter],
-  }
+    standalone: false
+}
 )
 export class AcDefaultPlonterComponent implements OnInit {
 

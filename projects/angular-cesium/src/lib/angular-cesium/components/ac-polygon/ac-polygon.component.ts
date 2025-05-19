@@ -22,8 +22,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  *  ```
  */
 @Component({
-  selector: 'ac-polygon',
-  template: '',
+    selector: 'ac-polygon',
+    template: '',
+    standalone: false
 })
 export class AcPolygonComponent extends EntityOnMapComponent {
   constructor(polygonDrawer: PolygonDrawerService, mapLayers: MapLayersService) {

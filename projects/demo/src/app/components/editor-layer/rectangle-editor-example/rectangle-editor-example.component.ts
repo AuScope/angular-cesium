@@ -11,10 +11,11 @@ import {
 } from 'angular-cesium';
 
 @Component({
-  selector: 'rectangle-editor-example',
-  templateUrl: './rectangle-editor-example.component.html',
-  styleUrls: ['./rectangle-editor-example.component.css'],
-  providers: [RectanglesEditorService]
+    selector: 'rectangle-editor-example',
+    templateUrl: './rectangle-editor-example.component.html',
+    styleUrls: ['./rectangle-editor-example.component.css'],
+    providers: [RectanglesEditorService],
+    standalone: false
 })
 export class RectangleEditorExampleComponent implements OnInit {
 

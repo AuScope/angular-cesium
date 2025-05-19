@@ -16,10 +16,11 @@ import {
 } from 'angular-cesium';
 
 @Component({
-  selector: 'map-events-example',
-  templateUrl: 'map-events-example.component.html',
-  styleUrls: ['map-events-example.component.css'],
-  providers: [CoordinateConverter],
+    selector: 'map-events-example',
+    templateUrl: 'map-events-example.component.html',
+    styleUrls: ['map-events-example.component.css'],
+    providers: [CoordinateConverter],
+    standalone: false
 })
 export class MapEventsExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

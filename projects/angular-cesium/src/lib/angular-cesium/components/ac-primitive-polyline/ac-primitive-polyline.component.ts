@@ -22,8 +22,9 @@ import { PolylinePrimitiveDrawerService } from '../../services/drawers/polyline-
  */
 
 @Component({
-  selector: 'ac-primitive-polyline',
-  template: '',
+    selector: 'ac-primitive-polyline',
+    template: '',
+    standalone: false
 })
 export class AcPrimitivePolylineComponent extends EntityOnMapComponent {
 

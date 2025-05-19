@@ -17,8 +17,8 @@ import { EditablePoint } from '../../models/editable-point';
 import { LabelProps } from '../../models/label-props';
 
 @Component({
-  selector: 'points-editor',
-  template: /*html*/ `
+    selector: 'points-editor',
+    template: /*html*/ `
     <ac-layer #editPointLayer acFor="let point of editPoint$" [context]="this">
       <ac-point-desc
         props="{
@@ -66,8 +66,9 @@ import { LabelProps } from '../../models/label-props';
       </ac-array-desc>
     </ac-layer>
   `,
-  providers: [CoordinateConverter, PointsManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, PointsManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PointsEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: PointEditUpdate, labels: LabelProps[]) => LabelProps[];

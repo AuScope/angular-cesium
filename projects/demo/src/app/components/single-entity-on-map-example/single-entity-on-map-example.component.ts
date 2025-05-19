@@ -3,8 +3,9 @@ import { Color, Cartesian3, ColorGeometryInstanceAttribute, PolylineMaterialAppe
 import { AcArcComponent, AcHtmlComponent, AcLabelComponent } from 'angular-cesium';
 
 @Component({
-  selector: 'single-entity-on-map-example',
-  templateUrl: 'single-entity-on-map-example.component.html'
+    selector: 'single-entity-on-map-example',
+    templateUrl: 'single-entity-on-map-example.component.html',
+    standalone: false
 })
 export class SingleEntityOnMapExampleComponent implements OnInit {
   // Cesium = Cesium;

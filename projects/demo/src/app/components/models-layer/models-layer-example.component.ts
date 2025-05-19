@@ -5,8 +5,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'models-layer-example',
-  template: `
+    selector: 'models-layer-example',
+    template: `
     <ac-layer acFor="let track of entities$" [context]="this">
       <ac-model-desc props="{
                               position: track.position,
@@ -17,6 +17,7 @@ import { map } from 'rxjs/operators';
       </ac-model-desc>
     </ac-layer>
   `,
+    standalone: false
 })
 export class ModelsLayerExampleComponent implements OnInit {
 

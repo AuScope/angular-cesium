@@ -25,9 +25,10 @@ import { EllipseDrawerService } from '../../services/drawers/ellipse-drawer/elli
  *  ```
  */
 @Component({
-  selector: 'ac-ellipse-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcEllipseDescComponent)}],
+    selector: 'ac-ellipse-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcEllipseDescComponent) }],
+    standalone: false
 })
 export class AcEllipseDescComponent extends BasicDesc {
   constructor(ellipseDrawer: EllipseDrawerService, layerService: LayerService,

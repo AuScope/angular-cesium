@@ -36,9 +36,10 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
  */
 
 @Component({
-  selector: 'ac-arc-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcArcDescComponent)}],
+    selector: 'ac-arc-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcArcDescComponent) }],
+    standalone: false
 })
 export class AcArcDescComponent extends BasicDesc {
 

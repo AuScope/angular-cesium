@@ -23,8 +23,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-ellipse',
-  template: '',
+    selector: 'ac-ellipse',
+    template: '',
+    standalone: false
 })
 export class AcEllipseComponent extends EntityOnMapComponent {
 

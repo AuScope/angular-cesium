@@ -4,9 +4,10 @@ import { MapLayerProviderOptions, MapsManagerService, SceneMode, ViewerConfigura
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
 
 @Component({
-  selector: 'demo-multiple-maps',
-  templateUrl: './demo-multiple-maps.component.html',
-  providers: [ViewerConfiguration],
+    selector: 'demo-multiple-maps',
+    templateUrl: './demo-multiple-maps.component.html',
+    providers: [ViewerConfiguration],
+    standalone: false
 })
 export class DemoMultipleMapsComponent implements AfterViewInit {
   arcGisMapServerProvider = MapLayerProviderOptions.ArcGisMapServer;

@@ -4,8 +4,9 @@ import { Color, Cartesian3, PolylineMaterialAppearance, ColorGeometryInstanceAtt
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
 @Component({
-  selector: 'arc-layer-example',
-  templateUrl: 'arc-layer-example.component.html'
+    selector: 'arc-layer-example',
+    templateUrl: 'arc-layer-example.component.html',
+    standalone: false
 })
 
 export class ArcLayerExampleComponent implements OnInit, AfterViewInit {

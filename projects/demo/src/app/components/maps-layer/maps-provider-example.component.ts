@@ -3,8 +3,9 @@ import { AcMapLayerProviderComponent, MapLayerProviderOptions, MapTerrainProvide
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
 
 @Component({
-  selector: 'maps-provider-example',
-  templateUrl: 'maps-provider-example.component.html'
+    selector: 'maps-provider-example',
+    templateUrl: 'maps-provider-example.component.html',
+    standalone: false
 })
 
 export class MapsProviderExampleComponent implements AfterViewInit {

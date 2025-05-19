@@ -5,10 +5,11 @@ import { MapMode2D, ScreenSpaceEventType, Cartesian3, HeadingPitchRoll, Cesium3D
 import { MapsManagerService, SceneMode, ViewerConfiguration } from '@auscope/angular-cesium';
 
 @Component({
-  selector: 'main-map',
-  templateUrl: './main-map.component.html',
-  providers: [ViewerConfiguration],
-  styleUrls: ['./main-map.component.scss']
+    selector: 'main-map',
+    templateUrl: './main-map.component.html',
+    providers: [ViewerConfiguration],
+    styleUrls: ['./main-map.component.scss'],
+    standalone: false
 })
 export class MainMapComponent implements AfterViewInit {
   @Input() multiMaps = false

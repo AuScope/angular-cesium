@@ -5,9 +5,10 @@ import { Subject } from 'rxjs';
 // import { CesiumHeatMapMaterialCreator } from 'angular-cesium';
 
 @Component({
-  selector: 'heatmap-example',
-  templateUrl: 'heatmap-example.component.html',
-  providers: [CoordinateConverter]
+    selector: 'heatmap-example',
+    templateUrl: 'heatmap-example.component.html',
+    providers: [CoordinateConverter],
+    standalone: false
 })
 export class HeatmapExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

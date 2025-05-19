@@ -31,8 +31,9 @@ import { DynamicEllipseDrawerService } from '../../../services/drawers/static-dy
  *   __param__: {number} [0.003] granularity
  */
 @Component({
-  selector: 'ac-dynamic-ellipse-desc',
-  template: '',
+    selector: 'ac-dynamic-ellipse-desc',
+    template: '',
+    standalone: false
 })
 export class AcDynamicEllipseDescComponent extends BasicDesc {
   constructor(ellipseDrawer: DynamicEllipseDrawerService, layerService: LayerService,

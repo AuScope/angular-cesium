@@ -50,7 +50,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
         }
     `],
     changeDetection: ChangeDetectionStrategy.OnPush,
-  }
+    standalone: false
+}
 )
 export class AcToolbarButtonComponent implements OnInit {
 

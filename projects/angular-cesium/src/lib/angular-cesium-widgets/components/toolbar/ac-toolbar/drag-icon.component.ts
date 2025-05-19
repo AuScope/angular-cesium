@@ -52,7 +52,8 @@ import { Component } from '@angular/core';
 </g>
 </svg>
     `,
-  }
+    standalone: false
+}
 )
 export class DragIconComponent {
   constructor() {

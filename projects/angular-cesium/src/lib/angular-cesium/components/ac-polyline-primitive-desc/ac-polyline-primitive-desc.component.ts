@@ -22,9 +22,10 @@ import { PolylinePrimitiveDrawerService } from '../../services/drawers/polyline-
  * ```
  */
 @Component({
-  selector: 'ac-polyline-primitive-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcPolylinePrimitiveDescComponent)}],
+    selector: 'ac-polyline-primitive-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPolylinePrimitiveDescComponent) }],
+    standalone: false
 })
 export class AcPolylinePrimitiveDescComponent extends BasicDesc {
 

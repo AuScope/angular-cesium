@@ -15,8 +15,8 @@ import { LabelProps } from '../../models/label-props';
 import { EditableCircle } from '../../models/editable-circle';
 
 @Component({
-  selector: 'circles-editor',
-  template: /*html*/ `
+    selector: 'circles-editor',
+    template: /*html*/ `
       <ac-layer #editArcsLayer acFor="let arc of editArcs$" [context]="this">
           <ac-arc-desc
                   props="{
@@ -97,8 +97,9 @@ import { EditableCircle } from '../../models/editable-circle';
           </ac-array-desc>
       </ac-layer>
   `,
-  providers: [CoordinateConverter, CirclesManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, CirclesManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CirclesEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: CircleEditUpdate, labels: LabelProps[]) => LabelProps[];

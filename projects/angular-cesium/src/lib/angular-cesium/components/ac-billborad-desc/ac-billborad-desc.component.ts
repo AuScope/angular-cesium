@@ -26,9 +26,10 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
  */
 
 @Component({
-  selector: 'ac-billboard-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcBillboardDescComponent)}],
+    selector: 'ac-billboard-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcBillboardDescComponent) }],
+    standalone: false
 })
 export class AcBillboardDescComponent extends BasicDesc {
 

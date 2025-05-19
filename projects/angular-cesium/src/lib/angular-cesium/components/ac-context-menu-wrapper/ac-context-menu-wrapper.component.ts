@@ -38,14 +38,15 @@ import { BasicContextMenu } from '../../models/basic-context-menu';
  */
 
 @Component({
-  selector: 'ac-context-menu-wrapper',
-  template: `
+    selector: 'ac-context-menu-wrapper',
+    template: `
     <ac-html *ngIf="contextMenuService.showContextMenu" [props]="{position: contextMenuService.position}">
       <ng-template #contextMenuContainer></ng-template>
     </ac-html>
   `,
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    styles: [],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcContextMenuWrapperComponent implements OnInit, OnDestroy {
 

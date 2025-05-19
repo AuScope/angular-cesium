@@ -5,8 +5,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'cylinder-layer-example',
-  template: `
+    selector: 'cylinder-layer-example',
+    template: `
     <ac-layer acFor="let entity of entities$" [context]="this">
       <ac-cylinder-desc props="{
 														position: entity.position,
@@ -18,7 +18,8 @@ import { map } from 'rxjs/operators';
       </ac-cylinder-desc>
     </ac-layer>
   `,
-  providers: []
+    providers: [],
+    standalone: false
 })
 export class CylinderLayerExampleComponent implements OnInit {
 

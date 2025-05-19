@@ -25,9 +25,10 @@ import { LabelDrawerService } from '../../services/drawers/label-drawer/label-dr
  */
 
 @Component({
-  selector: 'ac-label-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcLabelDescComponent)}],
+    selector: 'ac-label-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcLabelDescComponent) }],
+    standalone: false
 })
 export class AcLabelDescComponent extends BasicDesc {
 

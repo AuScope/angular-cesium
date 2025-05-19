@@ -5,9 +5,10 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'circle-layer-example',
-  templateUrl: 'circle-layer-example.component.html',
-  styleUrls: ['circle-layer-example.component.css'],
+    selector: 'circle-layer-example',
+    templateUrl: 'circle-layer-example.component.html',
+    styleUrls: ['circle-layer-example.component.css'],
+    standalone: false
 })
 export class CircleLayerExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

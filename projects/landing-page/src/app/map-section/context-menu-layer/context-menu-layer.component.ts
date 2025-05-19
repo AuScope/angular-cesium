@@ -3,9 +3,10 @@ import { CesiumEvent, ContextMenuService, CoordinateConverter, MapEventsManagerS
 import { ContextMenuData, MyCustomContextMenuComponent } from './context-menu/my-custom-context-menu.component';
 
 @Component({
-  selector: 'context-menu-layer',
-  templateUrl: 'context-menu-layer.component.html',
-  providers: [CoordinateConverter]
+    selector: 'context-menu-layer',
+    templateUrl: 'context-menu-layer.component.html',
+    providers: [CoordinateConverter],
+    standalone: false
 })
 
 export class ContextMenuLayerComponent implements OnInit {

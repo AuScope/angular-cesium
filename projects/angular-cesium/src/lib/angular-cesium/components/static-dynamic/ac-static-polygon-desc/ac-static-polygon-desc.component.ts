@@ -29,8 +29,9 @@ import { StaticPolygonDrawerService } from '../../../services/drawers/static-dyn
  *    ```
  */
 @Component({
-  selector: 'ac-static-polygon-desc',
-  template: '',
+    selector: 'ac-static-polygon-desc',
+    template: '',
+    standalone: false
 })
 export class AcStaticPolygonDescComponent extends BasicStaticPrimitiveDesc {
   constructor(polygonDrawer: StaticPolygonDrawerService, layerService: LayerService,

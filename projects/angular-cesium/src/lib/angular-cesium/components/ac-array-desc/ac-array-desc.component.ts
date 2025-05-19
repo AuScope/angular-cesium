@@ -46,8 +46,8 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
  */
 
 @Component({
-  selector: 'ac-array-desc',
-  template: `
+    selector: 'ac-array-desc',
+    template: `
     <ac-layer #layer [acFor]="getAcForString()"
               [context]="layerService.context"
               [options]="layerService.options"
@@ -56,7 +56,8 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
       <ng-content #content></ng-content>
     </ac-layer>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcArrayDescComponent implements OnChanges, OnInit, AfterContentInit, OnDestroy, IDescription {
 

@@ -23,10 +23,11 @@ class MyEntity extends AcEntity {
 }
 
 @Component({
-  selector: 'selection-layer-example',
-  templateUrl: 'selection-layer-example.component.html',
-  styleUrls: [],
-  providers: [SelectionManagerService]
+    selector: 'selection-layer-example',
+    templateUrl: 'selection-layer-example.component.html',
+    styleUrls: [],
+    providers: [SelectionManagerService],
+    standalone: false
 })
 export class SelectionLayerExampleComponent implements OnInit {
 

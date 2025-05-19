@@ -22,9 +22,10 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
  *  ```
  */
 @Component({
-  selector: 'ac-polygon-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcPolygonDescComponent)}],
+    selector: 'ac-polygon-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPolygonDescComponent) }],
+    standalone: false
 })
 export class AcPolygonDescComponent extends BasicDesc implements OnInit {
 

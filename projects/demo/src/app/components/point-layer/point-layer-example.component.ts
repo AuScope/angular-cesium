@@ -6,8 +6,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'point-layer-example',
-  template: `
+    selector: 'point-layer-example',
+    template: `
       <ac-layer acFor="let point of entities$" [context]="this" [show]="show">
           <ac-point-desc props="{
               position: point.position,
@@ -18,7 +18,8 @@ import { map } from 'rxjs/operators';
           </ac-point-desc>
       </ac-layer>
   `,
-  styleUrls: [],
+    styleUrls: [],
+    standalone: false
 })
 export class PointLayerExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

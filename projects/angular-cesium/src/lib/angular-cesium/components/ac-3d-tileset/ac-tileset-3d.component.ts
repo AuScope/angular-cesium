@@ -17,8 +17,9 @@ declare var Cesium: any;
  *  ```
  */
 @Component({
-  selector: 'ac-3d-tile-layer',
-  template: '',
+    selector: 'ac-3d-tile-layer',
+    template: '',
+    standalone: false
 })
 export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
   /**

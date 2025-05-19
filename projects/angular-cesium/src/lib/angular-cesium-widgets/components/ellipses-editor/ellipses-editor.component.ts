@@ -16,8 +16,8 @@ import { LabelProps } from '../../models/label-props';
 import { EditableEllipse } from '../../models/editable-ellipse';
 
 @Component({
-  selector: 'ellipses-editor',
-  template: /*html*/ `
+    selector: 'ellipses-editor',
+    template: /*html*/ `
       <ac-layer #editPointsLayer acFor="let point of editPoints$" [context]="this">
           <ac-point-desc
                   props="{
@@ -85,8 +85,9 @@ import { EditableEllipse } from '../../models/editable-ellipse';
           </ac-array-desc>
       </ac-layer>
   `,
-  providers: [CoordinateConverter, EllipsesManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, EllipsesManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EllipsesEditorComponent implements OnDestroy {
   private editLabelsRenderFn: (update: EllipseEditUpdate, labels: LabelProps[]) => LabelProps[];

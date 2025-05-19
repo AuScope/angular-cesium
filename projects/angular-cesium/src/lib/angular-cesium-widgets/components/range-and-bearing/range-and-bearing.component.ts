@@ -34,12 +34,13 @@ import { PolylinesEditorService } from '../../services/entity-editors/polyline-e
  *
  */
 @Component({
-  selector: 'range-and-bearing',
-  template: `
+    selector: 'range-and-bearing',
+    template: `
     <polylines-editor></polylines-editor>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PolylinesEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [PolylinesEditorService],
+    standalone: false
 })
 export class RangeAndBearingComponent {
   @Input() lineEditOptions?: PolylineEditOptions = {};

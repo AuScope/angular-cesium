@@ -7,14 +7,14 @@ export interface ContextMenuData {
 }
 
 @Component({
-  template: `
+    template: `
       <div class="container">
           <div (click)="data.onActionClick()" class="item">Remove {{data.item.name}}</div>
           <div (click)="data.onActionClick()" class="item">Update {{data.item.name}}</div>
           <div (click)="data.onActionClick()" class="item">Do Something</div>
       </div>
   `,
-  styles: [`
+    styles: [`
       .container {
           background-color: rgba(140, 140, 140, 0.8);
       }
@@ -30,7 +30,8 @@ export interface ContextMenuData {
 
       }
   `],
-  selector: 'my-custom-context-menu',
+    selector: 'my-custom-context-menu',
+    standalone: false
 })
 export class MyCustomContextMenuComponent implements BasicContextMenu {
   data: ContextMenuData; // data will be injected from the ContextMenuService.open()

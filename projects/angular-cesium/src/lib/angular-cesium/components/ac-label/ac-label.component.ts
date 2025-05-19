@@ -23,8 +23,9 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-label',
-  template: '',
+    selector: 'ac-label',
+    template: '',
+    standalone: false
 })
 export class AcLabelComponent extends EntityOnMapComponent {
 

@@ -31,8 +31,9 @@ import { LayerService } from '../../services/layer-service/layer-service.service
  *  ```
  */
 @Component({
-  selector: 'ac-czml-desc',
-  template: '',
+    selector: 'ac-czml-desc',
+    template: '',
+    standalone: false
 })
 export class AcCzmlDescComponent extends BasicDesc implements OnInit {
   constructor(czmlDrawer: CzmlDrawerService, layerService: LayerService,
