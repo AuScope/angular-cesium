@@ -1,7 +1,20 @@
 # Angular-Cesium
 <img src="https://preview.ibb.co/cpDuwF/angular_cesium.png" width=150 alt="Drawing" style="margin:10"/>
 
-**This is a fork of Articode's "angular-cesium", adapted for Angular v18 [Angular Cesium](https://github.com/articodeltd/angular-cesium)**
+**This is a fork of Articode's [Angular Cesium](https://github.com/articodeltd/angular-cesium), adapted for Angular v12 - v19**
+
+**Available from 'npmjs' https://www.npmjs.com/package/@auscope/angular-cesium**
+
+| Angular Version | Branch      |
+|-----------------|-------------|
+| v19             | upgrade-v19 |
+| v18             | upgrade-v18 |
+| v17             | upgrade-v17 |
+| v16             | upgrade-v16 |
+| v15             | upgrade-v15 |
+| v14             | upgrade-v14 |
+| v13             | upgrade-v13-with-models |
+| v12             | upgrade-v12 |
 
 **NB: Building schematics will fail because @compodoc/compodoc v1.1.19 only supports Angular v13, but the latest unreleased code changes do support v15.**
 
