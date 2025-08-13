@@ -1,6 +1,6 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "19.0.0",
+  "version": "20.0.0",
   "license": "MIT",
   "description": "Angular v19 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
   "repository": {
