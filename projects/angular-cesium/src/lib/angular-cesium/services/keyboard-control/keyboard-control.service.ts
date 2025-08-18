@@ -1,5 +1,5 @@
-import { Inject, Injectable, NgZone } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, NgZone, DOCUMENT } from '@angular/core';
+
 import { KeyboardAction } from '../../models/ac-keyboard-action.enum';
 import { CesiumService } from '../cesium/cesium.service';
 import { PREDEFINED_KEYBOARD_ACTIONS } from './predefined-actions';
