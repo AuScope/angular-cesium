@@ -1,12 +1,13 @@
 # Angular-Cesium
 <img src="https://preview.ibb.co/cpDuwF/angular_cesium.png" width=150 alt="Drawing" style="margin:10"/>
 
-**This is a fork of Articode's [Angular Cesium](https://github.com/articodeltd/angular-cesium), adapted for Angular v12 - v19**
+**This is a fork of Articode's [Angular Cesium](https://github.com/articodeltd/angular-cesium), adapted for Angular v12 - v20**
 
 **Available from 'npmjs' https://www.npmjs.com/package/@auscope/angular-cesium**
 
 | Angular Version | Branch      |
 |-----------------|-------------|
+| v20             | upgrade-v20 |
 | v19             | upgrade-v19 |
 | v18             | upgrade-v18 |
 | v17             | upgrade-v17 |
