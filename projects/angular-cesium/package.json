@@ -1,6 +1,6 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "20.0.0",
+  "version": "20.1.0",
   "license": "MIT",
   "description": "Angular v20 library for working with Cesium, fork of https://github.com/articodeltd/angular-cesium.",
   "repository": {
@@ -16,7 +16,7 @@
   "peerDependencies": {
     "@angular/common": "^20.1.6",
     "@angular/core": "^20.1.6",
-    "cesium": "1.93",
+    "cesium": "1.135.0",
     "lodash": "^4.17.21",
     "rxjs": "~6.6.7"
   },

@@ -112,8 +112,8 @@ export class CoordinateConverter {
 
   middlePointByScreen(position0: Cartesian3, position1: Cartesian3): Cartesian3 {
     const scene = this.cesiumService.getScene();
-    const screenPosition1 = SceneTransforms.wgs84ToWindowCoordinates(scene, position0);
-    const screenPosition2 = SceneTransforms.wgs84ToWindowCoordinates(scene, position1);
+    const screenPosition1 = SceneTransforms.worldToWindowCoordinates(scene, position0);
+    const screenPosition2 = SceneTransforms.worldToWindowCoordinates(scene, position1);
     const middleScreenPoint =
       new Cartesian2((screenPosition2.x + screenPosition1.x) / 2.0, (screenPosition2.y + screenPosition1.y) / 2.0);
     return scene.pickPosition(middleScreenPoint);

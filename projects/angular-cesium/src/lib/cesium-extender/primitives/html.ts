@@ -91,7 +91,7 @@ export class HtmlPrimitive {
       return;
     }
 
-    let screenPosition = SceneTransforms.wgs84ToWindowCoordinates(this._scene, new Cartesian3(this._position.x, this._position.y, this._position.z));
+    let screenPosition = SceneTransforms.worldToWindowCoordinates(this._scene, new Cartesian3(this._position.x, this._position.y, this._position.z));
 
     if (!defined(screenPosition)) {
       screenPosition = new Cartesian2((-1000), (-1000));

@@ -62,7 +62,7 @@ export class AcHtmlComponent implements DoCheck, OnDestroy, OnInit {
     if (!this.isDraw) {
       this.isDraw = true;
       this.preRenderEventListener = () => {
-        const screenPosition = SceneTransforms.wgs84ToWindowCoordinates(this.cesiumService.getScene(),
+        const screenPosition = SceneTransforms.worldToWindowCoordinates(this.cesiumService.getScene(),
           this.props.position);
         this.setScreenPosition(screenPosition);
       };
