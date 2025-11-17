@@ -6,5 +6,5 @@ export class MapTerrainProviderOptions {
   static GoogleEarthEnterprise = Cesium.GoogleEarthEnterpriseTerrainProvider;
   static VRTheWorld = Cesium.VRTheWorldTerrainProvider;
   static Ellipsoid = Cesium.EllipsoidTerrainProvider;
-  static WorldTerrain = Cesium.createWorldTerrain;
+  static WorldTerrain = Cesium.createWorldTerrainAsync;
 }
