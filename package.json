@@ -1,6 +1,6 @@
 {
   "name": "@auscope/angular-cesium",
-  "version": "20.1.0",
+  "version": "20.2.0",
   "license": "MIT",
   "description": "Angular v20 library for working with Cesium, fork of the ArticodeId library. (https://github.com/articodeltd/angular-cesium)",
   "repository": {
@@ -52,7 +52,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@types/lodash": "^4.14.180",
-    "cesium": "1.135.0",
+    "cesium": "1.140.0",
     "core-js": "^3.24.1",
     "dataloader": "^1.4.0",
     "geodesy": "^1.1.3",
