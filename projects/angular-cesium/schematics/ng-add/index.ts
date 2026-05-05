@@ -29,10 +29,10 @@ export function ngAdd(_options: any): Rule {
 function addTypings(): Rule {
   return (tree: Tree) => {
     if (!tree.exists('./src/typing.d.ts')) {
-      tree.create('./src/typing.d.ts', 'declare var Cesium;');
+      tree.create('./src/typing.d.ts', "import * as Cesium from 'cesium';\n");
     } else {
       const recorder = tree.beginUpdate('./src/typing.d.ts');
-      recorder.insertLeft(0, 'declare var Cesium;\n');
+      recorder.insertLeft(0, "import * as Cesium from 'cesium';\n");
       tree.commitUpdate(recorder);
     }
     return tree;

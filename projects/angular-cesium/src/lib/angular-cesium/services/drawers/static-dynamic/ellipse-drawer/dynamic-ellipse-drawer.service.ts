@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { PrimitiveCollection } from 'cesium';
 import { CesiumService } from '../../../cesium/cesium.service';
 import { Checker } from '../../../../utils/checker';
-import { EllipsePrimitive } from 'primitive-primitives';
+import { EllipsePrimitive } from '../../../../models/primitives/EllipsePrimitive';
 import { PrimitivesDrawerService } from '../../primitives-drawer/primitives-drawer.service';
 
 
