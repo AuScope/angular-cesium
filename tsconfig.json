@@ -47,6 +47,7 @@
         "node_modules/process"
       ]
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "skipLibCheck": true
   }
 }

@@ -55,7 +55,7 @@
               "http",
               "https",
               "url",
-              "zlib"
+              "browserify-zlib"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
