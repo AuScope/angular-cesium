@@ -1,6 +1,6 @@
 import { isTranslucent } from './Util';
-declare var Cesium;
-
+import * as Cesium from 'cesium'; // For Internal Cesium classes not exported from public API
+import { Matrix4 } from 'cesium';
 /**
  * This is the default implementation of a primitive, all primitives extend this class.
  */
@@ -19,11 +19,11 @@ export abstract class Primitive{
 	protected _shaderProgram: any;
 
 	constructor(options: {show?: boolean, color?: number[]}) {
-		this._show = Cesium.defaultValue(options.show, true);
+		this._show = options.show ?? true;
 		this._color = options.color || [0.0, 0.0, 0.0, 1.0];
 
-		this._modelMatrix = Cesium.Matrix4.clone(Cesium.Matrix4.IDENTITY);
-		this._drawCommand = new Cesium.DrawCommand({owner: this});
+		this._modelMatrix = Matrix4.clone(Matrix4.IDENTITY);
+		this._drawCommand = new (Cesium as any).DrawCommand({owner: this});
 	}
 
 	get color(): number[] {
@@ -57,7 +57,7 @@ export abstract class Primitive{
 		drawCommand.renderState = this._renderState;
 		drawCommand.shaderProgram = this._shaderProgram;
 		drawCommand.boundingVolume = this._boundingVolume;
-		drawCommand.pass = translucent ? Cesium.Pass.TRANSLUCENT : Cesium.Pass.OPAQUE;
+		drawCommand.pass = translucent ? (Cesium as any).Pass.TRANSLUCENT : (Cesium as any).Pass.OPAQUE;
 
 		drawCommand.debugShowBoundingVolume = debugShowBoundingVolume;
 		drawCommand.primitiveType = primitiveType;

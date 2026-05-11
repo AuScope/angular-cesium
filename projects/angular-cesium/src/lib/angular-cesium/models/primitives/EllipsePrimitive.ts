@@ -1,7 +1,7 @@
 import { createSimpleIndicesArray, to2D, isTranslucent } from './Util';
 import { UpdateablePrimitive } from './UpdateablePrimitive';
 import { Primitive } from './Primitive';
-import * as Cesium from 'cesium';
+import * as Cesium from 'cesium'; // For Internal Cesium classes not exported from public API
 import { PrimitiveType, Cartesian3, SceneMode,
          ComponentDatatype,
          BoundingSphere, IndexDatatype,
@@ -32,13 +32,6 @@ void main()
 {
     gl_FragColor = v_color;
 }`;
-
-function defaultValue(a: any, b: any) {
-    if (a !== undefined) {
-        return a;
-    }
-    return b;
-};
 
 /**
  * EllipsePrimitive is implemented to be as minimal as possible.
@@ -81,8 +74,8 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 		this._semiMajor = options.semiMajorAxis;
 		this._semiMinor = options.semiMinorAxis;
 		this._rotation = options.rotation || 0;
-		this._border = defaultValue(options.border, {show: true, style: 'solid'});
-		this._showFill = defaultValue(options.fill, true);
+		this._border = options.border ?? {show: true, style: 'solid'};
+		this._showFill = options.fill ?? true;
 		this._borderColor = options.borderColor || [0.0, 0.0, 0.0, 1.0];
 		this._granularity = options.granularity || 0.3;
 
