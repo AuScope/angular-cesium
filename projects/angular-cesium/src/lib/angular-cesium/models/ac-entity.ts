@@ -9,6 +9,15 @@
  * ```
  */
 export class AcEntity {
+  [key: string]: any;
+
+  /**
+   * Creates entity from a json
+   * @param json (Optional) entity object
+   */
+  constructor(json?: any) {
+    Object.assign(this, json);
+  }
 
   /**
    * Creates entity from a json
@@ -20,13 +29,5 @@ export class AcEntity {
       return Object.assign(new AcEntity(), json);
     }
     return new AcEntity();
-  }
-
-  /**
-   * Creates entity from a json
-   * @param json (Optional) entity object
-   */
-  constructor(json?: any) {
-    Object.assign(this, json);
   }
 }

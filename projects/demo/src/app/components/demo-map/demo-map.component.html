@@ -1,18 +1,18 @@
 <ac-map [sceneMode]="sceneMode" id="main-map">
   <!-- <ac-map-layer-provider
-    *ngIf="appSettingsService.showMapLayer"
-    [provider]="arcGisMapServerProvider"
+  *ngIf="appSettingsService.showMapLayer"
+  [provider]="arcGisMapServerProvider"
     [options]="{
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
     }"
   >
-  </ac-map-layer-provider> -->
+</ac-map-layer-provider> -->
 
 
 <!-- start - mapbox style image provider different than the tile api -->
 
-  <!-- <ac-map-layer-provider 
-  [provider]="mapboxStyleImageryProvider"
+<!-- <ac-map-layer-provider
+[provider]="mapboxStyleImageryProvider"
   [options]="{
       styleId:'style id from mapbox style dashboard item',
       url:'https://api.mapbox.com/styles/v1/',
@@ -21,19 +21,20 @@
       tilesize:'512',
       accessToken : 'your access token from map box'
     }"
->   
+>
 </ac-map-layer-provider> -->
 
 <!-- end - mapbox style image provider-->
 
+@if (appSettingsService.show3dtiles) {
   <ac-3d-tile-layer
-    *ngIf="appSettingsService.show3dtiles"
     [options]="{
       url: Cesium.IonResource.fromAssetId(29328)
     }"
-  >
+    >
   </ac-3d-tile-layer>
-   <!-- <entities-with-arrays-example #layer [show]="true"></entities-with-arrays-example> -->
+}
+<!-- <entities-with-arrays-example #layer [show]="true"></entities-with-arrays-example> -->
 <!--   <html-layer-example> </html-layer-example>-->
 <!--  <boxes-layer-example></boxes-layer-example>-->
 <!--   <models-layer-example></models-layer-example>-->
@@ -68,7 +69,9 @@
 <!--   <maps-provider-example></maps-provider-example>-->
 <!--  <map-events-example></map-events-example>-->
 
-  <toolbar-example></toolbar-example>
-  <context-menu-layer></context-menu-layer>
-  <keyboard-control-layer *ngIf="appSettingsService.keyboardControl"></keyboard-control-layer>
+<toolbar-example></toolbar-example>
+<context-menu-layer></context-menu-layer>
+@if (appSettingsService.keyboardControl) {
+  <keyboard-control-layer></keyboard-control-layer>
+}
 </ac-map>

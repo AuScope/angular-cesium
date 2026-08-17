@@ -40,10 +40,12 @@ import { BasicContextMenu } from '../../models/basic-context-menu';
 @Component({
     selector: 'ac-context-menu-wrapper',
     template: `
-    <ac-html *ngIf="contextMenuService.showContextMenu" [props]="{position: contextMenuService.position}">
-      <ng-template #contextMenuContainer></ng-template>
-    </ac-html>
-  `,
+    @if (contextMenuService.showContextMenu) {
+      <ac-html [props]="{position: contextMenuService.position}">
+        <ng-template #contextMenuContainer></ng-template>
+      </ac-html>
+    }
+    `,
     styles: [],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false

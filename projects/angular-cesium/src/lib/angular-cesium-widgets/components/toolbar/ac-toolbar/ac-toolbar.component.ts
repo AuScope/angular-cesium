@@ -35,15 +35,17 @@ import { CesiumService } from '../../../../angular-cesium/services/cesium/cesium
     selector: 'ac-toolbar',
     template: `
         <div class="{{toolbarClass}}">
-            <div *ngIf="allowDrag">
-                <ac-toolbar-button>
-                    <ac-drag-icon></ac-drag-icon>
-                </ac-toolbar-button>
+          @if (allowDrag) {
+            <div>
+              <ac-toolbar-button>
+                <ac-drag-icon></ac-drag-icon>
+              </ac-toolbar-button>
             </div>
-
-            <ng-content></ng-content>
+          }
+        
+          <ng-content></ng-content>
         </div>
-    `,
+        `,
     styles: [`
         :host {
             position: absolute;

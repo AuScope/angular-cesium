@@ -47,18 +47,22 @@
 }">
 </ac-point>
 
-<ac-circle *ngIf="toggle" [props]="{
+@if (toggle) {
+<ac-circle [props]="{
     position: position,
     radius: radius,
     fill: false,
     outline: true,
     outlineColor: Color.GREEN
 }">
-</ac-circle>
+  </ac-circle>
+}
 
-<ac-html #html *ngIf="toggle" [props]="{position: position}">
-  <p>{{htmlElement}}</p>
-</ac-html>
+@if (toggle) {
+  <ac-html #html [props]="{position: position}">
+    <p>{{htmlElement}}</p>
+  </ac-html>
+}
 
 <ac-arc
   [geometryProps]="{
