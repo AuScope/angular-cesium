@@ -1,5 +1,5 @@
 // tslint:disable
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../../services/computation-cache/computation-cache.service';
@@ -25,6 +25,7 @@ import { DynamicPolylineDrawerService } from '../../../services/drawers/static-d
 @Component({
     selector: 'ac-dynamic-polyline-desc',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcDynamicPolylineDescComponent extends BasicDesc {

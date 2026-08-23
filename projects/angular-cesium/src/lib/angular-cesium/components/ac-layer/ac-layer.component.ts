@@ -117,22 +117,22 @@ export class AcLayerComponent implements OnInit, OnChanges, AfterContentInit, On
   @Input()
   show = true;
   @Input()
-  acFor: string;
+  acFor!: string;
   @Input()
   context: any;
   @Input()
   store = false;
   @Input()
-  options: LayerOptions;
+  options!: LayerOptions;
   @Input()
   zIndex = 0;
   @Input()
   debug = false;
 
   private readonly acForRgx = /^let\s+.+\s+of\s+.+$/;
-  private entityName: string;
+  private entityName!: string;
   private stopObservable = new Subject<any>();
-  private observable: Observable<AcNotification>;
+  private observable!: Observable<AcNotification>;
   private _drawerList: Map<string, BasicDrawerService>;
   private _updateStream: Subject<AcNotification> = new Subject<AcNotification>();
   private entitiesStore = new Map<string, any>();
@@ -284,7 +284,7 @@ export class AcLayerComponent implements OnInit, OnChanges, AfterContentInit, On
     this.layerService.show = this.show;
     this.layerService.zIndex = this.zIndex;
     this._drawerList.forEach((drawer, drawerName) => {
-      const initOptions = this.options ? this.options[drawerName] : undefined;
+      const initOptions = this.options ? this.options[drawerName as keyof LayerOptions] : undefined;
       const drawerDataSources = drawer.init(initOptions);
       // only entities drawers create data sources
       if (drawerDataSources) {

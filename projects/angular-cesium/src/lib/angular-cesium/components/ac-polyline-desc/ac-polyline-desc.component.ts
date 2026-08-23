@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { PolylineDrawerService } from '../../services/drawers/polyline-drawer/polyline-drawer.service';
@@ -26,6 +26,7 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
     selector: 'ac-polyline-desc',
     template: '',
     providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPolylineDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcPolylineDescComponent extends BasicDesc {

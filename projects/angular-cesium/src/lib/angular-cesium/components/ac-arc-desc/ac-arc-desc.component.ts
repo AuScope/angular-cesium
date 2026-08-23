@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { CesiumProperties } from '../../services/cesium-properties/cesium-properties.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -39,6 +39,7 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
     selector: 'ac-arc-desc',
     template: '',
     providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcArcDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcArcDescComponent extends BasicDesc {

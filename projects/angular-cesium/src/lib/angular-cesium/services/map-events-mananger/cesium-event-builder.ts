@@ -10,9 +10,6 @@ import { ConnectableObservable } from 'rxjs';
 @Injectable()
 export class CesiumEventBuilder {
 
-  constructor(private cesiumService: CesiumService) {
-  }
-
   public static longPressEvents: Set<CesiumEvent> = new Set([
     CesiumEvent.LONG_LEFT_PRESS,
     CesiumEvent.LONG_RIGHT_PRESS,
@@ -22,11 +19,16 @@ export class CesiumEventBuilder {
   private eventsHandler: any;
   private cesiumEventsObservables = new Map<string, ConnectableObservable<any>>();
 
+  constructor(private cesiumService: CesiumService) {
+  }
+
   public static getEventFullName(event: CesiumEvent, modifier?: CesiumEventModifier): string {
-    if (modifier) {
+    if (modifier && event) {
       return `${event}_${modifier}`;
-    } else {
+    } else if (event) {
       return event.toString();
+    } else {
+      throw new Error('Event is required to get event full name');
     }
   }
 
@@ -36,13 +38,13 @@ export class CesiumEventBuilder {
 
   get(event: CesiumEvent, modifier?: CesiumEventModifier): ConnectableObservable<any> {
     const eventName = CesiumEventBuilder.getEventFullName(event, modifier);
-    if (this.cesiumEventsObservables.has(eventName)) {
-      return this.cesiumEventsObservables.get(eventName);
-    } else {
-      const eventObserver = this.createCesiumEventObservable(event, modifier);
-      this.cesiumEventsObservables.set(eventName, eventObserver);
-      return eventObserver;
+    const existingEvent = this.cesiumEventsObservables.get(eventName);
+    if (existingEvent !== undefined) {
+      return existingEvent;
     }
+    const eventObserver = this.createCesiumEventObservable(event, modifier);
+    this.cesiumEventsObservables.set(eventName, eventObserver);
+    return eventObserver;
   }
 
   private createCesiumEventObservable(event: CesiumEvent, modifier?: CesiumEventModifier): ConnectableObservable<any> {
@@ -56,7 +58,7 @@ export class CesiumEventBuilder {
     return cesiumEventObservable;
   }
 
-  private createSpecialCesiumEventObservable(event: CesiumEvent, modifier: CesiumEventModifier): ConnectableObservable<any> {
+  private createSpecialCesiumEventObservable(event: CesiumEvent, modifier: CesiumEventModifier | undefined): ConnectableObservable<any> {
     // could support more events if needed
     return new CesiumLongPressObserver(event, modifier, this).init();
   }

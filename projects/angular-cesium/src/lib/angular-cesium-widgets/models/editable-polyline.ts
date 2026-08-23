@@ -13,11 +13,11 @@ export class EditablePolyline extends AcEntity {
   private positions: EditPoint[] = [];
 
   private polylines: EditPolyline[] = [];
-  private movingPoint: EditPoint;
+  private movingPoint?: EditPoint;
   private doneCreation = false;
   private _enableEdit = true;
   private _pointProps: PointProps;
-  private polylineProps: PolylineProps;
+  private polylineProps!: PolylineProps;
   private lastDraggedToPosition: any;
   private _labels: LabelProps[] = [];
 
@@ -282,8 +282,10 @@ export class EditablePolyline extends AcEntity {
 
   addLastPoint(position: Cartesian3) {
     this.doneCreation = true;
-    this.removePosition(this.movingPoint); // remove movingPoint
-    this.movingPoint = null;
+    if (this.movingPoint) {
+        this.removePosition(this.movingPoint); // remove movingPoint
+        this.movingPoint = undefined;
+    }
 
     this.addAllVirtualEditPoints();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumService } from '../../services/cesium/cesium.service';
 import { Checker } from '../../utils/checker';
 import { MapTerrainProviderOptions } from '../../models/map-terrain-provider-options.enum';
@@ -17,6 +17,7 @@ import { MapTerrainProviderOptions } from '../../models/map-terrain-provider-opt
 @Component({
     selector: 'ac-map-terrain-provider',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcMapTerrainProviderComponent implements OnInit, OnChanges, OnDestroy {

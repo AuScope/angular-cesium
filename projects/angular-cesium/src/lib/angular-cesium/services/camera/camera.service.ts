@@ -20,9 +20,9 @@ export class CameraService {
   private camera: any;
   private screenSpaceCameraController: any;
   private morphListenerCancelFn: any;
-  private lastRotate: boolean;
-  private lastTilt: boolean;
-  private lastLook: boolean;
+  private lastRotate!: boolean;
+  private lastTilt!: boolean;
+  private lastLook!: boolean;
   private isSceneModePerformance2D = false;
 
   constructor() {

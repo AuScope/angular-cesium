@@ -6,15 +6,15 @@ import { HtmlCollection } from '../collections';
 export class HtmlPrimitive {
 
   private _scene: any;
-  private _show: boolean;
-  private _position: Cartesian3;
-  private _lastPosition: Cartesian2;
-  private _pixelOffset: Cartesian2;
-  private _element: HTMLElement;
-  private _collection: HtmlCollection;
+  private _show!: boolean;
+  private _position!: Cartesian3;
+  private _lastPosition!: Cartesian2;
+  private _pixelOffset!: Cartesian2;
+  private _element!: HTMLElement;
+  private _collection!: HtmlCollection | null;
   private _mapContainer;
 
-  constructor(options: any, collection: HtmlCollection = null) {
+  constructor(options: any, collection: HtmlCollection | null = null) {
     if (typeof options !== 'object') {
       throw new Error('HtmlPrimitive ERROR: invalid html options!');
     }
@@ -78,7 +78,7 @@ export class HtmlPrimitive {
     return this._element;
   }
 
-  set collection(collection: HtmlCollection) {
+  set collection(collection: HtmlCollection | null) {
     this._collection = collection;
   }
 

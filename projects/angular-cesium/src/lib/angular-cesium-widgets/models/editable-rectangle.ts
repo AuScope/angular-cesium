@@ -10,12 +10,12 @@ import { defaultLabelProps, LabelProps } from './label-props';
 
 export class EditableRectangle extends AcEntity {
   private positions: EditPoint[] = [];
-  private movingPoint: EditPoint;
+  private movingPoint?: EditPoint;
   private done = false;
   private _enableEdit = true;
-  private _defaultPointProps: PointProps;
-  private _rectangleProps: RectangleProps;
-  private lastDraggedToPosition: Cartesian3;
+  private _defaultPointProps!: PointProps;
+  private _rectangleProps!: RectangleProps;
+  private lastDraggedToPosition?: Cartesian3;
   private _labels: LabelProps[] = [];
 
   constructor(
@@ -123,7 +123,7 @@ export class EditableRectangle extends AcEntity {
       this.updatePointsLayer(...this.positions);
       this.updateRectangleLayer();
       this.done = true;
-      this.movingPoint = null;
+      this.movingPoint = undefined;
     }
   }
 
@@ -177,8 +177,10 @@ export class EditableRectangle extends AcEntity {
 
   addLastPoint(position: Cartesian3) {
     this.done = true;
-    this.removePosition(this.movingPoint); // remove movingPoint
-    this.movingPoint = null;
+    if (this.movingPoint) {
+        this.removePosition(this.movingPoint); // remove movingPoint
+    }
+    this.movingPoint = undefined;
   }
 
   getRealPositions(): Cartesian3[] {

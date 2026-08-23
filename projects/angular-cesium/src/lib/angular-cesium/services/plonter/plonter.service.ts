@@ -9,10 +9,10 @@ import { EventResult, Movement } from '../map-events-mananger/map-events-manager
  */
 @Injectable()
 export class PlonterService {
-  private _plonterShown: boolean;
+  private _plonterShown!: boolean;
   private _entitesToPlonter: AcEntity[] = [];
   private _plonterObserver: Subject<EventResult>;
-  private _eventResult: EventResult;
+  private _eventResult!: EventResult;
   private _plonterChangeNotifier: EventEmitter<any> = new EventEmitter();
 
   constructor() {

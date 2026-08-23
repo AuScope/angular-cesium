@@ -1,4 +1,4 @@
-import { Component, ContentChild, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ContentChild, OnInit, TemplateRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -39,12 +39,13 @@ import { AcHtmlManager } from '../../services/ac-html-manager/ac-html-manager.se
                            [ngTemplateOutletContext]="acHtmlContext"></ng-template>
           </div>
       </div>`,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcHtmlDescComponent extends BasicDesc implements OnInit {
 
-  @ViewChild(AcHtmlDirective, {static: true}) acHtmlCreator: AcHtmlDirective;
-  @ContentChild(TemplateRef, {static: true}) acHtmlTemplate: TemplateRef<any>;
+  @ViewChild(AcHtmlDirective, {static: true}) acHtmlCreator!: AcHtmlDirective;
+  @ContentChild(TemplateRef, {static: true}) acHtmlTemplate!: TemplateRef<any>;
 
   constructor(htmlDrawer: HtmlDrawerService, layerService: LayerService,
               computationCache: ComputationCache, cesiumProperties: CesiumProperties) {

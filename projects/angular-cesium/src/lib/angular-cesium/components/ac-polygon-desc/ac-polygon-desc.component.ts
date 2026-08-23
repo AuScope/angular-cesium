@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { PolygonDrawerService } from '../../services/drawers/polygon-drawer/polygon-drawer.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
@@ -25,6 +25,7 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
     selector: 'ac-polygon-desc',
     template: '',
     providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPolygonDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcPolygonDescComponent extends BasicDesc implements OnInit {

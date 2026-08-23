@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EntityOnMapComponent } from '../../services/entity-on-map/entity-on-map.component';
 import { MapLayersService } from '../../services/map-layers/map-layers.service';
 import { PolylinePrimitiveDrawerService } from '../../services/drawers/polyline-primitive-drawer/polyline-primitive-drawer.service';
@@ -24,6 +24,7 @@ import { PolylinePrimitiveDrawerService } from '../../services/drawers/polyline-
 @Component({
     selector: 'ac-primitive-polyline',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcPrimitivePolylineComponent extends EntityOnMapComponent {

@@ -5,7 +5,11 @@ import { Vec3 } from '../../models/vec3';
 
 @Injectable()
 export class GeoUtilsService {
-  static pointByLocationDistanceAndAzimuth(currentLocation: any, meterDistance: number, radianAzimuth: number, deprecated?) {
+
+  constructor(private cesiumService: CesiumService) { }
+
+  static pointByLocationDistanceAndAzimuth(currentLocation: any, meterDistance: number, radianAzimuth: number,
+    deprecated?: any): Cartesian3 {
     const distance = meterDistance / Ellipsoid.WGS84.maximumRadius;
     const cartographicLocation =
       currentLocation instanceof Cartesian3 ? Cartographic.fromCartesian(currentLocation) : currentLocation;
@@ -14,15 +18,14 @@ export class GeoUtilsService {
         ? currentLocation
         : Cartesian3.fromRadians(currentLocation.longitude, currentLocation.latitude, currentLocation.height);
 
-    let resultPosition;
-    let resultDistance;
+    let resultPosition: Cartesian3 | undefined;
+    let resultDistance = 0;
     let counter = 0;
     let distanceFactorRangeMax = 0.1;
     let distanceFactorRangeMin = -0.1;
     while (
       counter === 0 ||
-      (counter < 16 && Math.max(resultDistance, meterDistance) / Math.min(resultDistance, meterDistance) > 1.000001)
-      ) {
+      (counter < 16 && Math.max(resultDistance, meterDistance) / Math.min(resultDistance, meterDistance) > 1.000001)) {
       const factor = distanceFactorRangeMin + (distanceFactorRangeMax - distanceFactorRangeMin) / 2;
       resultPosition = GeoUtilsService._pointByLocationDistanceAndAzimuth(cartographicLocation, distance * (1 + factor), radianAzimuth);
       resultDistance = this.distance(cartesianLocation, resultPosition);
@@ -33,6 +36,10 @@ export class GeoUtilsService {
         distanceFactorRangeMin = distanceFactorRangeMin + (distanceFactorRangeMax - distanceFactorRangeMin) / 2;
       }
       counter++;
+    }
+
+    if (!resultPosition) {
+      throw new Error('Failed to calculate position');
     }
 
     return resultPosition;
@@ -91,9 +98,6 @@ export class GeoUtilsService {
 
   static middleCartesian3Point(position0: Cartesian3, position1: Cartesian3) {
     return new Cartesian3(position1.x - position0.x / 2, position1.y - position0.y / 2, position1.z - position0.z / 2);
-  }
-
-  constructor(private cesiumService: CesiumService) {
   }
 
   screenPositionToCartesian3(screenPos: { x: number; y: number }) {

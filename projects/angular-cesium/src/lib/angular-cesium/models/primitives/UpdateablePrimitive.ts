@@ -1,4 +1,4 @@
 
 export interface UpdateablePrimitive{
-	updateLocationData(data: any);
+	updateLocationData(data: any): any;
 }

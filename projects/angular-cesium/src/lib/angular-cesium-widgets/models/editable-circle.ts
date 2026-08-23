@@ -10,11 +10,12 @@ import { PointProps } from './point-edit-options';
 import { PolylineProps } from './polyline-edit-options';
 import { defaultLabelProps, LabelProps } from './label-props';
 import { EllipseProps } from './ellipse-edit-options';
+import { DEFAULT_CIRCLE_OPTIONS } from '../services';
 
 export class EditableCircle extends AcEntity {
-  private _center: EditPoint;
-  private _radiusPoint: EditPoint;
-  private _outlineArc: EditArc;
+  private _center!: EditPoint;
+  private _radiusPoint!: EditPoint;
+  private _outlineArc!: EditArc;
   private doneCreation = false;
   private _enableEdit = true;
   private lastDraggedToPosition: any;
@@ -31,7 +32,10 @@ export class EditableCircle extends AcEntity {
     private options: CircleEditOptions,
   ) {
     super();
-    this._circleProps = {...options.circleProps};
+    this._circleProps = {
+      ...DEFAULT_CIRCLE_OPTIONS.circleProps,
+      ...options.circleProps
+    } as EllipseProps;
     this._pointProps = {...options.pointProps};
     this._polylineProps = {...options.polylineProps};
   }
@@ -185,7 +189,11 @@ export class EditableCircle extends AcEntity {
 
     const radius = this.getRadius();
     const delta = GeoUtilsService.getPositionsDelta(this.lastDraggedToPosition, dragEndPosition);
-    const newCenterPosition = GeoUtilsService.addDeltaToPosition(this.getCenter(), delta, true);
+    const center = this.getCenter();
+    if (center === undefined) {
+      throw new Error('Center is undefined');
+    }
+    const newCenterPosition = GeoUtilsService.addDeltaToPosition(center, delta, true);
     this._center.setPosition(newCenterPosition);
     this.radiusPoint.setPosition(GeoUtilsService.pointByLocationDistanceAndAzimuth(this.getCenter(), radius, Math.PI / 2, true));
     this._outlineArc.radius = this.getRadius();
@@ -212,7 +220,7 @@ export class EditableCircle extends AcEntity {
   }
 
   getCenter(): Cartesian3 {
-    return this._center ? this._center.getPosition() : undefined;
+    return this._center.getPosition();
   }
 
   getCenterCallbackProperty(): CallbackProperty {
@@ -220,7 +228,7 @@ export class EditableCircle extends AcEntity {
   }
 
   getRadiusPoint(): Cartesian3 {
-    return this._radiusPoint ? this._radiusPoint.getPosition() : undefined;
+    return this._radiusPoint.getPosition();
   }
 
   dispose() {

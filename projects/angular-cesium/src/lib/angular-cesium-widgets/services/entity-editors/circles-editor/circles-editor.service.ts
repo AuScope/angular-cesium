@@ -89,12 +89,12 @@ export const DEFAULT_CIRCLE_OPTIONS: CircleEditOptions = {
  */
 @Injectable()
 export class CirclesEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<CircleEditUpdate>();
   private updatePublisher = publish<CircleEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private circlesManager: CirclesManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private circlesManager!: CirclesManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
 
   init(
@@ -132,7 +132,10 @@ export class CirclesEditorService {
       circleOptions,
     });
 
-    const finishCreation = (position: Cartesian3) => {
+    const finishCreation = (position: Cartesian3 | null): boolean => {
+      if (position === null) {
+        return false;
+      }
       const update = {
         id,
         center,
@@ -160,7 +163,10 @@ export class CirclesEditorService {
         ...this.getCircleProperties(id),
       });
       if (this.observablesMap.has(id)) {
-        this.observablesMap.get(id).forEach(registration => registration.dispose());
+        const observable = this.observablesMap.get(id);
+        if (observable) {
+          observable.forEach(registration => registration.dispose());
+        }
       }
       this.observablesMap.delete(id);
       this.editCircle(id, priority, clientEditSubject, circleOptions, editorObservable);
@@ -245,7 +251,7 @@ export class CirclesEditorService {
       editMode: EditModes.EDIT,
     });
 
-    const radiusPoint: Cartesian3 = GeoUtilsService.pointByLocationDistanceAndAzimuth(center, radius, Math.PI / 2, true);
+    const radiusPoint = GeoUtilsService.pointByLocationDistanceAndAzimuth(center, radius, Math.PI / 2, true);
 
     const update = {
       id,
@@ -293,7 +299,7 @@ export class CirclesEditorService {
     }
 
     pointDragRegistration
-      .pipe(tap(({ movement: { drop } }) => this.cameraService.enableInputs(drop)))
+      .pipe(tap(({ movement: { drop } }) => this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({ movement: { endPosition, startPosition, drop }, entities }) => {
         const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);
         const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
@@ -333,7 +339,7 @@ export class CirclesEditorService {
 
     if (shapeDragRegistration) {
       shapeDragRegistration
-        .pipe(tap(({ movement: { drop } }) => this.cameraService.enableInputs(drop)))
+        .pipe(tap(({ movement: { drop } }) => this.cameraService.enableInputs(drop ?? false)))
         .subscribe(({ movement: { startPosition, endPosition, drop } }) => {
           const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);
           const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
@@ -367,7 +373,7 @@ export class CirclesEditorService {
     return editObservable || this.createEditorObservable(editSubject, id);
   }
 
-  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3) => boolean)
+  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3 | null) => boolean)
                                                                                                         : CircleEditorObservable {
     observableToExtend.dispose = () => {
       const observables = this.observablesMap.get(id);
@@ -466,15 +472,23 @@ export class CirclesEditorService {
   }
 
   private getCenterPosition(id: string): Cartesian3 {
-    return this.circlesManager.get(id).getCenter();
+    const circle = this.circlesManager.get(id);
+    if (!circle) {
+      throw new Error('Missing circle');
+    }
+    return circle.getCenter();
   }
 
   private getCenterPoint(id: string): EditPoint {
     return this.circlesManager.get(id).center;
   }
 
-  private getRadiusPosition(id: string): Cartesian3 {
-    return this.circlesManager.get(id).getRadiusPoint();
+  private getRadiusPosition(id: string): Cartesian3 | undefined{
+    const circle = this.circlesManager.get(id);
+    if (!circle) {
+      throw new Error('Missing circle');
+    }
+    return circle.getRadiusPoint();
   }
 
   private getRadius(id: string): number {

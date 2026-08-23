@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumProperties } from '../../../services/cesium-properties/cesium-properties.service';
 import { ComputationCache } from '../../../services/computation-cache/computation-cache.service';
 import { LayerService } from '../../../services/layer-service/layer-service.service';
@@ -33,6 +33,7 @@ import { DynamicEllipseDrawerService } from '../../../services/drawers/static-dy
 @Component({
     selector: 'ac-dynamic-ellipse-desc',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcDynamicEllipseDescComponent extends BasicDesc {

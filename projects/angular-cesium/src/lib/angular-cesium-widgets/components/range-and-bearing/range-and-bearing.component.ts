@@ -96,6 +96,9 @@ export class RangeAndBearingComponent {
           (labels, position, index, array) => {
             if (index !== 0) {
               const previousPosition = array[index - 1];
+              if (!position || !previousPosition) {
+                throw new Error('Invalid position');
+              }
               const bearing = this.coordinateConverter.bearingToCartesian(previousPosition, position);
               const distance = Cartesian3.distance(previousPosition, position) / 1000;
               labels.push(

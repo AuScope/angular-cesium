@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -26,6 +26,7 @@ import { PolylineVolumeDrawerService } from '../../services/drawers/polyline-vol
 @Component({
     selector: 'ac-polyline-volume-desc',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcPolylineVolumeDescComponent extends BasicDesc {

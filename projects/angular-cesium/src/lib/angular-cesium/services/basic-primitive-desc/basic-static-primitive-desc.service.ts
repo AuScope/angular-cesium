@@ -15,9 +15,9 @@ export class BasicStaticPrimitiveDesc extends BasicDesc implements OnInit {
   @Input()
   primitiveProps: any;
 
-  private _geometryPropsEvaluator: Function;
-  private _instancePropsEvaluator: Function;
-  private _primitivePropsEvaluator: Function;
+  private _geometryPropsEvaluator!: Function;
+  private _instancePropsEvaluator!: Function;
+  private _primitivePropsEvaluator!: Function;
 
   constructor(protected _staticPrimitiveDrawer: StaticPrimitiveDrawer, layerService: LayerService,
               computationCache: ComputationCache, cesiumProperties: CesiumProperties) {

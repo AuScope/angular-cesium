@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -27,6 +27,7 @@ import { BoxDrawerService } from '../../services/drawers/box-dawer/box-drawer.se
     selector: 'ac-box-desc',
     template: '',
     providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcBoxDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcBoxDescComponent extends BasicDesc {

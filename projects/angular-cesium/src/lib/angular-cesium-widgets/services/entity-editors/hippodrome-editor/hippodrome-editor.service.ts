@@ -85,12 +85,12 @@ export const DEFAULT_HIPPODROME_OPTIONS: HippodromeEditOptions = {
  */
 @Injectable()
 export class HippodromeEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<HippodromeEditUpdate>();
   private updatePublisher = publish<HippodromeEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private hippodromeManager: HippodromeManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private hippodromeManager!: HippodromeManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
 
   init(mapEventsManager: MapEventsManagerService,
@@ -137,7 +137,10 @@ export class HippodromeEditorService {
       this.updateSubject.next(changeMode);
       clientEditSubject.next(changeMode);
       if (this.observablesMap.has(id)) {
-        this.observablesMap.get(id).forEach(registration => registration.dispose());
+        const observable = this.observablesMap.get(id);
+        if (observable) {
+          observable.forEach(registration => registration.dispose());
+        }
       }
       this.observablesMap.delete(id);
       this.editHippodrome(id, eventPriority, clientEditSubject, hippodromeOptions, editorObservable);
@@ -269,7 +272,7 @@ export class HippodromeEditorService {
     });
 
     pointDragRegistration.pipe(
-      tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+      tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({movement: {endPosition, drop}, entities}) => {
         const position = this.coordinateConverter.screenToCartesian3(endPosition);
         if (!position) {
@@ -296,7 +299,7 @@ export class HippodromeEditorService {
 
     if (shapeDragRegistration) {
       shapeDragRegistration
-        .pipe(tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+        .pipe(tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
         .subscribe(({movement: {startPosition, endPosition, drop}, entities}) => {
           const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
           const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);

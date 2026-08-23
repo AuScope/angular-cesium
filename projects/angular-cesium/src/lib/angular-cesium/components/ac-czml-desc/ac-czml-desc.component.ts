@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { CesiumProperties } from '../../services/cesium-properties/cesium-properties.service';
@@ -33,6 +33,7 @@ import { LayerService } from '../../services/layer-service/layer-service.service
 @Component({
     selector: 'ac-czml-desc',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcCzmlDescComponent extends BasicDesc implements OnInit {

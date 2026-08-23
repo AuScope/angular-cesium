@@ -8,7 +8,7 @@ import { ViewerConfiguration } from '../viewer-configuration/viewer-configuratio
 @Injectable()
 export class CesiumService {
   private cesiumViewer: any;
-  private mapContainer: HTMLElement;
+  private mapContainer!: HTMLElement;
 
   constructor(private ngZone: NgZone, private viewerFactory: ViewerFactory, @Optional() private viewerConfiguration: ViewerConfiguration) {
   }

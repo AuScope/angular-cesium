@@ -28,21 +28,10 @@ export class EntitiesDrawerService extends BasicDrawerService {
 
     // Fix bad enum compilation
     for (const i in GraphicsType) {
-      if (GraphicsType[i] as any === this.graphicsType) {
+      if ((GraphicsType as any)[i] as any === this.graphicsType) {
         this.graphicsTypeName = i;
       }
     }
-  }
-
-  private getFreeEntitiesCollection(): OptimizedEntityCollection {
-    let freeEntityCollection = null;
-    this.entityCollections.forEach(entityCollection => {
-      if (entityCollection.isFree()) {
-        freeEntityCollection = entityCollection;
-      }
-    });
-
-    return freeEntityCollection;
   }
 
   init(options?: EntitiesDrawerOptions) {
@@ -109,7 +98,9 @@ export class EntitiesDrawerService extends BasicDrawerService {
 
   remove(entity: any) {
     const optimizedEntityCollection = this.entityCollections.get(entity.entityCollection);
-    optimizedEntityCollection.remove(entity);
+    if (optimizedEntityCollection) {
+      optimizedEntityCollection.remove(entity);
+    }
   }
 
   removeAll() {
@@ -124,6 +115,17 @@ export class EntitiesDrawerService extends BasicDrawerService {
     });
   }
 
+  private getFreeEntitiesCollection(): OptimizedEntityCollection | null {
+    let freeEntityCollection = null;
+    this.entityCollections.forEach(entityCollection => {
+      if (entityCollection.isFree()) {
+        freeEntityCollection = entityCollection;
+      }
+    });
+
+    return freeEntityCollection;
+  }
+
   private suspendEntityCollection(entity: any) {
     const id = entity.entityCollection;
     if (!this.entityCollections.has(id)) {
@@ -131,7 +133,9 @@ export class EntitiesDrawerService extends BasicDrawerService {
     }
 
     const entityCollection = this.entityCollections.get(id);
-    entityCollection.suspend();
+    if (entityCollection) {
+      entityCollection.suspend();
+    }
   }
 }
 

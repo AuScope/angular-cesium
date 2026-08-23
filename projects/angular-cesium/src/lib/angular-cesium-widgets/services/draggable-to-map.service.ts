@@ -23,9 +23,9 @@ export interface IconDragEvent {
 @Injectable()
 export class DraggableToMapService {
 
-  private coordinateConverter: CoordinateConverter;
-  private dragObservable: Observable<IconDragEvent>;
-  private stopper: Subject<any>;
+  private coordinateConverter!: CoordinateConverter;
+  private dragObservable?: Observable<IconDragEvent>;
+  private stopper?: Subject<any>;
   private mainSubject = new Subject<IconDragEvent>();
 
   constructor(@Inject(DOCUMENT) private document: any, private mapsManager: MapsManagerService) {
@@ -43,7 +43,7 @@ export class DraggableToMapService {
       }
     }
     this.cancel();
-    const imgElement = document.createElement('img');
+    const imgElement: any = document.createElement('img');
     imgElement.src = imageSrc;
     imgElement.style.position = 'fixed';
     imgElement.style.visibility = 'hidden';
@@ -59,7 +59,7 @@ export class DraggableToMapService {
     document.body.appendChild(imgElement);
 
     this.createDragObservable();
-    this.dragObservable.subscribe(
+    this.dragObservable?.subscribe(
       (e) => {
         imgElement.style.visibility = 'visible';
         imgElement.style.left = e.screenPosition.x - imgElement.clientWidth / 2 + 'px';

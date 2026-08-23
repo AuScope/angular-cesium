@@ -3,7 +3,7 @@
  */
 
 export abstract class BasicDrawerService {
-  protected _propsAssigner: Function;
+  protected _propsAssigner!: Function;
 
   constructor() {
   }

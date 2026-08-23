@@ -39,7 +39,9 @@ export class HtmlCollection {
   removeAll() {
     while (this._collection.length > 0) {
       const html = this._collection.pop();
-      html.remove();
+      if (html) {
+        html.remove();
+      }
     }
   }
 

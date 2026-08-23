@@ -41,12 +41,12 @@ import { Subscription } from 'rxjs';
 @Injectable()
 export class ContextMenuService {
   private _showContextMenu = false;
-  private _options: ContextMenuOptions;
-  private _position: Cartesian3;
-  private _content: BasicContextMenu;
-  private mapEventsManager: MapEventsManagerService;
-  private leftClickRegistration: DisposableObservable<any>;
-  private leftClickSubscription: Subscription;
+  private _options!: ContextMenuOptions | undefined;
+  private _position!: Cartesian3 | undefined;
+  private _content!: BasicContextMenu | undefined;
+  private mapEventsManager!: MapEventsManagerService;
+  private leftClickRegistration!: DisposableObservable<any> | undefined;
+  private leftClickSubscription!: Subscription | undefined;
   private _contextMenuChangeNotifier = new EventEmitter();
   private _onOpen = new EventEmitter();
   private _onClose = new EventEmitter();
@@ -63,15 +63,15 @@ export class ContextMenuService {
     return this._showContextMenu;
   }
 
-  get options(): ContextMenuOptions {
+  get options(): ContextMenuOptions | undefined {
     return this._options;
   }
 
-  get position(): Cartesian3 {
+  get position(): Cartesian3 | undefined {
     return this._position;
   }
 
-  get content(): BasicContextMenu {
+  get content(): BasicContextMenu | undefined {
     return this._content;
   }
 
@@ -101,7 +101,9 @@ export class ContextMenuService {
         priority: this._options.closeOnLeftClickPriority,
       });
       this.leftClickSubscription = this.leftClickRegistration.subscribe(() => {
-        this.leftClickSubscription.unsubscribe();
+        if (this.leftClickSubscription) {
+          this.leftClickSubscription.unsubscribe();
+        }
         this.close();
       });
     }

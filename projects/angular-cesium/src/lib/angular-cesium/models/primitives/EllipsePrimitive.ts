@@ -39,6 +39,10 @@ void main()
  * Both color and border color are just an array of 4 floats from 0 to 1 in the RGBA format, currently we do not support materials.
  */
 export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
+    private static borderStyleToPrimitiveType = {
+		solid: PrimitiveType.LINE_LOOP,
+		dashed: PrimitiveType.LINES
+	};
 	private _center: any;
 	private _semiMajor: number;
 	private _semiMinor: number;
@@ -47,14 +51,25 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 	private _border: {show: boolean, style: string};
 	private _showFill: boolean;
 	private _borderDrawCommand: any;
-	private _borderIndicesArray: Uint16Array;
+	private _borderIndicesArray!: Uint16Array;
 	private _borderColor: number[];
 	private _borderVertexArray: any;
 
-	private static borderStyleToPrimitiveType = {
-		solid: PrimitiveType.LINE_LOOP,
-		dashed: PrimitiveType.LINES
-	};
+    private static createBorderIndicesArray(size: number): Uint16Array {
+		return createSimpleIndicesArray(size);
+	}
+
+	private static createIndicesArray(length: number) {
+		const indices = [];
+
+		for (let i = 2; i < length; i++) {
+			indices.push(0, i - 1, i);
+		}
+
+		indices.push(0, length - 1, 1);
+
+		return indices;
+	}
 
 	/**
 	 * The ellipse constructor requires an ellipse center point a semiMinor and semiMajor, these are used to calculate the ellipses position and thus mandatory.
@@ -179,7 +194,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 		this._showFill = value;
 	}
 
-	private set points(value) {
+	private set points(value: any) {
 		if (!this._borderIndicesArray || (this._points && this._points.outerPositions && this._points.outerPositions.length !== value.outerPositions.length)) {
 			this._borderIndicesArray = EllipsePrimitive.createBorderIndicesArray(value.outerPositions.length / 3);
 		}
@@ -196,7 +211,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 	 *
 	 * @param data
 	 */
-	updateLocationData(data: {center?, semiMajorAxis?: number, semiMinorAxis?: number, rotation?: number}) {
+	updateLocationData(data: {center?: any, semiMajorAxis?: number, semiMinorAxis?: number, rotation?: number}) {
 		this.center = data.center || this._center;
 		this.semiMajor = data.semiMajorAxis || this._semiMajor;
 		this.semiMinor = data.semiMinorAxis || this._semiMinor;
@@ -211,7 +226,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 	 * This is a Cesium only function it is called once each tick of the render engine, do NOT call it!
 	 * @param frameState
 	 */
-	update(frameState) {
+	update(frameState: any) {
 		if (!this.shouldRender()) {
 			return;
 		}
@@ -220,7 +235,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 			this._dirty = true;
 		}
 
-		let context = frameState.context;
+		const context = frameState.context;
 
 		this.setupRenderState();
 		this.setupShaderProgram(context);
@@ -228,7 +243,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 		if (this._border) {
 			this._borderVertexArray = (this._dirty || !this._borderVertexArray) ? this.createBorderVertexArray(context, frameState) : this._borderVertexArray;
 			this.setupDrawCommand(this._borderDrawCommand, this._borderVertexArray,
-								  EllipsePrimitive.borderStyleToPrimitiveType[this._border.style], isTranslucent(this._borderColor));
+								  (EllipsePrimitive as any).borderStyleToPrimitiveType[this._border.style], isTranslucent(this._borderColor));
 			frameState.commandList.push(this._borderDrawCommand);
 		}
 
@@ -255,16 +270,16 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 		return super.shouldRender() && (this._showFill || this._border.show);
 	}
 
-	private createBorderVertexArray(context: any, frameState) {
-		let points = frameState.mode === SceneMode.SCENE3D ? this._points.outerPositions : to2D(frameState, this._points.outerPositions);
+	private createBorderVertexArray(context: any, frameState: any) {
+		const points = frameState.mode === SceneMode.SCENE3D ? this._points.outerPositions : to2D(frameState, this._points.outerPositions);
 
-		let vertexBuffer = Buffer.createVertexBuffer({
+		const vertexBuffer = Buffer.createVertexBuffer({
 			context: context,
 			typedArray: new Float32Array(points),
 			usage: BufferUsage.STATIC_DRAW
 		});
 
-		let attributes = [
+		const attributes = [
 			{
 				index: 0,
 				enabled: true,
@@ -294,16 +309,16 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 		});
 	}
 
-	private createVertexArray(context: any, frameState) {
-		let points = frameState.mode === SceneMode.SCENE3D ? this._points.innerPoints : to2D(frameState, this._points.innerPoints);
+	private createVertexArray(context: any, frameState: any) {
+		const points = frameState.mode === SceneMode.SCENE3D ? this._points.innerPoints : to2D(frameState, this._points.innerPoints);
 
-		let vertexBuffer = Buffer.createVertexBuffer({
+		const vertexBuffer = Buffer.createVertexBuffer({
 			context: context,
 			typedArray: new Float32Array(points),
 			usage: BufferUsage.STATIC_DRAW
 		});
 
-		let attributes = [
+		const attributes = [
 			{
 				index: 0,
 				enabled: true,
@@ -357,7 +372,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 	}
 
 	private calculatePoints() {
-		let points = EllipseGeometryLibrary.computeEllipsePositions({
+		const points = EllipseGeometryLibrary.computeEllipsePositions({
 			center: this._center,
 			rotation: this._rotation,
 			semiMajorAxis: this._semiMajor,
@@ -370,7 +385,7 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 		this.points = points;
 	}
 
-	private createBorderIndexBuffer(context) {
+	private createBorderIndexBuffer(context: any) {
 		return Buffer.createIndexBuffer({
 			context: context,
 			typedArray: this._borderIndicesArray,
@@ -390,21 +405,5 @@ export class EllipsePrimitive extends Primitive implements UpdateablePrimitive {
 			usage: BufferUsage.STATIC_DRAW,
 			indexDatatype: IndexDatatype.UNSIGNED_SHORT
 		});
-	}
-
-	private static createBorderIndicesArray(size: number): Uint16Array {
-		return createSimpleIndicesArray(size);
-	}
-
-	private static createIndicesArray(length) {
-		let indices = [];
-
-		for (let i = 2; i < length; i++) {
-			indices.push(0, i - 1, i);
-		}
-
-		indices.push(0, length - 1, 1);
-
-		return indices;
 	}
 }

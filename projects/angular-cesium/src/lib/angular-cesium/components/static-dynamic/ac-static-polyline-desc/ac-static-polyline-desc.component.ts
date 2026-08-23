@@ -1,5 +1,5 @@
 // tslint:disable
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { StaticPolylineDrawerService } from '../../../services/drawers/static-dynamic/static-polyline-drawer/static-polyline-drawer.service';
 import { LayerService } from '../../../services/layer-service/layer-service.service';
 import { CesiumProperties } from '../../../services/cesium-properties/cesium-properties.service';
@@ -32,6 +32,7 @@ import { BasicStaticPrimitiveDesc } from '../../../services/basic-primitive-desc
 @Component({
     selector: 'ac-static-polyline-desc',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcStaticPolylineDescComponent extends BasicStaticPrimitiveDesc {

@@ -58,14 +58,8 @@ export enum MouseButtons {
 
 @Injectable()
 export class ZoomToRectangleService {
-  constructor(
-    private mapsManager: MapsManagerService,
-    @Optional() cameraService: CameraService,
-    @Optional() cesiumService: CesiumService,
-  ) {}
-
-  private cameraService: CameraService;
-  private cesiumService: CesiumService;
+  private cameraService!: CameraService;
+  private cesiumService!: CesiumService;
 
   private mapsZoomElements = new Map<string, ZoomData>();
   private defaultOptions = {
@@ -78,6 +72,12 @@ export class ZoomToRectangleService {
     keepRotation: true,
     mouseButton: MouseButtons.LEFT,
   };
+
+  constructor(
+    private mapsManager: MapsManagerService,
+    @Optional() cameraService: CameraService,
+    @Optional() cesiumService: CesiumService,
+  ) {}
 
   init(cesiumService: CesiumService, cameraService: CameraService) {
     this.cameraService = cameraService;
@@ -213,7 +213,7 @@ export class ZoomToRectangleService {
       }
     };
 
-    const resetOnEscapePress = e => {
+    const resetOnEscapePress = (e: any) => {
       if (e.keyCode === finalOptions.resetKeyCode && borderElement) {
         borderElement.remove();
         borderElement = undefined;
@@ -236,6 +236,9 @@ export class ZoomToRectangleService {
     }
     if (!mapId) {
       const map = this.mapsManager.getMap();
+      if (!map) {
+        throw new Error('Map not found');
+      }
       mapId = map.getId();
     }
     const data = this.mapsZoomElements.get(mapId);
@@ -254,8 +257,8 @@ export class ZoomToRectangleService {
   private zoomCameraToRectangle(
     cameraService: CameraService,
     positions: { endX: number; endY: number; startX: number; startY: number },
-    animationDuration,
-    options,
+    animationDuration: any,
+    options: any,
   ): boolean {
     const camera = cameraService.getCamera();
     const cartesian1 = camera.pickEllipsoid({ x: positions.startX, y: positions.startY });

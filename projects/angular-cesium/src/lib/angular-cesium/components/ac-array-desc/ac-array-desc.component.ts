@@ -61,21 +61,23 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 })
 export class AcArrayDescComponent implements OnChanges, OnInit, AfterContentInit, OnDestroy, IDescription {
 
-  @Input() acFor: string;
+  @Input() acFor!: string;
 
-  @Input() idGetter: (item: any, index: number) => string;
+  @Input() idGetter?: (item: any, index: number) => string;
 
   @Input() show = true;
-  @ViewChild('layer', {static: true}) private layer: AcLayerComponent;
+  @ViewChild('layer', {static: true}) private layer!: AcLayerComponent;
   @ContentChildren(BasicDesc, {descendants: false}) private basicDescs: any;
   @ContentChildren(AcArrayDescComponent, {descendants: false}) private arrayDescs: any;
+
+  entityName!: string;
+  arrayPath!: string;
+  arrayObservable$ = new Subject<AcNotification>();
+
   private entitiesMap = new Map<string, string[]>();
-  private layerServiceSubscription: Subscription;
+  private layerServiceSubscription!: Subscription;
   private id = 0;
   private readonly acForRgx = /^let\s+.+\s+of\s+.+$/;
-  entityName: string;
-  arrayPath: string;
-  arrayObservable$ = new Subject<AcNotification>();
 
   constructor(public layerService: LayerService, private cd: ChangeDetectorRef) {
   }

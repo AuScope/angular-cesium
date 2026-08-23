@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Cesium3DTileset, PrimitiveCollection, Cesium3DTileStyle } from 'cesium';
 import { CesiumService } from '../../services/cesium/cesium.service';
 import { Checker } from '../../utils/checker';
@@ -18,6 +18,7 @@ import { Checker } from '../../utils/checker';
 @Component({
     selector: 'ac-3d-tile-layer',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
@@ -31,7 +32,7 @@ export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
    * index (optional) - The index to add the layer at. If omitted, the layer will added on top of all existing layers.
    */
   @Input()
-  index: Number;
+  index!: Number;
 
   /**
    * show (optional) - Determines if the map layer is shown.

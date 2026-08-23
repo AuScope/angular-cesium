@@ -85,14 +85,14 @@ import { LabelProps } from '../../models/label-props';
     standalone: false
 })
 export class PolylinesEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: PolylineEditUpdate, labels: LabelProps[]) => LabelProps[];
+  @ViewChild('editPointsLayer') private editPointsLayer!: AcLayerComponent;
+  @ViewChild('editPolylinesLayer') private editPolylinesLayer!: AcLayerComponent;
+  @ViewChild('polylineLabelsLayer') private polylineLabelsLayer!: AcLayerComponent;
+
   public editPoints$ = new Subject<AcNotification>();
   public editPolylines$ = new Subject<AcNotification>();
   public polylineLabels$ = new Subject<AcNotification>();
-
-  @ViewChild('editPointsLayer') private editPointsLayer: AcLayerComponent;
-  @ViewChild('editPolylinesLayer') private editPolylinesLayer: AcLayerComponent;
-  @ViewChild('polylineLabelsLayer') private polylineLabelsLayer: AcLayerComponent;
+  private editLabelsRenderFn?: (update: PolylineEditUpdate, labels: LabelProps[]) => LabelProps[];
 
   constructor(
     private polylinesEditor: PolylinesEditorService,
@@ -226,7 +226,7 @@ export class PolylinesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT: {
         const polyline = this.polylinesManager.get(update.id);
-        if (polyline && polyline.enableEdit) {
+        if (polyline && polyline.enableEdit && update.updatedPosition && update.updatedPoint) {
           polyline.movePoint(update.updatedPosition, update.updatedPoint);
           this.renderEditLabels(polyline, update);
         }
@@ -234,10 +234,10 @@ export class PolylinesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT_FINISH: {
         const polyline = this.polylinesManager.get(update.id);
-        if (polyline && polyline.enableEdit) {
+        if (polyline && polyline.enableEdit && update.updatedPoint) {
           polyline.movePointFinish(update.updatedPoint);
 
-          if (update.updatedPoint.isVirtualEditPoint()) {
+          if (update.updatedPoint?.isVirtualEditPoint()) {
             polyline.changeVirtualPointToRealPoint(update.updatedPoint);
             this.renderEditLabels(polyline, update);
           }
@@ -246,7 +246,7 @@ export class PolylinesEditorComponent implements OnDestroy {
       }
       case EditActions.REMOVE_POINT: {
         const polyline = this.polylinesManager.get(update.id);
-        if (polyline && polyline.enableEdit) {
+        if (polyline && polyline.enableEdit && update.updatedPoint) {
           polyline.removePoint(update.updatedPoint);
           this.renderEditLabels(polyline, update);
         }
@@ -270,7 +270,7 @@ export class PolylinesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_SHAPE: {
         const polyline = this.polylinesManager.get(update.id);
-        if (polyline && polyline.enableEdit) {
+        if (polyline && polyline.enableEdit && update.draggedPosition && update.updatedPosition) {
           polyline.moveShape(update.draggedPosition, update.updatedPosition);
           this.renderEditLabels(polyline, update);
         }

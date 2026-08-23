@@ -92,12 +92,12 @@ export const DEFAULT_ELLIPSE_OPTIONS: EllipseEditOptions = {
  */
 @Injectable()
 export class EllipsesEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<EllipseEditUpdate>();
   private updatePublisher = publish<EllipseEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private ellipsesManager: EllipsesManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private ellipsesManager!: EllipsesManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
   private cesiumScene: any;
 
@@ -139,7 +139,10 @@ export class EllipsesEditorService {
       ellipseOptions,
     });
 
-    const finishCreation = (position: Cartesian3) => {
+    const finishCreation = (position: Cartesian3 | null): boolean => {
+      if (position === null) {
+        return false;
+      }
       const update: EllipseEditUpdate = {
         id,
         center,
@@ -164,7 +167,10 @@ export class EllipsesEditorService {
         ...update,
       });
       if (this.observablesMap.has(id)) {
-        this.observablesMap.get(id).forEach(registration => registration.dispose());
+        const observable = this.observablesMap.get(id);
+        if (observable) {
+          observable.forEach(registration => registration.dispose());
+        }
       }
       this.observablesMap.delete(id);
       this.editEllipse(id, priority, clientEditSubject, ellipseOptions, editorObservable);
@@ -314,7 +320,7 @@ export class EllipsesEditorService {
     }
 
     pointDragRegistration
-      .pipe(tap(({ movement: { drop } }) => this.ellipsesManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+      .pipe(tap(({ movement: { drop } }) => this.ellipsesManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({ movement: { endPosition, startPosition, drop }, entities }) => {
         const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);
         const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
@@ -369,7 +375,7 @@ export class EllipsesEditorService {
 
     if (shapeDragRegistration) {
       shapeDragRegistration
-        .pipe(tap(({ movement: { drop } }) => this.ellipsesManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+        .pipe(tap(({ movement: { drop } }) => this.ellipsesManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
         .subscribe(({ movement: { startPosition, endPosition, drop } }) => {
           const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);
           const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
@@ -404,7 +410,7 @@ export class EllipsesEditorService {
     return editObservable || this.createEditorObservable(editSubject, id);
   }
 
-  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3) => boolean)
+  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3 | null) => boolean)
                                                                                                         : EllipseEditorObservable {
     observableToExtend.dispose = () => {
       const observables = this.observablesMap.get(id);

@@ -40,11 +40,6 @@ export class MapsManagerService {
     return this._Maps.delete(id);
   }
 
-  private generateDefaultId(): string {
-    this.defaultIdCounter++;
-    return 'default-map-id-' + this.defaultIdCounter;
-  }
-
   /**
    * Binds multiple 2D map's cameras together.
    * @param mapsConfiguration - binding options.
@@ -69,7 +64,7 @@ export class MapsManagerService {
       const options = masterMapConfig.options;
       const masterCamera = masterMap.getCameraService().getCamera();
       const masterCameraCartographic = masterCamera.positionCartographic;
-      masterCamera.percentageChanged = options.sensitivity || DEFAULT_SENSITIVITY;
+      masterCamera.percentageChanged = options?.sensitivity || DEFAULT_SENSITIVITY;
       const removeCallback = masterCamera.changed.addEventListener(() => {
         maps.forEach(slaveMapConfig => {
           const slaveMap = slaveMapConfig.map;
@@ -84,7 +79,7 @@ export class MapsManagerService {
             new Cartographic(
                 masterCameraCartographic.longitude,
                 masterCameraCartographic.latitude,
-                slaveMapOptions.bindZoom ? masterCameraCartographic.height : slaveCameraCartographic.height)
+                slaveMapOptions?.bindZoom ? masterCameraCartographic.height : slaveCameraCartographic.height)
           );
 
           if (slaveMap.getCesiumViewer().scene.mode !== SceneMode.MORPHING) {
@@ -108,5 +103,10 @@ export class MapsManagerService {
   unsyncMapsCameras() {
     this.eventRemoveCallbacks.forEach(removeCallback => removeCallback());
     this.eventRemoveCallbacks = [];
+  }
+
+  private generateDefaultId(): string {
+    this.defaultIdCounter++;
+    return 'default-map-id-' + this.defaultIdCounter;
   }
 }

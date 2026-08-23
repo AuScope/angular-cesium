@@ -26,7 +26,11 @@ export class CirclesManagerService {
   }
 
   get(id: string): EditableCircle {
-    return this.circles.get(id);
+    const circle = this.circles.get(id);
+    if (!circle) {
+      throw new Error(`Missing circle with id '${id}'`);
+    }
+    return circle;
   }
 
   clear() {

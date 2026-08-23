@@ -14,15 +14,21 @@ export class CesiumProperties {
   }
 
   _compile(expression: string, withCache = true): (cache: ComputationCache, context: Object) => Object {
-    const cesiumDesc = {};
+    const cesiumDesc: any = {};
     const propsMap = new Map<string, { expression: string, get: Function }>();
 
     const resultMap = this._jsonMapper.map(expression);
 
-    resultMap.forEach((resultExpression, prop) => propsMap.set(prop, {
-      expression: resultExpression,
-      get: this._parser.eval(resultExpression)
-    }));
+    resultMap.forEach((resultExpression, prop) => {
+      const getter = this._parser.eval(resultExpression);
+      if (getter === undefined) {
+        throw new Error(`Invalid expression '${resultExpression}' for property '${prop}'`);
+      }
+      propsMap.set(prop, {
+        expression: resultExpression,
+        get: getter
+      });
+    });
 
     propsMap.forEach((value, prop) => {
       if (withCache) {
@@ -51,7 +57,11 @@ export class CesiumProperties {
 
   createEvaluator(expression: string, withCache = true, newEvaluator = false): (cache: ComputationCache, context: Object) => Object {
     if (!newEvaluator && this._evaluatorsCache.has(expression)) {
-      return this._evaluatorsCache.get(expression);
+      const evaluator = this._evaluatorsCache.get(expression);
+      if (evaluator === undefined) {
+        throw new Error(`Missing evaluator for '${expression}'`);
+      }
+      return evaluator;
     }
 
     const evaluatorFn = this._compile(expression, withCache);
@@ -62,7 +72,11 @@ export class CesiumProperties {
 
   createAssigner(expression: string): (oldVal: Object, newVal: Object) => Object {
     if (this._assignersCache.has(expression)) {
-      return this._assignersCache.get(expression);
+      const cachedExpression = this._assignersCache.get(expression);
+      if (cachedExpression === undefined) {
+        throw new Error(`Missing assigner for '${cachedExpression}'`);
+      }
+      return cachedExpression;
     }
 
     const assignFn = this._build(expression);

@@ -21,7 +21,6 @@ import { ClampTo3DOptions } from '../../../models/polyline-edit-options';
 import { PointProps } from '../../../models/point-edit-options';
 import { LabelProps } from '../../../models/label-props';
 import { debounce, generateKey } from '../../utils';
-import { when } from 'when';
 
 export const DEFAULT_POLYGON_OPTIONS: PolygonEditOptions = {
   addPointEvent: CesiumEvent.LEFT_CLICK,
@@ -96,16 +95,16 @@ export const DEFAULT_POLYGON_OPTIONS: PolygonEditOptions = {
  */
 @Injectable()
 export class PolygonsEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<PolygonEditUpdate>();
   private updatePublisher = publish<PolygonEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private polygonsManager: PolygonsManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private polygonsManager!: PolygonsManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
   private cesiumScene: any;
 
-  private clampPointsDebounced = debounce((id, clampHeightTo3D: boolean, clampHeightTo3DOptions) => {
+  private clampPointsDebounced = debounce((id: any, clampHeightTo3D: boolean, clampHeightTo3DOptions: any) => {
     this.clampPoints(id, clampHeightTo3D, clampHeightTo3DOptions);
   }, 300);
 
@@ -128,61 +127,6 @@ export class PolygonsEditorService {
     return this.updatePublisher;
   }
 
-  private clampPoints(id, clampHeightTo3D: boolean, { clampToTerrain, clampMostDetailed, clampToHeightPickWidth }: ClampTo3DOptions) {
-    if (clampHeightTo3D && clampMostDetailed) {
-      const polygon = this.polygonsManager.get(id);
-      const points = polygon.getPoints();
-
-      if (!clampToTerrain) {
-        // 3dTiles
-        points.forEach(point => {
-          point.setPosition(this.cesiumScene.clampToHeight(point.getPosition(), undefined, clampToHeightPickWidth));
-        });
-        // const cartesians = points.map(point => point.getPosition());
-        // const promise = this.cesiumScene.clampToHeightMostDetailed(cartesians, undefined, clampToHeightPickWidth);
-        // promise.then((updatedCartesians) => {
-        //   points.forEach((point, index) => {
-        //     point.setPosition(updatedCartesians[index]);
-        //   });
-        // });
-      } else {
-        const cartographics = points.map(point => this.coordinateConverter.cartesian3ToCartographic(point.getPosition()));
-        const promise = sampleTerrain(this.cesiumScene.terrainProvider, 11, cartographics);
-        when(promise, (updatedPositions) => {
-          points.forEach((point, index) => {
-            point.setPosition(Cartographic.toCartesian(updatedPositions[index]));
-          });
-        });
-      }
-    }
-  }
-
-  private screenToPosition(cartesian2, clampHeightTo3D: boolean, { clampToHeightPickWidth, clampToTerrain }: ClampTo3DOptions) {
-    const cartesian3 = this.coordinateConverter.screenToCartesian3(cartesian2);
-
-    // If cartesian3 is undefined then the point inst on the globe
-    if (clampHeightTo3D && cartesian3) {
-      const globePositionPick = () => {
-        const ray = this.cameraService.getCamera().getPickRay(cartesian2);
-        return this.cesiumScene.globe.pick(ray, this.cesiumScene);
-      };
-
-      // is terrain?
-      if (clampToTerrain) {
-        return globePositionPick();
-      } else {
-        const cartesian3PickPosition = this.cesiumScene.pickPosition(cartesian2);
-        const latLon = CoordinateConverter.cartesian3ToLatLon(cartesian3PickPosition);
-        if (latLon.height < 0) {// means nothing picked -> Validate it
-          return globePositionPick();
-        }
-        return this.cesiumScene.clampToHeight(cartesian3PickPosition, undefined, clampToHeightPickWidth);
-      }
-    }
-
-    return cartesian3;
-  }
-
   create(options = DEFAULT_POLYGON_OPTIONS, priority = 100): PolygonEditorObservable {
     const positions: Cartesian3[] = [];
     const id = generateKey();
@@ -203,7 +147,10 @@ export class PolygonsEditorService {
       polygonOptions: polygonOptions,
     });
 
-    const finishCreation = (position: Cartesian3) => {
+    const finishCreation = (position: Cartesian3 | null) => {
+      if (position === null) {
+        return false;
+      }
       return this.switchToEditMode(
         id,
         position,
@@ -240,7 +187,11 @@ export class PolygonsEditorService {
     const editorObservable = this.createEditorObservable(clientEditSubject, id, finishCreation);
 
     mouseMoveRegistration.subscribe(({ movement: { endPosition } }) => {
-      const position = this.screenToPosition(endPosition, polygonOptions.clampHeightTo3D, polygonOptions.clampHeightTo3DOptions);
+      const clampOptions = polygonOptions.clampHeightTo3DOptions ?? DEFAULT_POLYGON_OPTIONS.clampHeightTo3DOptions;
+      if (!clampOptions) {
+        throw new Error('Missing clampHeightTo3DOptions');
+      }
+      const position = this.screenToPosition(endPosition, polygonOptions.clampHeightTo3D ?? false, clampOptions);
 
       if (position) {
         this.updateSubject.next({
@@ -257,7 +208,11 @@ export class PolygonsEditorService {
       if (finishedCreate) {
         return;
       }
-      const position = this.screenToPosition(endPosition, polygonOptions.clampHeightTo3D, polygonOptions.clampHeightTo3DOptions);
+      const clampOptions = polygonOptions.clampHeightTo3DOptions ?? DEFAULT_POLYGON_OPTIONS.clampHeightTo3DOptions;
+      if (!clampOptions) {
+        throw new Error('Missing clampHeightTo3DOptions');
+      }
+      const position = this.screenToPosition(endPosition, polygonOptions.clampHeightTo3D ?? false, clampOptions);
       if (!position) {
         return;
       }
@@ -287,7 +242,11 @@ export class PolygonsEditorService {
 
 
     addLastPointRegistration.subscribe(({ movement: { endPosition } }) => {
-      const position = this.screenToPosition(endPosition, polygonOptions.clampHeightTo3D, polygonOptions.clampHeightTo3DOptions);
+      const clampOptions = polygonOptions.clampHeightTo3DOptions ?? DEFAULT_POLYGON_OPTIONS.clampHeightTo3DOptions;
+      if (!clampOptions) {
+        throw new Error('Missing clampHeightTo3DOptions');
+      }
+      const position = this.screenToPosition(endPosition, polygonOptions.clampHeightTo3D ?? false, clampOptions);
       if (!position) {
         return;
       }
@@ -314,44 +273,6 @@ export class PolygonsEditorService {
     });
 
     return editorObservable;
-  }
-
-  private switchToEditMode(id,
-                           position,
-                           clientEditSubject,
-                           positions: Cartesian3[],
-                           priority,
-                           polygonOptions,
-                           editorObservable,
-                           finishedCreate: boolean) {
-    const updateValue = {
-      id,
-      positions: this.getPositions(id),
-      editMode: EditModes.CREATE,
-      updatedPosition: position,
-      editAction: EditActions.ADD_LAST_POINT,
-    };
-    this.updateSubject.next(updateValue);
-    clientEditSubject.next({
-      ...updateValue,
-      positions: this.getPositions(id),
-      points: this.getPoints(id),
-    });
-
-    const changeMode = {
-      id,
-      editMode: EditModes.CREATE,
-      editAction: EditActions.CHANGE_TO_EDIT,
-    };
-    this.updateSubject.next(changeMode);
-    clientEditSubject.next(changeMode);
-    if (this.observablesMap.has(id)) {
-      this.observablesMap.get(id).forEach(registration => registration.dispose());
-    }
-    this.observablesMap.delete(id);
-    this.editPolygon(id, positions, priority, clientEditSubject, polygonOptions, editorObservable);
-    finishedCreate = true;
-    return finishedCreate;
   }
 
   edit(positions: Cartesian3[], options = DEFAULT_POLYGON_OPTIONS, priority = 100): PolygonEditorObservable {
@@ -387,13 +308,113 @@ export class PolygonsEditorService {
     );
   }
 
+  private clampPoints(id: any, clampHeightTo3D: boolean, { clampToTerrain, clampMostDetailed, clampToHeightPickWidth }: ClampTo3DOptions) {
+    if (clampHeightTo3D && clampMostDetailed) {
+      const polygon = this.polygonsManager.get(id);
+      const points = polygon.getPoints();
+
+      if (!clampToTerrain) {
+        // 3dTiles
+        points.forEach(point => {
+          point.setPosition(this.cesiumScene.clampToHeight(point.getPosition(), undefined, clampToHeightPickWidth));
+        });
+        // const cartesians = points.map(point => point.getPosition());
+        // const promise = this.cesiumScene.clampToHeightMostDetailed(cartesians, undefined, clampToHeightPickWidth);
+        // promise.then((updatedCartesians) => {
+        //   points.forEach((point, index) => {
+        //     point.setPosition(updatedCartesians[index]);
+        //   });
+        // });
+      } else {
+        const cartographics = points.map(point => this.coordinateConverter.cartesian3ToCartographic(point.getPosition()));
+        const promise = sampleTerrain(this.cesiumScene.terrainProvider, 11, cartographics);
+        Promise.resolve(promise).then((updatedPositions) => {
+          points.forEach((point, index) => {
+            point.setPosition(Cartographic.toCartesian(updatedPositions[index]));
+          });
+        });
+      }
+    }
+  }
+
+  private screenToPosition(cartesian2: any, clampHeightTo3D: boolean, { clampToHeightPickWidth, clampToTerrain }: ClampTo3DOptions) {
+    const cartesian3 = this.coordinateConverter.screenToCartesian3(cartesian2);
+
+    // If cartesian3 is undefined then the point inst on the globe
+    if (clampHeightTo3D && cartesian3) {
+      const globePositionPick = () => {
+        const ray = this.cameraService.getCamera().getPickRay(cartesian2);
+        return this.cesiumScene.globe.pick(ray, this.cesiumScene);
+      };
+
+      // is terrain?
+      if (clampToTerrain) {
+        return globePositionPick();
+      } else {
+        const cartesian3PickPosition = this.cesiumScene.pickPosition(cartesian2);
+        const latLon = CoordinateConverter.cartesian3ToLatLon(cartesian3PickPosition);
+        if (latLon.height < 0) {// means nothing picked -> Validate it
+          return globePositionPick();
+        }
+        return this.cesiumScene.clampToHeight(cartesian3PickPosition, undefined, clampToHeightPickWidth);
+      }
+    }
+
+    return cartesian3;
+  }
+
+  private switchToEditMode(id: any,
+                           position: any,
+                           clientEditSubject: any,
+                           positions: Cartesian3[],
+                           priority: any,
+                           polygonOptions: any,
+                           editorObservable: any,
+                           finishedCreate: boolean) {
+    const updateValue = {
+      id,
+      positions: this.getPositions(id),
+      editMode: EditModes.CREATE,
+      updatedPosition: position,
+      editAction: EditActions.ADD_LAST_POINT,
+    };
+    this.updateSubject.next(updateValue);
+    clientEditSubject.next({
+      ...updateValue,
+      positions: this.getPositions(id),
+      points: this.getPoints(id),
+    });
+
+    const changeMode = {
+      id,
+      editMode: EditModes.CREATE,
+      editAction: EditActions.CHANGE_TO_EDIT,
+    };
+    this.updateSubject.next(changeMode);
+    clientEditSubject.next(changeMode);
+    if (this.observablesMap.has(id)) {
+      const observable = this.observablesMap.get(id);
+      if (observable) {
+        observable.forEach(registration => registration.dispose());
+      }
+    }
+    this.observablesMap.delete(id);
+    this.editPolygon(id, positions, priority, clientEditSubject, polygonOptions, editorObservable);
+    finishedCreate = true;
+    return finishedCreate;
+  }
+
   private editPolygon(id: string,
                       positions: Cartesian3[],
                       priority: number,
                       editSubject: Subject<PolygonEditUpdate>,
                       options: PolygonEditOptions,
                       editObservable?: PolygonEditorObservable): PolygonEditorObservable {
-    this.clampPoints(id, options.clampHeightTo3D, options.clampHeightTo3DOptions);
+    const clampOptions = options.clampHeightTo3DOptions ?? DEFAULT_POLYGON_OPTIONS.clampHeightTo3DOptions;
+    if (!clampOptions) {
+      throw new Error('Missing clampHeightTo3DOptions');
+    }
+    this.clampPoints(id, options.clampHeightTo3D ?? false, clampOptions);
 
     const pointDragRegistration = this.mapEventsManager.register({
       event: options.dragPointEvent,
@@ -426,9 +447,9 @@ export class PolygonsEditorService {
     });
 
     pointDragRegistration.pipe(
-      tap(({ movement: { drop } }) => this.polygonsManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+      tap(({ movement: { drop } }) => this.polygonsManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({ movement: { endPosition, drop }, entities }) => {
-        const position = this.screenToPosition(endPosition, options.clampHeightTo3D, options.clampHeightTo3DOptions);
+        const position = this.screenToPosition(endPosition, options.clampHeightTo3D ?? false, clampOptions);
         if (!position) {
           return;
         }
@@ -454,10 +475,10 @@ export class PolygonsEditorService {
 
     if (shapeDragRegistration) {
       shapeDragRegistration
-        .pipe(tap(({ movement: { drop } }) => this.polygonsManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+        .pipe(tap(({ movement: { drop } }) => this.polygonsManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
         .subscribe(({ movement: { startPosition, endPosition, drop }, entities }) => {
-          const endDragPosition = this.screenToPosition(endPosition, false, options.clampHeightTo3DOptions);
-          const startDragPosition = this.screenToPosition(startPosition, false, options.clampHeightTo3DOptions);
+          const endDragPosition = this.screenToPosition(endPosition, false, clampOptions);
+          const startDragPosition = this.screenToPosition(startPosition, false, clampOptions);
           if (!endDragPosition) {
             return;
           }
@@ -504,7 +525,7 @@ export class PolygonsEditorService {
         points: this.getPoints(id),
       });
 
-      this.clampPoints(id, options.clampHeightTo3D, options.clampHeightTo3DOptions);
+      this.clampPoints(id, options.clampHeightTo3D ?? false, clampOptions);
     });
 
     const observables = [pointDragRegistration, pointRemoveRegistration];
@@ -553,7 +574,7 @@ export class PolygonsEditorService {
   }
 
 
-  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3) => boolean)
+  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3 | null) => boolean)
                                                                                                         : PolygonEditorObservable {
     observableToExtend.dispose = () => {
       const observables = this.observablesMap.get(id);

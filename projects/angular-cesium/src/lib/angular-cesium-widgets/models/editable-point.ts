@@ -12,7 +12,7 @@ interface PositionWithPointProps {
 }
 
 export class EditablePoint extends AcEntity {
-  private point: EditPoint;
+  private point!: EditPoint;
   private _enableEdit = true;
   private _props: PointProps;
   private _labels: LabelProps[] = [];
@@ -33,6 +33,14 @@ export class EditablePoint extends AcEntity {
     return this._labels;
   }
 
+  get props(): PointProps {
+    return this._props;
+  }
+
+  get enableEdit() {
+    return this._enableEdit;
+  }
+
   set labels(labels: LabelProps[]) {
     if (!labels) {
       return;
@@ -46,16 +54,8 @@ export class EditablePoint extends AcEntity {
     });
   }
 
-  get props(): PointProps {
-    return this._props;
-  }
-
   set props(value: PointProps) {
     this._props = value;
-  }
-
-  get enableEdit() {
-    return this._enableEdit;
   }
 
   set enableEdit(value: boolean) {
@@ -69,23 +69,11 @@ export class EditablePoint extends AcEntity {
     this.updatePointLayer();
   }
 
-  private createFromExisting(position: Cartesian3) {
-    this.point = new EditPoint(this.id, position, this._props);
-    this.updatePointLayer();
-  }
-
-  private hasPosition(point: PositionWithPointProps | Cartesian3): point is PositionWithPointProps {
-    if ((point as PositionWithPointProps).position) {
-      return true;
-    }
-    return false;
-  }
-
   setManually(point: PositionWithPointProps | Cartesian3, props?: PointProps) {
     if (!this.enableEdit) {
       throw new Error('Update manually only in edit mode, after point is created');
     }
-    let newProps = props;
+    let newProps: any = props;
     if (this.hasPosition(point)) {
       newProps = point.pointProp ? point.pointProp : props;
       this.point.setPosition(point.position);
@@ -122,10 +110,6 @@ export class EditablePoint extends AcEntity {
     return new CallbackProperty(this.getPosition.bind(this), false);
   }
 
-  private updatePointLayer() {
-    this.pointLayer.update(this.point, this.point.getId());
-  }
-
   update() {
     this.updatePointLayer();
   }
@@ -136,5 +120,21 @@ export class EditablePoint extends AcEntity {
 
   getId() {
     return this.id;
+  }
+
+  private updatePointLayer() {
+    this.pointLayer.update(this.point, this.point.getId());
+  }
+
+  private createFromExisting(position: Cartesian3) {
+    this.point = new EditPoint(this.id, position, this._props);
+    this.updatePointLayer();
+  }
+
+  private hasPosition(point: PositionWithPointProps | Cartesian3): point is PositionWithPointProps {
+    if ((point as PositionWithPointProps).position) {
+      return true;
+    }
+    return false;
   }
 }

@@ -6,7 +6,7 @@ import { PointProps } from './point-edit-options';
 import { EllipseProps } from './ellipse-edit-options';
 
 export class EllipseEditorObservable extends EditorObservable<EllipseEditUpdate> {
-  setManually: (
+  setManually!: (
     center: Cartesian3,
     majorRadius: number,
     rotation?: number,
@@ -15,7 +15,7 @@ export class EllipseEditorObservable extends EditorObservable<EllipseEditUpdate>
     radiusPointProp?: PointProps,
     ellipseProp?: EllipseProps,
   ) => void;
-  getCenter: () => Cartesian3;
-  getMinorRadius: () => number; // meters
-  getMajorRadius: () => number; // meters
+  getCenter!: () => Cartesian3;
+  getMinorRadius!: () => number; // meters
+  getMajorRadius!: () => number; // meters
 }

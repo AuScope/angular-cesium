@@ -26,9 +26,9 @@ enum KeyEventState {
 }
 
 interface ActiveDefinition {
-  keyboardEvent: KeyboardEvent;
+  keyboardEvent: KeyboardEvent | null;
   state: KeyEventState;
-  action: KeyboardControlParams;
+  action: KeyboardControlParams | null;
 }
 
 /**
@@ -137,7 +137,7 @@ interface ActiveDefinition {
  */
 @Injectable()
 export class KeyboardControlService {
-  private _currentDefinitions: KeyboardControlDefinition = null;
+  private _currentDefinitions: KeyboardControlDefinition | null = null;
   private _activeDefinitions: { [definitionKey: string]: ActiveDefinition } = {};
   private _keyMappingFn: Function = this.defaultKeyMappingFn;
 
@@ -207,8 +207,8 @@ export class KeyboardControlService {
   /**
    * Returns the current action that handles `char` key string, or `null` if not exists
    */
-  private getAction(char: string): KeyboardControlParams {
-    return this._currentDefinitions[char] || null;
+  private getAction(char: string): KeyboardControlParams | null {
+    return this._currentDefinitions?.[char] || null;
   }
 
   /**
@@ -277,7 +277,8 @@ export class KeyboardControlService {
     activeKeys.forEach(key => {
       const actionState = this._activeDefinitions[key];
 
-      if (actionState !== null && actionState.action !== null && actionState.state === KeyEventState.PRESSED) {
+      if (actionState !== null && actionState.action !== null &&
+          actionState.state === KeyEventState.PRESSED && actionState.keyboardEvent !== null) {
         this.executeAction(actionState.action, key, actionState.keyboardEvent);
       }
     });

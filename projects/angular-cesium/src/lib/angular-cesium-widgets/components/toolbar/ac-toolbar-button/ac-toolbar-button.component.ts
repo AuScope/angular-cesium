@@ -58,13 +58,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output
 export class AcToolbarButtonComponent implements OnInit {
 
   @Input()
-  iconUrl: string;
+  iconUrl!: string;
 
   @Input()
-  buttonClass: string;
+  buttonClass!: string;
 
   @Input()
-  iconClass: string;
+  iconClass!: string;
 
   @Output()
   onClick = new EventEmitter();

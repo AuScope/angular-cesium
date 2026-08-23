@@ -8,12 +8,13 @@ import { PointProps } from './point-edit-options';
 import { PolylineProps } from './polyline-edit-options';
 import { defaultLabelProps, LabelProps } from './label-props';
 import { CoordinateConverter } from '../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
+import { DEFAULT_ELLIPSE_OPTIONS } from '../services';
 
 export class EditableEllipse extends AcEntity {
-  private _center: EditPoint;
-  private _majorRadiusPoint: EditPoint;
-  private _majorRadius: number;
-  private _minorRadius: number;
+  private _center!: EditPoint;
+  private _majorRadiusPoint!: EditPoint;
+  private _majorRadius!: number;
+  private _minorRadius!: number;
   private _rotation = 0;
   private doneCreation = false;
   private _enableEdit = true;
@@ -21,7 +22,7 @@ export class EditableEllipse extends AcEntity {
   private lastDraggedToPosition: any;
   private _ellipseProps: EllipseProps;
   private _pointProps: PointProps;
-  private _polylineProps: PolylineProps;
+  private _polylineProps!: PolylineProps;
   private _labels: LabelProps[] = [];
 
   constructor(
@@ -32,7 +33,11 @@ export class EditableEllipse extends AcEntity {
     private options: EllipseEditOptions,
   ) {
     super();
-    this._ellipseProps = {...options.ellipseProps};
+    const ellipseProps = {
+      ...DEFAULT_ELLIPSE_OPTIONS.ellipseProps,
+      ...options.ellipseProps
+    };
+    this._ellipseProps = ellipseProps as EllipseProps;
     this._pointProps = {...options.pointProps};
   }
 
@@ -105,8 +110,8 @@ export class EditableEllipse extends AcEntity {
   }
 
   getMinorRadiusPointPosition(): Cartesian3 {
-    if (this._minorRadiusPoints.length < 1) {
-      return undefined;
+    if (!this._minorRadiusPoints || this._minorRadiusPoints.length < 1) {
+      throw new Error('Minor radius points not initialized');
     }
 
     return this._minorRadiusPoints[0].getPosition();
@@ -132,7 +137,7 @@ export class EditableEllipse extends AcEntity {
     radiusPointProp = this.pointProps,
     ellipseProp = this.ellipseProps,
   ) {
-    if (majorRadius < minorRadius) {
+    if (minorRadius && majorRadius < minorRadius) {
       throw new Error('Major radius muse be equal or greater than minor radius');
     }
     this._rotation = rotation;
@@ -321,7 +326,10 @@ export class EditableEllipse extends AcEntity {
   }
 
   getCenter(): Cartesian3 {
-    return this._center ? this._center.getPosition() : undefined;
+    if (!this._center) {
+        throw new Error('Ellipse center not initialized');
+    }
+    return this._center.getPosition();
   }
 
   getCenterCallbackProperty(): CallbackProperty {

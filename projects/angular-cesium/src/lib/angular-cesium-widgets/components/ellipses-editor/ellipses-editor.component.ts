@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
 import { CameraService } from '../../../angular-cesium/services/camera/camera.service';
 import { EditPoint } from '../../models/edit-point';
 import { EllipsesManagerService } from '../../services/entity-editors/ellipses-editor/ellipses-manager.service';
-import { EllipsesEditorService } from '../../services/entity-editors/ellipses-editor/ellipses-editor.service';
+import { DEFAULT_ELLIPSE_OPTIONS, EllipsesEditorService } from '../../services/entity-editors/ellipses-editor/ellipses-editor.service';
 import { EllipseEditUpdate } from '../../models/ellipse-edit-update';
 import { LabelProps } from '../../models/label-props';
 import { EditableEllipse } from '../../models/editable-ellipse';
@@ -90,12 +90,12 @@ import { EditableEllipse } from '../../models/editable-ellipse';
     standalone: false
 })
 export class EllipsesEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: EllipseEditUpdate, labels: LabelProps[]) => LabelProps[];
+  @ViewChild('editEllipsesLayer') private editEllipsesLayer!: AcLayerComponent;
+  @ViewChild('editPointsLayer') private editPointsLayer!: AcLayerComponent;
+
   public editPoints$ = new Subject<AcNotification>();
   public editEllipses$ = new Subject<AcNotification>();
-
-  @ViewChild('editEllipsesLayer') private editEllipsesLayer: AcLayerComponent;
-  @ViewChild('editPointsLayer') private editPointsLayer: AcLayerComponent;
+  private editLabelsRenderFn?: (update: EllipseEditUpdate, labels: LabelProps[]) => LabelProps[];
 
   constructor(
     private ellipsesEditor: EllipsesEditorService,
@@ -156,7 +156,7 @@ export class EllipsesEditorComponent implements OnDestroy {
           this.editEllipsesLayer,
           this.editPointsLayer,
           this.coordinateConverter,
-          update.ellipseOptions,
+          update.ellipseOptions ?? DEFAULT_ELLIPSE_OPTIONS,
         );
         break;
       }
@@ -222,8 +222,13 @@ export class EllipsesEditorComponent implements OnDestroy {
           this.editEllipsesLayer,
           this.editPointsLayer,
           this.coordinateConverter,
-          update.ellipseOptions,
+          update.ellipseOptions ?? DEFAULT_ELLIPSE_OPTIONS,
         );
+        if (
+          update.center === undefined || update.majorRadius === undefined ||
+          update.rotation === undefined || update.minorRadius === undefined) {
+          throw new Error('Ellipse INIT requires center, majorRadius, minorRadius and rotation');
+        }
         ellipse.setManually(
           update.center,
           update.majorRadius,
@@ -239,7 +244,7 @@ export class EllipsesEditorComponent implements OnDestroy {
       case EditActions.DRAG_POINT_FINISH:
       case EditActions.DRAG_POINT: {
         const ellipse = this.ellipsesManager.get(update.id);
-        if (ellipse && ellipse.enableEdit) {
+        if (ellipse && ellipse.enableEdit && update.endDragPosition && update.updatedPoint) {
           ellipse.movePoint(update.endDragPosition, update.updatedPoint);
           this.renderEditLabels(ellipse, update);
         }
@@ -247,7 +252,7 @@ export class EllipsesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_SHAPE: {
         const ellipse = this.ellipsesManager.get(update.id);
-        if (ellipse && ellipse.enableEdit) {
+        if (ellipse && ellipse.enableEdit && update.startDragPosition && update.endDragPosition) {
           ellipse.moveEllipse(update.startDragPosition, update.endDragPosition);
           this.renderEditLabels(ellipse, update);
         }

@@ -87,12 +87,12 @@ export const DEFAULT_RECTANGLE_OPTIONS: RectangleEditOptions = {
  */
 @Injectable()
 export class RectanglesEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<RectangleEditUpdate>();
   private updatePublisher = publish<RectangleEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private rectanglesManager: RectanglesManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private rectanglesManager!: RectanglesManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
   private cesiumScene: any;
 
@@ -144,7 +144,7 @@ export class RectanglesEditorService {
       this.updateSubject.next(changeMode);
       clientEditSubject.next(changeMode);
       if (this.observablesMap.has(id)) {
-        this.observablesMap.get(id).forEach(registration => registration.dispose());
+        this.observablesMap.get(id)?.forEach(registration => registration.dispose());
       }
       this.observablesMap.delete(id);
       this.editRectangle(id, positions, priority, clientEditSubject, rectangleOptions, editorObservable);
@@ -278,7 +278,7 @@ export class RectanglesEditorService {
     }
 
     pointDragRegistration.pipe(
-      tap(({ movement: { drop } }) => this.rectanglesManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+      tap(({ movement: { drop } }) => this.rectanglesManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({ movement: { endPosition, drop }, entities }) => {
         const position = this.coordinateConverter.screenToCartesian3(endPosition);
         if (!position) {
@@ -304,7 +304,7 @@ export class RectanglesEditorService {
 
     if (shapeDragRegistration) {
       shapeDragRegistration
-        .pipe(tap(({ movement: { drop } }) => this.rectanglesManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+        .pipe(tap(({ movement: { drop } }) => this.rectanglesManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
         .subscribe(({ movement: { startPosition, endPosition, drop }, entities }) => {
           const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
           const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);
@@ -357,7 +357,7 @@ export class RectanglesEditorService {
         console.warn('Point color and outline color must have alpha in order to make the editor work properly on 3D');
       }
 
-      rectangleOptions.pointProps.heightReference =  rectangleOptions.clampHeightTo3DOptions.clampToTerrain ?
+      rectangleOptions.pointProps.heightReference =  rectangleOptions.clampHeightTo3DOptions?.clampToTerrain ?
         HeightReference.CLAMP_TO_GROUND : HeightReference.RELATIVE_TO_GROUND;
       rectangleOptions.pointProps.disableDepthTestDistance = Number.POSITIVE_INFINITY;
     }

@@ -63,7 +63,7 @@ import { CesiumService } from '../../../../angular-cesium/services/cesium/cesium
 )
 export class AcToolbarComponent implements OnInit, OnChanges, OnDestroy {
   @Input()
-  toolbarClass: string;
+  toolbarClass!: string;
   @Input()
   allowDrag = true;
   @Output()
@@ -74,11 +74,11 @@ export class AcToolbarComponent implements OnInit, OnChanges, OnDestroy {
     'width.px': 20,
   };
 
-  private mouseDown$: Observable<MouseEvent>;
-  private mouseMove$: Observable<MouseEvent>;
-  private mouseUp$: Observable<MouseEvent>;
-  private drag$: Observable<MouseEvent>;
-  private dragSubscription: Subscription;
+  private mouseDown$!: Observable<MouseEvent>;
+  private mouseMove$!: Observable<MouseEvent>;
+  private mouseUp$!: Observable<MouseEvent>;
+  private drag$!: Observable<MouseEvent>;
+  private dragSubscription!: Subscription;
 
   constructor(private element: ElementRef, private cesiumService: CesiumService) {}
 

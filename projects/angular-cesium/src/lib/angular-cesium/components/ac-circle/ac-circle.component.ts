@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EntityOnMapComponent } from '../../services/entity-on-map/entity-on-map.component';
 import { EllipseDrawerService } from '../../services/drawers/ellipse-drawer/ellipse-drawer.service';
 import { MapLayersService } from '../../services/map-layers/map-layers.service';
@@ -25,6 +25,7 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
 @Component({
     selector: 'ac-circle',
     template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcCircleComponent extends EntityOnMapComponent {

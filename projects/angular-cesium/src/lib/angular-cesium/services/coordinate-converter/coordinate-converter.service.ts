@@ -6,7 +6,7 @@ import { hemisphere, LatLon, LatLonEllipsoidal, Utm } from 'geodesy';
 
 const LatLonVectors = geodesy['LatLonVectors']; // doesnt exists on typings
 
-window['geodesy'] = geodesy;
+(window as any).geodesy = geodesy;
 
 /**
  *  Given different types of coordinates, we provide you a service converting those types to the most common other types.
@@ -88,14 +88,6 @@ export class CoordinateConverter {
     return this.geodesyToCesiumObject(new Utm(zone, hemisphereType, easting, northing).toLatLonE());
   }
 
-  private geodesyToCesiumObject(geodesyRadians: LatLon) {
-    return {
-      longitude: geodesyRadians.lon,
-      latitude: geodesyRadians.lat,
-      height: geodesyRadians['height'] ? geodesyRadians['height'] : 0
-    };
-  }
-
   /**
    * middle point between two points
    * @param first  (latitude,longitude) in radians
@@ -111,9 +103,15 @@ export class CoordinateConverter {
   }
 
   middlePointByScreen(position0: Cartesian3, position1: Cartesian3): Cartesian3 {
+    if (!this.cesiumService) {
+      throw new Error('ANGULAR2-CESIUM - Cesium service should be provided in order to do screen position calculations');
+    }
     const scene = this.cesiumService.getScene();
     const screenPosition1 = SceneTransforms.worldToWindowCoordinates(scene, position0);
     const screenPosition2 = SceneTransforms.worldToWindowCoordinates(scene, position1);
+    if (!screenPosition1 || !screenPosition2) {
+      throw new Error('ANGULAR2-CESIUM - Could not convert world position to screen position');
+    }
     const middleScreenPoint =
       new Cartesian2((screenPosition2.x + screenPosition1.x) / 2.0, (screenPosition2.y + screenPosition1.y) / 2.0);
     return scene.pickPosition(middleScreenPoint);
@@ -145,5 +143,14 @@ export class CoordinateConverter {
     const secondCart = Cartographic.fromCartesian(secondCartesian3);
 
     return this.bearingTo(firstCart, secondCart);
+  }
+
+  private geodesyToCesiumObject(geodesyRadians: LatLon) {
+    const point = geodesyRadians as any;
+    return {
+      longitude: geodesyRadians.lon,
+      latitude: geodesyRadians.lat,
+      height: point.height ?? 0
+    };
   }
 }

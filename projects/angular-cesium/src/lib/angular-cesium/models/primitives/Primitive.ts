@@ -10,9 +10,9 @@ export abstract class Primitive{
 	protected _renderState: any;
 	protected _drawCommand: any;
 	protected _points: any;
-	protected _indicesArray: number[];
+	protected _indicesArray!: number[];
 	protected _boundingVolume: any;
-	protected _dirty: boolean = true;
+	protected _dirty = true;
 	protected _lastMode: any;
 	protected _color: number[];
 	protected _vertexArray: any;
@@ -30,14 +30,14 @@ export abstract class Primitive{
 		return this._color;
 	}
 
-	set color(value: number[]) {
+	get show(): boolean {
+		return this._show;
+	}
+
+    set color(value: number[]) {
 		this._color = value;
 
 		this._dirty = true;
-	}
-
-	get show(): boolean {
-		return this._show;
 	}
 
 	set show(value: boolean) {
@@ -52,7 +52,8 @@ export abstract class Primitive{
 		return this._show;
 	}
 
-	protected setupDrawCommand(drawCommand, vertexArray, primitiveType, translucent:boolean = false, debugShowBoundingVolume: boolean = false) {
+    protected setupDrawCommand(drawCommand: any, vertexArray: any, primitiveType: any, translucent: boolean = false,
+        debugShowBoundingVolume: boolean = false) {
 		drawCommand.modelMatrix = this._modelMatrix;
 		drawCommand.renderState = this._renderState;
 		drawCommand.shaderProgram = this._shaderProgram;

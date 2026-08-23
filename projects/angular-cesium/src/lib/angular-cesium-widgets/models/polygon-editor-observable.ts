@@ -7,7 +7,7 @@ import { PolygonProps } from './polygon-edit-options';
 
 
 export class PolygonEditorObservable extends EditorObservable<PolygonEditUpdate> {
-  setManually: (points: { position: Cartesian3, pointProp?: PointProps }[] | Cartesian3[],
+  setManually!: (points: { position: Cartesian3, pointProp?: PointProps }[] | Cartesian3[],
                 polygonProps?: PolygonProps) => void;
-  getCurrentPoints: () => EditPoint[];
+  getCurrentPoints!: () => EditPoint[];
 }

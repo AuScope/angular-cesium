@@ -17,8 +17,8 @@ import { EditablePoint } from '../../models/editable-point';
 import { LabelProps } from '../../models/label-props';
 
 @Component({
-    selector: 'points-editor',
-    template: /*html*/ `
+  selector: 'points-editor',
+  template: /*html*/ `
     <ac-layer #editPointLayer acFor="let point of editPoint$" [context]="this">
       <ac-point-desc
         props="{
@@ -66,17 +66,18 @@ import { LabelProps } from '../../models/label-props';
       </ac-array-desc>
     </ac-layer>
   `,
-    providers: [CoordinateConverter, PointsManagerService],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  providers: [CoordinateConverter, PointsManagerService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class PointsEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: PointEditUpdate, labels: LabelProps[]) => LabelProps[];
+  @ViewChild('editPointLayer') private editPointLayer!: AcLayerComponent;
+  @ViewChild('pointLabelsLayer') private pointLabelsLayer!: AcLayerComponent;
+
   public editPoint$ = new Subject<AcNotification>();
   public pointLabels$ = new Subject<AcNotification>();
 
-  @ViewChild('editPointLayer') private editPointLayer: AcLayerComponent;
-  @ViewChild('pointLabelsLayer') private pointLabelsLayer: AcLayerComponent;
+  private editLabelsRenderFn: ((update: PointEditUpdate, labels: LabelProps[]) => LabelProps[]) | undefined;
 
   constructor(
     private pointsEditor: PointsEditorService,
@@ -88,16 +89,6 @@ export class PointsEditorComponent implements OnDestroy {
   ) {
     this.pointsEditor.init(this.mapEventsManager, this.coordinateConverter, this.cameraService, pointsManager, this.cesiumService);
     this.startListeningToEditorUpdates();
-  }
-
-  private startListeningToEditorUpdates() {
-    this.pointsEditor.onUpdate().subscribe((update: PointEditUpdate) => {
-      if (update.editMode === EditModes.CREATE || update.editMode === EditModes.CREATE_OR_EDIT) {
-        this.handleCreateUpdates(update);
-      } else if (update.editMode === EditModes.EDIT) {
-        this.handleEditUpdates(update);
-      }
-    });
   }
 
   getLabelId(element: any, index: number): string {
@@ -199,7 +190,7 @@ export class PointsEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT: {
         const point = this.pointsManager.get(update.id);
-        if (point && point.enableEdit) {
+        if (point && point.enableEdit && update.updatedPosition) {
           point.movePoint(update.updatedPosition);
           this.renderEditLabels(point, update);
         }
@@ -207,7 +198,7 @@ export class PointsEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT_FINISH: {
         const point = this.pointsManager.get(update.id);
-        if (point && point.enableEdit) {
+        if (point && point.enableEdit&& update.updatedPosition) {
           point.movePoint(update.updatedPosition);
           this.renderEditLabels(point, update);
         }
@@ -245,5 +236,15 @@ export class PointsEditorComponent implements OnDestroy {
 
   getPointShow(point: EditPoint) {
     return point.show && (point.isVirtualEditPoint() ? point.props.showVirtual : point.props.show);
+  }
+
+  private startListeningToEditorUpdates() {
+    this.pointsEditor.onUpdate().subscribe((update: PointEditUpdate) => {
+      if (update.editMode === EditModes.CREATE || update.editMode === EditModes.CREATE_OR_EDIT) {
+        this.handleCreateUpdates(update);
+      } else if (update.editMode === EditModes.EDIT) {
+        this.handleEditUpdates(update);
+      }
+    });
   }
 }

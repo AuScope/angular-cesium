@@ -11,7 +11,7 @@ import { Subject } from 'rxjs';
 import { CameraService } from '../../../angular-cesium/services/camera/camera.service';
 import { EditPoint } from '../../models/edit-point';
 import { PolygonsManagerService } from '../../services/entity-editors/polygons-editor/polygons-manager.service';
-import { PolygonsEditorService } from '../../services/entity-editors/polygons-editor/polygons-editor.service';
+import { DEFAULT_POLYGON_OPTIONS, PolygonsEditorService } from '../../services/entity-editors/polygons-editor/polygons-editor.service';
 import { LabelProps } from '../../models/label-props';
 import { EditablePolygon } from '../../models/editable-polygon';
 
@@ -95,14 +95,15 @@ import { EditablePolygon } from '../../models/editable-polygon';
     standalone: false
 })
 export class PolygonsEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: PolygonEditUpdate, labels: LabelProps[]) => LabelProps[];
+  @ViewChild('editPolygonsLayer') private editPolygonsLayer!: AcLayerComponent;
+  @ViewChild('editPointsLayer') private editPointsLayer!: AcLayerComponent;
+  @ViewChild('editPolylinesLayer') private editPolylinesLayer!: AcLayerComponent;
+
   public editPoints$ = new Subject<AcNotification>();
   public editPolylines$ = new Subject<AcNotification>();
   public editPolygons$ = new Subject<AcNotification>();
 
-  @ViewChild('editPolygonsLayer') private editPolygonsLayer: AcLayerComponent;
-  @ViewChild('editPointsLayer') private editPointsLayer: AcLayerComponent;
-  @ViewChild('editPolylinesLayer') private editPolylinesLayer: AcLayerComponent;
+  private editLabelsRenderFn?: ((update: PolygonEditUpdate, labels: LabelProps[]) => LabelProps[]) | undefined;
 
   constructor(
     private polygonsEditor: PolygonsEditorService,
@@ -162,7 +163,7 @@ export class PolygonsEditorComponent implements OnDestroy {
           this.editPointsLayer,
           this.editPolylinesLayer,
           this.coordinateConverter,
-          update.polygonOptions,
+          update.polygonOptions ?? DEFAULT_POLYGON_OPTIONS,
         );
         break;
       }
@@ -231,14 +232,14 @@ export class PolygonsEditorComponent implements OnDestroy {
           this.editPointsLayer,
           this.editPolylinesLayer,
           this.coordinateConverter,
-          update.polygonOptions,
+          update.polygonOptions ?? DEFAULT_POLYGON_OPTIONS,
           update.positions,
         );
         break;
       }
       case EditActions.DRAG_POINT: {
         const polygon = this.polygonsManager.get(update.id);
-        if (polygon && polygon.enableEdit) {
+        if (polygon && polygon.enableEdit && update.updatedPosition && update.updatedPoint) {
           polygon.movePoint(update.updatedPosition, update.updatedPoint);
           this.renderEditLabels(polygon, update);
         }
@@ -246,10 +247,10 @@ export class PolygonsEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT_FINISH: {
         const polygon = this.polygonsManager.get(update.id);
-        if (polygon && polygon.enableEdit) {
+        if (polygon && polygon.enableEdit && update.updatedPoint) {
           polygon.movePointFinish(update.updatedPoint);
 
-          if (update.updatedPoint.isVirtualEditPoint()) {
+          if (update.updatedPoint?.isVirtualEditPoint()) {
             polygon.changeVirtualPointToRealPoint(update.updatedPoint);
             this.renderEditLabels(polygon, update);
           }
@@ -258,7 +259,7 @@ export class PolygonsEditorComponent implements OnDestroy {
       }
       case EditActions.REMOVE_POINT: {
         const polygon = this.polygonsManager.get(update.id);
-        if (polygon && polygon.enableEdit) {
+        if (polygon && polygon.enableEdit && update.updatedPoint) {
           polygon.removePoint(update.updatedPoint);
           this.renderEditLabels(polygon, update);
         }
@@ -274,7 +275,7 @@ export class PolygonsEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_SHAPE: {
         const polygon = this.polygonsManager.get(update.id);
-        if (polygon && polygon.enableEdit) {
+        if (polygon && polygon.enableEdit && update.draggedPosition && update.updatedPosition) {
           polygon.movePolygon(update.draggedPosition, update.updatedPosition);
           this.renderEditLabels(polygon, update);
         }

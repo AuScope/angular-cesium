@@ -1,5 +1,5 @@
 
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, DOCUMENT } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, DOCUMENT, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumService } from '../../services/cesium/cesium.service';
 import { SceneMode } from '../../models/scene-mode.enum';
 import { CameraService } from '../../services/camera/camera.service';
@@ -67,6 +67,7 @@ import { ScreenshotService } from '../../services/screenshot/screenshot.service'
         ContextMenuService,
         CoordinateConverter,
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
@@ -81,7 +82,7 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
    * default: 'default-map-id-[index]'
    */
   @Input()
-  mapId: string;
+  mapId!: string;
 
   /**
    * flyTo options according to https://cesiumjs.org/Cesium/Build/Documentation/Camera.html?classFilter=cam#flyTo
@@ -93,14 +94,14 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
    * Sets the map's SceneMode
    */
   @Input()
-  sceneMode: SceneMode;
+  sceneMode!: SceneMode;
 
   /**
    * Optional - the container element's id in which the map's canvas will be appended to.
    * If not supplied - the container element will be the parent element of ac-map;
    */
   @Input()
-  containerId: string;
+  containerId!: string;
 
   private mapContainer: HTMLElement;
 
@@ -108,7 +109,7 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
     private _cesiumService: CesiumService,
     private _cameraService: CameraService,
     private _elemRef: ElementRef,
-    @Inject(DOCUMENT) private document,
+    @Inject(DOCUMENT) private document: any,
     private mapsManagerService: MapsManagerService,
     private billboardDrawerService: BillboardDrawerService,
     private labelDrawerService: LabelDrawerService,
