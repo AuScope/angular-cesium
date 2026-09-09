@@ -1,5 +1,5 @@
 import { map } from 'rxjs/operators';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AcLayerComponent, AcNotification, ActionType, CesiumEvent, MapEventsManagerService, PickOptions } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
@@ -39,6 +39,7 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
       </ac-layer>
 
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EntitiesWithArraysExampleComponent implements OnInit, OnChanges {

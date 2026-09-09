@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Color } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
@@ -19,6 +19,7 @@ import { map } from 'rxjs/operators';
       </ac-layer>
   `,
     styleUrls: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PointLayerExampleComponent implements OnInit {

@@ -2,10 +2,10 @@
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
   "allowedNonPeerDependencies": [
     "geodesy",
-    "angular2parse",
+    "@auscope/angular2parse",
     "json-string-mapper",
     "primitive-primitives"
-  ,
+  ],
   "dest": "../../dist/angular-cesium",
   "lib": {
     "entryFile": "src/public_api.ts"

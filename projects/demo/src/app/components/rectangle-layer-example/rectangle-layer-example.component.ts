@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Rectangle, Color } from 'cesium';
 import { AcEntity, AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
@@ -21,6 +21,7 @@ import { AcEntity, AcLayerComponent, AcNotification, ActionType } from 'angular-
 
 
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RectangleLayerExampleComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { Observable, of, of as observableOf } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AcNotification, ActionType, CesiumService } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 import { map } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { map } from 'rxjs/operators';
     </ac-layer>
   `,
     providers: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CylinderLayerExampleComponent implements OnInit {

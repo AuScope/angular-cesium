@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 import { Observable } from 'rxjs';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
     selector: 'circle-layer-example',
     templateUrl: 'circle-layer-example.component.html',
     styleUrls: ['circle-layer-example.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class CircleLayerExampleComponent implements OnInit {

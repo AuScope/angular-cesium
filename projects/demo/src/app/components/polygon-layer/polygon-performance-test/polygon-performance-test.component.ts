@@ -1,7 +1,7 @@
 import { Observable, range as observableRange } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3 } from 'cesium';
 import { AcEntity, AcNotification, ActionType } from 'angular-cesium';
 
@@ -17,6 +17,7 @@ import { AcEntity, AcNotification, ActionType } from 'angular-cesium';
     		}">
       </ac-polygon-desc>
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PolygonPerformanceTestComponent implements OnInit {

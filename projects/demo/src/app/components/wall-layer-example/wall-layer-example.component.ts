@@ -1,5 +1,5 @@
 import { from, Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3 } from 'cesium';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { map } from 'rxjs/operators';
@@ -18,6 +18,7 @@ import { map } from 'rxjs/operators';
       </ac-layer>
   `,
     providers: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class WallLayerExampleComponent implements OnInit {

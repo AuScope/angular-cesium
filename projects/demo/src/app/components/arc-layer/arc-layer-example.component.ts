@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, Subscriber } from 'rxjs';
 import { Color, Cartesian3, PolylineMaterialAppearance, ColorGeometryInstanceAttribute, Material } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
@@ -6,6 +6,7 @@ import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 @Component({
     selector: 'arc-layer-example',
     templateUrl: 'arc-layer-example.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

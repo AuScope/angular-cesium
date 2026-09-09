@@ -1,7 +1,7 @@
 import { from as observableFrom, Observable } from 'rxjs';
 
 import { filter, map, tap } from 'rxjs/operators';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3 } from 'cesium';
 import {
   AcEntity,
@@ -20,6 +20,7 @@ import {
     templateUrl: 'map-events-example.component.html',
     styleUrls: ['map-events-example.component.css'],
     providers: [CoordinateConverter],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MapEventsExampleComponent implements OnInit {

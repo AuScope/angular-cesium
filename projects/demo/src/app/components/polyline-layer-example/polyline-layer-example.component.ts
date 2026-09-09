@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3, PolylineGlowMaterialProperty, PolylineOutlineMaterialProperty } from 'cesium';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { map } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import { from, Observable } from 'rxjs';
       </ac-layer>
 
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PolylineLayerExampleComponent implements OnInit {

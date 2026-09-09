@@ -1,5 +1,5 @@
 import { from, Observable } from 'rxjs';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { map } from 'rxjs/operators';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
@@ -15,6 +15,7 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
       </ac-billboard-desc>
     </ac-layer>
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BillboardLayerExampleComponent implements OnInit {

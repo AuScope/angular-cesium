@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Math as cMath, Color, Cartographic, Cartesian3 } from 'cesium';
 import { AcNotification, ActionType } from '@auscope/angular-cesium';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { interpolate, InterpolationType } from '../../utils/interpolation';
 @Component({
     selector: 'ufos-layer',
     templateUrl: './ufos-layer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class UFOsLayerComponent {

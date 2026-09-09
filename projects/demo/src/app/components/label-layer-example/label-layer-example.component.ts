@@ -1,5 +1,5 @@
 import { from as observableFrom, Observable } from 'rxjs';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3 } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
@@ -7,6 +7,7 @@ import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
     selector: 'label-layer-example',
     templateUrl: 'label-layer-example.component.html',
     styleUrls: ['label-layer-example.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class LabelLayerExampleComponent implements OnInit, AfterViewInit {

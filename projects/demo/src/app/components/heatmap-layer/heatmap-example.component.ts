@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3, Rectangle } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType, CesiumService, CoordinateConverter } from 'angular-cesium';
 import { Subject } from 'rxjs';
@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
     selector: 'heatmap-example',
     templateUrl: 'heatmap-example.component.html',
     providers: [CoordinateConverter],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HeatmapExampleComponent implements OnInit {

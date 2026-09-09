@@ -1,5 +1,5 @@
 import { from, Observable } from 'rxjs';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3 } from 'cesium';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { map } from 'rxjs/operators';
@@ -19,6 +19,7 @@ import { map } from 'rxjs/operators';
       </ac-box-desc>
     </ac-layer>
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BoxesLayerComponent implements OnInit {

@@ -11,9 +11,9 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:ng-packagr",
           "options": {
-	          "preserveSymlinks": true,
+	        "project": "projects/angular-cesium/ng-package.json",
             "outputPath": {
               "base": "dist/angular-cesium-demo"
             },
@@ -54,8 +54,7 @@
               "nosleep.js",
               "http",
               "https",
-              "url",
-              "zlib"
+              "url"
             ],
             "extractLicenses": false,
             "sourceMap": true,

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { faBolt, faCog, faFeatherAlt, faProjectDiagram, faTools } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -6,6 +6,7 @@ import { faBolt, faCog, faFeatherAlt, faProjectDiagram, faTools } from '@fortawe
     selector: 'about',
     templateUrl: 'about.component.html',
     styleUrls: ['about.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class AboutComponent {

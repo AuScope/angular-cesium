@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ScreenSpaceEventType, MapMode2D } from 'cesium';
 import { MapLayerProviderOptions, MapsManagerService, SceneMode, ViewerConfiguration, ZoomToRectangleService } from 'angular-cesium';
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
@@ -7,6 +7,7 @@ import { AppSettingsService } from '../../services/app-settings-service/app-sett
     selector: 'demo-multiple-maps',
     templateUrl: './demo-multiple-maps.component.html',
     providers: [ViewerConfiguration],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DemoMultipleMapsComponent implements AfterViewInit {

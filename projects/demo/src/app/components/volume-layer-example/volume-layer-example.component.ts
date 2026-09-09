@@ -1,5 +1,5 @@
 import { from, Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3, CornerType, Color, Cartesian2, Math as cMath } from 'cesium';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
@@ -20,6 +20,7 @@ import { map } from 'rxjs/operators';
       </ac-layer>
   `,
     providers: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class VolumeLayerExampleComponent implements OnInit {

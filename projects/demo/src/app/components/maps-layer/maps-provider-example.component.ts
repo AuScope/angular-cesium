@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AcMapLayerProviderComponent, MapLayerProviderOptions, MapTerrainProviderOptions } from 'angular-cesium';
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
 
 @Component({
     selector: 'maps-provider-example',
     templateUrl: 'maps-provider-example.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 

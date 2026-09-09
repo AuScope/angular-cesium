@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3 } from 'cesium';
 import {
   CameraService,
@@ -15,6 +15,7 @@ import {
     templateUrl: './rectangle-editor-example.component.html',
     styleUrls: ['./rectangle-editor-example.component.css'],
     providers: [RectanglesEditorService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class RectangleEditorExampleComponent implements OnInit {

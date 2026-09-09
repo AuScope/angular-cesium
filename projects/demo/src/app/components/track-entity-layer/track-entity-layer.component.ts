@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3, Cartographic } from 'cesium';
 import {
   AcEntity,
@@ -28,6 +28,7 @@ const initialLocation = {
     selector: 'track-entity-layer',
     templateUrl: 'track-entity-layer.component.html',
     styleUrls: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class TrackEntityLayerComponent implements OnInit, AfterViewInit {

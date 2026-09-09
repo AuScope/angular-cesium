@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ScreenSpaceEventType, MapMode2D } from 'cesium';
 import { MapLayerProviderOptions, SceneMode, ViewerConfiguration } from 'angular-cesium';
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
@@ -8,6 +8,7 @@ import { AppSettingsService } from '../../services/app-settings-service/app-sett
     templateUrl: './demo-map.component.html',
     providers: [ViewerConfiguration],
     styleUrls: ['./demo-map.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class DemoMapComponent {

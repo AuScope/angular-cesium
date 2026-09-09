@@ -1,5 +1,5 @@
 import { from as observableFrom, Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3 } from 'cesium';
 import {
   AcEntity,
@@ -27,6 +27,7 @@ class MyEntity extends AcEntity {
     templateUrl: 'selection-layer-example.component.html',
     styleUrls: [],
     providers: [SelectionManagerService],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SelectionLayerExampleComponent implements OnInit {

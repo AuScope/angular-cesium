@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "esModuleInterop": true,
     "sourceMap": true,
@@ -13,34 +12,34 @@
     "target": "ES2022",
     "paths": {
       "angular-cesium": [
-        "projects/angular-cesium/dist"
+        "./projects/angular-cesium/dist"
       ],
       "angular-cesium/*": [
-        "projects/angular-cesium/dist/*"
+        "./projects/angular-cesium/dist/*"
       ],
       "core-js/es7/reflect": [
-        "node_modules/core-js/proposals/reflect-metadata"
+        "./node_modules/core-js/proposals/reflect-metadata"
       ],
       "crypto": [
-        "node_modules/crypto-browserify"
+        "./node_modules/crypto-browserify"
       ],
       "stream": [
-        "node_modules/stream-browserify"
+        "./node_modules/stream-browserify"
       ],
       "assert": [
-        "node_modules/assert"
+        "./node_modules/assert"
       ],
       "http": [
-        "node_modules/stream-http"
+        "./node_modules/stream-http"
       ],
       "https": [
-        "node_modules/https-browserify"
+        "./node_modules/https-browserify"
       ],
       "os": [
-        "node_modules/os-browserify"
+        "./node_modules/os-browserify"
       ],
       "process": [
-        "node_modules/process"
+        "./node_modules/process"
       ]
     },
     "useDefineForClassFields": false

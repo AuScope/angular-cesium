@@ -23,13 +23,13 @@ export class CesiumEventBuilder {
   }
 
   public static getEventFullName(event: CesiumEvent, modifier?: CesiumEventModifier): string {
-    if (modifier && event) {
-      return `${event}_${modifier}`;
-    } else if (event) {
-      return event.toString();
-    } else {
+    if (event === undefined || event === null) {
       throw new Error('Event is required to get event full name');
     }
+    if (modifier !== undefined && modifier !== null) {
+      return `${event}_${modifier}`;
+    }
+    return event.toString();
   }
 
   init() {

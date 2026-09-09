@@ -1,5 +1,5 @@
 import { from, from as observableFrom, Observable, Subject } from 'rxjs';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3, Cartesian2, Color } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
@@ -7,6 +7,7 @@ import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
     selector: 'html-layer-example',
     templateUrl: './html-example.component.html',
     styleUrls: ['./html-example.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HtmlExampleComponent implements OnInit {

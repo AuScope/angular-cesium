@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3, ColorGeometryInstanceAttribute, PolylineMaterialAppearance, Material } from 'cesium';
 import { AcArcComponent, AcHtmlComponent, AcLabelComponent } from 'angular-cesium';
 
 @Component({
     selector: 'single-entity-on-map-example',
     templateUrl: 'single-entity-on-map-example.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class SingleEntityOnMapExampleComponent implements OnInit {

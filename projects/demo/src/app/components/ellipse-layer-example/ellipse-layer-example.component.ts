@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 import { Observable } from 'rxjs';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
     selector: 'ellipse-layer-example',
     templateUrl: 'ellipse-layer-example.component.html',
     styleUrls: ['ellipse-layer-example.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EllipseLayerExampleComponent implements OnInit {

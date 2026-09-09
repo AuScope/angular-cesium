@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MapMode2D, ScreenSpaceEventType, Cartesian3, HeadingPitchRoll, Cesium3DTileset, IonResource, 
          Cesium3DTileStyle
         } from 'cesium';
@@ -9,6 +9,7 @@ import { MapsManagerService, SceneMode, ViewerConfiguration } from '@auscope/ang
     templateUrl: './main-map.component.html',
     providers: [ViewerConfiguration],
     styleUrls: ['./main-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class MainMapComponent implements AfterViewInit {

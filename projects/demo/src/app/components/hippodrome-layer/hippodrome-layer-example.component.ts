@@ -1,5 +1,5 @@
 import { Observable, of as observableOf } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Color, Cartesian3 } from 'cesium';
 import { AcNotification, ActionType, CesiumService } from 'angular-cesium';
 
@@ -17,6 +17,7 @@ import { AcNotification, ActionType, CesiumService } from 'angular-cesium';
     </ac-layer>
   `,
     providers: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class HippodromeLayerExampleComponent implements OnInit {

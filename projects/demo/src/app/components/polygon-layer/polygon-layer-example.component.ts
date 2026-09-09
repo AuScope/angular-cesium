@@ -1,7 +1,7 @@
 import { from as observableFrom, Observable, Subject } from 'rxjs';
 
 import { merge } from 'rxjs/operators';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Cartesian3, Color } from 'cesium';
 import { AcEntity, AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
@@ -23,6 +23,7 @@ import { AcEntity, AcLayerComponent, AcNotification, ActionType } from 'angular-
       </ac-layer>
 
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PolygonLayerExampleComponent implements OnInit {
