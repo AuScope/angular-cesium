@@ -1,24 +1,26 @@
 import { Observable, of, of as observableOf } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AcNotification, ActionType, CesiumService } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'cylinder-layer-example',
-  template: `
+    selector: 'cylinder-layer-example',
+    template: `
     <ac-layer acFor="let entity of entities$" [context]="this">
       <ac-cylinder-desc props="{
 														position: entity.position,
 														length : 400000.0,
                             topRadius : 200000.0,
                             bottomRadius : 200000.0,
-                            material : Cesium.Color.GREEN.withAlpha(0.5),
+                            material : Color.GREEN.withAlpha(0.5),
 														}">
       </ac-cylinder-desc>
     </ac-layer>
   `,
-  providers: []
+    providers: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class CylinderLayerExampleComponent implements OnInit {
 

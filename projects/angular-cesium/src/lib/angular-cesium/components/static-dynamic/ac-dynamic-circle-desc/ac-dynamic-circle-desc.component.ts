@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumProperties } from '../../../services/cesium-properties/cesium-properties.service';
 import { ComputationCache } from '../../../services/computation-cache/computation-cache.service';
 import { LayerService } from '../../../services/layer-service/layer-service.service';
@@ -21,15 +21,17 @@ import { DynamicEllipseDrawerService } from '../../../services/drawers/static-dy
  *    &lt;/ac-dynamic-circle-desc&gt;
  *  ```
  *
- *  __param__: {Cesium.Cartesian3} center
+ *  __param__: {Cartesian3} center
  *   __param__: {number} rotation
  *   __param__: {number} radius in meters
  *   __param__: {number} [1] width
  *   __param__: {number} [0.003] granularity
  */
 @Component({
-  selector: 'ac-dynamic-circle-desc',
-  template: ''
+    selector: 'ac-dynamic-circle-desc',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcDynamicCircleDescComponent extends BasicDesc {
   constructor(ellipseDrawer: DynamicEllipseDrawerService, layerService: LayerService,

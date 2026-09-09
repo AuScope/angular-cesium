@@ -9,14 +9,14 @@ import { Subject } from 'rxjs';
 import { CameraService } from '../../../angular-cesium/services/camera/camera.service';
 import { EditPoint } from '../../models/edit-point';
 import { CirclesManagerService } from '../../services/entity-editors/circles-editor/circles-manager.service';
-import { CirclesEditorService } from '../../services/entity-editors/circles-editor/circles-editor.service';
+import { CirclesEditorService, DEFAULT_CIRCLE_OPTIONS } from '../../services/entity-editors/circles-editor/circles-editor.service';
 import { CircleEditUpdate } from '../../models/circle-edit-update';
 import { LabelProps } from '../../models/label-props';
 import { EditableCircle } from '../../models/editable-circle';
 
 @Component({
-  selector: 'circles-editor',
-  template: /*html*/ `
+    selector: 'circles-editor',
+    template: /*html*/ `
       <ac-layer #editArcsLayer acFor="let arc of editArcs$" [context]="this">
           <ac-arc-desc
                   props="{
@@ -97,19 +97,19 @@ import { EditableCircle } from '../../models/editable-circle';
           </ac-array-desc>
       </ac-layer>
   `,
-  providers: [CoordinateConverter, CirclesManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, CirclesManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CirclesEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: CircleEditUpdate, labels: LabelProps[]) => LabelProps[];
-  public Cesium = Cesium;
+  @ViewChild('editCirclesLayer') private editCirclesLayer!: AcLayerComponent;
+  @ViewChild('editArcsLayer') private editArcsLayer!: AcLayerComponent;
+  @ViewChild('editPointsLayer') private editPointsLayer!: AcLayerComponent;
+
   public editPoints$ = new Subject<AcNotification>();
   public editCircles$ = new Subject<AcNotification>();
   public editArcs$ = new Subject<AcNotification>();
-
-  @ViewChild('editCirclesLayer') private editCirclesLayer: AcLayerComponent;
-  @ViewChild('editArcsLayer') private editArcsLayer: AcLayerComponent;
-  @ViewChild('editPointsLayer') private editPointsLayer: AcLayerComponent;
+  private editLabelsRenderFn?: (update: CircleEditUpdate, labels: LabelProps[]) => LabelProps[];
 
   constructor(
     private circlesEditor: CirclesEditorService,
@@ -168,7 +168,7 @@ export class CirclesEditorComponent implements OnDestroy {
           this.editCirclesLayer,
           this.editPointsLayer,
           this.editArcsLayer,
-          update.circleOptions,
+          update.circleOptions ?? DEFAULT_CIRCLE_OPTIONS,
         );
         break;
       }
@@ -234,15 +234,17 @@ export class CirclesEditorComponent implements OnDestroy {
           this.editCirclesLayer,
           this.editPointsLayer,
           this.editArcsLayer,
-          update.circleOptions,
+          update.circleOptions ?? DEFAULT_CIRCLE_OPTIONS,
         );
-        circle.setManually(update.center, update.radiusPoint);
+        if (update.center && update.radiusPoint) {
+          circle.setManually(update.center, update.radiusPoint);
+        }
         break;
       }
       case EditActions.DRAG_POINT_FINISH:
       case EditActions.DRAG_POINT: {
         const circle = this.circlesManager.get(update.id);
-        if (circle && circle.enableEdit) {
+        if (circle && circle.enableEdit && update.endDragPosition) {
           circle.movePoint(update.endDragPosition);
           this.renderEditLabels(circle, update);
         }
@@ -250,7 +252,7 @@ export class CirclesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_SHAPE: {
         const circle = this.circlesManager.get(update.id);
-        if (circle && circle.enableEdit) {
+        if (circle && circle.enableEdit && update.startDragPosition && update.endDragPosition) {
           circle.moveCircle(update.startDragPosition, update.endDragPosition);
           this.renderEditLabels(circle, update);
         }

@@ -1,4 +1,5 @@
 import { BasicDrawerService } from '../basic-drawer/basic-drawer.service';
+import { CustomDataSource, CallbackProperty } from 'cesium';
 import { CesiumService } from '../../cesium/cesium.service';
 import { GraphicsType } from './enums/graphics-type.enum';
 import { EntitiesDrawerOptions } from '../../../models/entities-drawer-options';
@@ -23,32 +24,21 @@ export class EntitiesDrawerService extends BasicDrawerService {
     },
   ) {
     super();
-    this.graphicsTypeName = GraphicsType[this.graphicsType];
+    this.graphicsTypeName = "Unknown";
 
     // Fix bad enum compilation
     for (const i in GraphicsType) {
-      if (GraphicsType[i] as any === this.graphicsType) {
+      if ((GraphicsType as any)[i] as any === this.graphicsType) {
         this.graphicsTypeName = i;
       }
     }
-  }
-
-  private getFreeEntitiesCollection(): OptimizedEntityCollection {
-    let freeEntityCollection = null;
-    this.entityCollections.forEach(entityCollection => {
-      if (entityCollection.isFree()) {
-        freeEntityCollection = entityCollection;
-      }
-    });
-
-    return freeEntityCollection;
   }
 
   init(options?: EntitiesDrawerOptions) {
     const finalOptions = options || this.defaultOptions;
     const dataSources = [];
     for (let i = 0; i < finalOptions.collectionsNumber; i++) {
-      const dataSource = new Cesium.CustomDataSource(this.graphicsTypeName);
+      const dataSource = new CustomDataSource(this.graphicsTypeName);
       dataSources.push(dataSource);
       this.cesiumService.getViewer().dataSources.add(dataSource);
       this.entityCollections.set(
@@ -87,7 +77,7 @@ export class EntitiesDrawerService extends BasicDrawerService {
   update(entity: any, cesiumProps: any) {
     this.suspendEntityCollection(entity);
 
-    if (entity.position instanceof Cesium.CallbackProperty) {
+    if (entity.position instanceof CallbackProperty) {
       if (entity.position._isConstant) {
         entity.position = cesiumProps.position;
       }
@@ -108,7 +98,9 @@ export class EntitiesDrawerService extends BasicDrawerService {
 
   remove(entity: any) {
     const optimizedEntityCollection = this.entityCollections.get(entity.entityCollection);
-    optimizedEntityCollection.remove(entity);
+    if (optimizedEntityCollection) {
+      optimizedEntityCollection.remove(entity);
+    }
   }
 
   removeAll() {
@@ -123,6 +115,17 @@ export class EntitiesDrawerService extends BasicDrawerService {
     });
   }
 
+  private getFreeEntitiesCollection(): OptimizedEntityCollection | null {
+    let freeEntityCollection = null;
+    this.entityCollections.forEach(entityCollection => {
+      if (entityCollection.isFree()) {
+        freeEntityCollection = entityCollection;
+      }
+    });
+
+    return freeEntityCollection;
+  }
+
   private suspendEntityCollection(entity: any) {
     const id = entity.entityCollection;
     if (!this.entityCollections.has(id)) {
@@ -130,7 +133,9 @@ export class EntitiesDrawerService extends BasicDrawerService {
     }
 
     const entityCollection = this.entityCollections.get(id);
-    entityCollection.suspend();
+    if (entityCollection) {
+      entityCollection.suspend();
+    }
   }
 }
 

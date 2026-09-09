@@ -12,7 +12,7 @@ export interface AcNotification {
 }
 
 export class AcNotification {
-  id: string;
+  id!: string;
   entity?: AcEntity;
-  actionType: ActionType;
+  actionType!: ActionType;
 }

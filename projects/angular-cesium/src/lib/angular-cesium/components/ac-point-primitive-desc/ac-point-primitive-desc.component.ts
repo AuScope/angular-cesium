@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { CesiumProperties } from '../../services/cesium-properties/cesium-properties.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -15,15 +15,17 @@ import { PointPrimitiveDrawerService } from '../../services/drawers/point-primit
  *  ```
  *    <ac-point-primitive-desc props="{
  *      position: track.position,
- *      color: Cesium.Color.RED
+ *      color: Color.RED
  *    }">
  *    </ac-point-primitive-desc>
  *  ```
  */
 
 @Component({
-  selector: 'ac-point-primitive-desc',
-  template: '',
+    selector: 'ac-point-primitive-desc',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcPointPrimitiveDescComponent extends BasicDesc {
 

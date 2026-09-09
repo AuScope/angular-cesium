@@ -15,8 +15,8 @@ import { LabelProps } from '../../models/label-props';
 import { EditableHippodrome } from '../../models/editable-hippodrome';
 
 @Component({
-  selector: 'hippodrome-editor',
-  template: /*html*/ `
+    selector: 'hippodrome-editor',
+    template: /*html*/ `
       <ac-layer #editHippodromesLayer acFor="let hippodrome of editHippodromes$" [context]="this">
           <ac-corridor-desc props="{
             positions: hippodrome.getRealPositionsCallbackProperty(),
@@ -76,17 +76,18 @@ import { EditableHippodrome } from '../../models/editable-hippodrome';
           </ac-point-desc>
       </ac-layer>
   `,
-  providers: [CoordinateConverter, HippodromeManagerService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [CoordinateConverter, HippodromeManagerService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class HippodromeEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: HippodromeEditUpdate, labels: LabelProps[]) => LabelProps[];
-  public Cesium = Cesium;
+  @ViewChild('editPointsLayer') private editPointsLayer!: AcLayerComponent;
+  @ViewChild('editHippodromesLayer') private editHippodromesLayer!: AcLayerComponent;
+
   public editPoints$ = new Subject<AcNotification>();
   public editHippodromes$ = new Subject<AcNotification>();
 
-  @ViewChild('editPointsLayer') private editPointsLayer: AcLayerComponent;
-  @ViewChild('editHippodromesLayer') private editHippodromesLayer: AcLayerComponent;
+  private editLabelsRenderFn?: (update: HippodromeEditUpdate, labels: LabelProps[]) => LabelProps[];
 
   constructor(
     private hippodromesEditor: HippodromeEditorService,
@@ -168,8 +169,8 @@ export class HippodromeEditorComponent implements OnDestroy {
       case EditActions.DISPOSE: {
         const hippodrome = this.hippodromesManager.get(update.id);
         if (hippodrome) {
-          hippodrome.dispose();
           this.removeEditLabels(hippodrome);
+          hippodrome.dispose();
         }
         break;
       }
@@ -210,7 +211,7 @@ export class HippodromeEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT: {
         const hippodrome = this.hippodromesManager.get(update.id);
-        if (hippodrome && hippodrome.enableEdit) {
+        if (hippodrome && hippodrome.enableEdit && update.updatedPosition && update.updatedPoint) {
           hippodrome.movePoint(update.updatedPosition, update.updatedPoint);
           this.renderEditLabels(hippodrome, update);
         }
@@ -242,7 +243,7 @@ export class HippodromeEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_SHAPE: {
         const hippodrome = this.hippodromesManager.get(update.id);
-        if (hippodrome && hippodrome.enableEdit) {
+        if (hippodrome && hippodrome.enableEdit && update.draggedPosition && update.updatedPosition) {
           hippodrome.moveShape(update.draggedPosition, update.updatedPosition);
           this.renderEditLabels(hippodrome, update);
         }

@@ -14,19 +14,19 @@ import { Injectable } from '@angular/core';
  */
 @Injectable()
 export class ViewerConfiguration {
+  Ï: any;
+
   /**
    * cesium viewer options According to [Viewer]{@link https://cesiumjs.org/Cesium/Build/Documentation/Viewer.html?classFilter=vie}
    */
-  private _viewerOptions: object | object[];
-  private _viewerModifier: Function | Function[];
+  private _viewerOptions!: object | object[];
+  private _viewerModifier!: Function | Function[];
   private nextViewerOptionsIndex = 0;
   private nextViewerModifierIndex = 0;
 
   get viewerOptions(): object | object[] {
     return this._viewerOptions;
   }
-
-  Ï;
 
   getNextViewerOptions(): object | object[] {
     if (this._viewerOptions instanceof Array) {

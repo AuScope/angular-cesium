@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Cartesian3 } from 'cesium';
 import { EditableRectangle } from '../../../models/editable-rectangle';
-import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { RectangleEditOptions } from '../../../models/rectangle-edit-options';
 import { AcLayerComponent } from '../../../../angular-cesium/components/ac-layer/ac-layer.component';
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
+import { DEFAULT_RECTANGLE_OPTIONS } from './rectangles-editor.service';
 
 @Injectable()
 export class RectanglesManagerService {
@@ -22,7 +23,7 @@ export class RectanglesManagerService {
       editPointsLayer,
       editRectanglesLayer,
       coordinateConverter,
-      rectangleOptions,
+      rectangleOptions ?? DEFAULT_RECTANGLE_OPTIONS,
       positions
     );
 
@@ -30,12 +31,20 @@ export class RectanglesManagerService {
   }
 
   dispose(id: string) {
-    this.rectangles.get(id).dispose();
-    this.rectangles.delete(id);
+    const rectangle = this.rectangles.get(id);
+    if (!rectangle) {
+      throw new Error(`Rectangle '${id}' not found`);
+    }
+    rectangle.dispose();
+    rectangle.delete(id);
   }
 
   get(id: string): EditableRectangle {
-    return this.rectangles.get(id);
+    const rectangle = this.rectangles.get(id);
+    if (!rectangle) {
+      throw new Error(`Rectangle '${id}' not found`);
+    }
+    return rectangle;
   }
 
   clear() {

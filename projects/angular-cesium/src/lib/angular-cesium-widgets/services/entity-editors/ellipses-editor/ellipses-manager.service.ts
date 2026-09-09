@@ -19,12 +19,19 @@ export class EllipsesManagerService {
   }
 
   dispose(id: string) {
-    this.ellipses.get(id).dispose();
-    this.ellipses.delete(id);
+    const ellipse = this.ellipses.get(id);
+    if (ellipse) {
+      ellipse.dispose();
+      this.ellipses.delete(id);
+    }
   }
 
   get(id: string): EditableEllipse {
-    return this.ellipses.get(id);
+    const ellipse = this.ellipses.get(id);
+    if (!ellipse) {
+      throw new Error(`Ellipse '${id}' not found`);
+    }
+    return ellipse;
   }
 
   clear() {

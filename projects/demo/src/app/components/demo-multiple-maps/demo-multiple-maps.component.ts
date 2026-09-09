@@ -1,11 +1,14 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { ScreenSpaceEventType, MapMode2D } from 'cesium';
 import { MapLayerProviderOptions, MapsManagerService, SceneMode, ViewerConfiguration, ZoomToRectangleService } from 'angular-cesium';
 import { AppSettingsService } from '../../services/app-settings-service/app-settings-service';
 
 @Component({
-  selector: 'demo-multiple-maps',
-  templateUrl: './demo-multiple-maps.component.html',
-  providers: [ViewerConfiguration],
+    selector: 'demo-multiple-maps',
+    templateUrl: './demo-multiple-maps.component.html',
+    providers: [ViewerConfiguration],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class DemoMultipleMapsComponent implements AfterViewInit {
   arcGisMapServerProvider = MapLayerProviderOptions.ArcGisMapServer;
@@ -44,11 +47,11 @@ export class DemoMultipleMapsComponent implements AfterViewInit {
       geocoder: false,
       navigationHelpButton: false,
       navigationInstructionsInitiallyVisible: false,
-      mapMode2D: Cesium.MapMode2D.ROTATE,
+      mapMode2D: MapMode2D.ROTATE,
     };
 
     viewerConf.viewerModifier = (viewer: any) => {
-      viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+      viewer.screenSpaceEventHandler.removeInputAction(ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
       viewer.bottomContainer.remove();
     };
 

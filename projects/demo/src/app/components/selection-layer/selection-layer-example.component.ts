@@ -1,11 +1,11 @@
 import { from as observableFrom, Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Cartesian3 } from 'cesium';
 import {
   AcEntity,
   AcLayerComponent,
   AcNotification,
   ActionType,
-  Cartesian3,
   CesiumEvent,
   CesiumEventModifier,
   SelectionManagerService
@@ -23,10 +23,12 @@ class MyEntity extends AcEntity {
 }
 
 @Component({
-  selector: 'selection-layer-example',
-  templateUrl: 'selection-layer-example.component.html',
-  styleUrls: [],
-  providers: [SelectionManagerService]
+    selector: 'selection-layer-example',
+    templateUrl: 'selection-layer-example.component.html',
+    styleUrls: [],
+    providers: [SelectionManagerService],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class SelectionLayerExampleComponent implements OnInit {
 
@@ -39,8 +41,8 @@ export class SelectionLayerExampleComponent implements OnInit {
 
   constructor(private selectionManager: SelectionManagerService, private snakBar: MatSnackBar) {
     const entities = [
-      new MyEntity(Cesium.Cartesian3.fromDegrees(10.0, 30.0), '1'),
-      new MyEntity(Cesium.Cartesian3.fromDegrees(33.0, 33.0), '2')
+      new MyEntity(Cartesian3.fromDegrees(10.0, 30.0), '1'),
+      new MyEntity(Cartesian3.fromDegrees(33.0, 33.0), '2')
     ];
     const entitiesNotifications = entities.map((entity, index) => ({
       id: entity.id,

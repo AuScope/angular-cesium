@@ -1,7 +1,7 @@
+import { Cartesian3 } from 'cesium';
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { AcLayerComponent } from '../../../../angular-cesium/components/ac-layer/ac-layer.component';
 import { Injectable } from '@angular/core';
-import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { PointEditOptions } from '../../../models/point-edit-options';
 import { EditablePoint } from '../../../models/editable-point';
 
@@ -18,7 +18,7 @@ export class PointsManagerService {
       id,
       editPointLayer,
       coordinateConverter,
-      editOptions,
+      editOptions ?? {} as PointEditOptions,
       position);
     this.points.set(id, editablePoint
     );
@@ -34,14 +34,18 @@ export class PointsManagerService {
 
   dispose(id: string) {
     const point = this.points.get(id);
-    if (point.getCurrentPoint()) {
+    if (point && point.getCurrentPoint()) {
       point.dispose();
     }
     this.points.delete(id);
   }
 
   get(id: string): EditablePoint {
-    return this.points.get(id);
+    const point = this.points.get(id);
+    if (!point) {
+      throw new Error(`Point with id ${id} not found`);
+    }
+    return point;
   }
 
   clear() {

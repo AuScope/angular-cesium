@@ -1,6 +1,5 @@
-import { isNumber } from 'util';
-import { Inject, Injectable, NgZone } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, NgZone, DOCUMENT } from '@angular/core';
+
 import { KeyboardAction } from '../../models/ac-keyboard-action.enum';
 import { CesiumService } from '../cesium/cesium.service';
 import { PREDEFINED_KEYBOARD_ACTIONS } from './predefined-actions';
@@ -27,9 +26,9 @@ enum KeyEventState {
 }
 
 interface ActiveDefinition {
-  keyboardEvent: KeyboardEvent;
+  keyboardEvent: KeyboardEvent | null;
   state: KeyEventState;
-  action: KeyboardControlParams;
+  action: KeyboardControlParams | null;
 }
 
 /**
@@ -138,7 +137,7 @@ interface ActiveDefinition {
  */
 @Injectable()
 export class KeyboardControlService {
-  private _currentDefinitions: KeyboardControlDefinition = null;
+  private _currentDefinitions: KeyboardControlDefinition | null = null;
   private _activeDefinitions: { [definitionKey: string]: ActiveDefinition } = {};
   private _keyMappingFn: Function = this.defaultKeyMappingFn;
 
@@ -208,8 +207,8 @@ export class KeyboardControlService {
   /**
    * Returns the current action that handles `char` key string, or `null` if not exists
    */
-  private getAction(char: string): KeyboardControlParams {
-    return this._currentDefinitions[char] || null;
+  private getAction(char: string): KeyboardControlParams | null {
+    return this._currentDefinitions?.[char] || null;
   }
 
   /**
@@ -278,7 +277,8 @@ export class KeyboardControlService {
     activeKeys.forEach(key => {
       const actionState = this._activeDefinitions[key];
 
-      if (actionState !== null && actionState.action !== null && actionState.state === KeyEventState.PRESSED) {
+      if (actionState !== null && actionState.action !== null &&
+          actionState.state === KeyEventState.PRESSED && actionState.keyboardEvent !== null) {
         this.executeAction(actionState.action, key, actionState.keyboardEvent);
       }
     });
@@ -314,7 +314,7 @@ export class KeyboardControlService {
 
     const params = this.getParams(execution.params, keyboardEvent);
 
-    if (isNumber(execution.action)) {
+    if (typeof execution.action == 'number') {
       const predefinedAction = PREDEFINED_KEYBOARD_ACTIONS[execution.action as number];
 
       if (predefinedAction) {

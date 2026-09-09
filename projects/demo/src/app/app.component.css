@@ -8,7 +8,7 @@
   height: 100% !important;
 }
 
-.mat-sidenav-content {
+.mat-mdc-sidenav-content {
   display: flex !important;
   flex-direction: column;
   flex: 1;

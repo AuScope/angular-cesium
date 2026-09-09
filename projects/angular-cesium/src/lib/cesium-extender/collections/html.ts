@@ -1,3 +1,4 @@
+import { defined } from 'cesium';
 import { HtmlPrimitive } from '../primitives';
 
 export class HtmlCollection {
@@ -38,12 +39,14 @@ export class HtmlCollection {
   removeAll() {
     while (this._collection.length > 0) {
       const html = this._collection.pop();
-      html.remove();
+      if (html) {
+        html.remove();
+      }
     }
   }
 
   contains(html: HtmlPrimitive): boolean {
-    return Cesium.defined(html) && html.collection === this;
+    return defined(html) && html.collection === this;
   }
 
   destroy() {

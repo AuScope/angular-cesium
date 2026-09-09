@@ -1,7 +1,8 @@
+import { CallbackProperty, Cartesian3 } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
 import { EditPoint } from './edit-point';
 import { AcLayerComponent } from '../../angular-cesium/components/ac-layer/ac-layer.component';
-import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
+//import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { GeoUtilsService } from '../../angular-cesium/services/geo-utils/geo-utils.service';
 import { EditArc } from './edit-arc';
 import { CircleEditOptions } from './circle-edit-options';
@@ -9,11 +10,12 @@ import { PointProps } from './point-edit-options';
 import { PolylineProps } from './polyline-edit-options';
 import { defaultLabelProps, LabelProps } from './label-props';
 import { EllipseProps } from './ellipse-edit-options';
+import { DEFAULT_CIRCLE_OPTIONS } from '../services';
 
 export class EditableCircle extends AcEntity {
-  private _center: EditPoint;
-  private _radiusPoint: EditPoint;
-  private _outlineArc: EditArc;
+  private _center!: EditPoint;
+  private _radiusPoint!: EditPoint;
+  private _outlineArc!: EditArc;
   private doneCreation = false;
   private _enableEdit = true;
   private lastDraggedToPosition: any;
@@ -30,7 +32,10 @@ export class EditableCircle extends AcEntity {
     private options: CircleEditOptions,
   ) {
     super();
-    this._circleProps = {...options.circleProps};
+    this._circleProps = {
+      ...DEFAULT_CIRCLE_OPTIONS.circleProps,
+      ...options.circleProps
+    } as EllipseProps;
     this._pointProps = {...options.pointProps};
     this._polylineProps = {...options.polylineProps};
   }
@@ -184,7 +189,11 @@ export class EditableCircle extends AcEntity {
 
     const radius = this.getRadius();
     const delta = GeoUtilsService.getPositionsDelta(this.lastDraggedToPosition, dragEndPosition);
-    const newCenterPosition = GeoUtilsService.addDeltaToPosition(this.getCenter(), delta, true);
+    const center = this.getCenter();
+    if (center === undefined) {
+      throw new Error('Center is undefined');
+    }
+    const newCenterPosition = GeoUtilsService.addDeltaToPosition(center, delta, true);
     this._center.setPosition(newCenterPosition);
     this.radiusPoint.setPosition(GeoUtilsService.pointByLocationDistanceAndAzimuth(this.getCenter(), radius, Math.PI / 2, true));
     this._outlineArc.radius = this.getRadius();
@@ -206,20 +215,20 @@ export class EditableCircle extends AcEntity {
     return GeoUtilsService.distance(this._center.getPosition(), this._radiusPoint.getPosition());
   }
 
-  getRadiusCallbackProperty() {
-    return new Cesium.CallbackProperty(this.getRadius.bind(this), false);
+  getRadiusCallbackProperty(): CallbackProperty {
+    return new CallbackProperty(this.getRadius.bind(this), false);
   }
 
   getCenter(): Cartesian3 {
-    return this._center ? this._center.getPosition() : undefined;
+    return this._center.getPosition();
   }
 
-  getCenterCallbackProperty() {
-    return new Cesium.CallbackProperty(this.getCenter.bind(this), false);
+  getCenterCallbackProperty(): CallbackProperty {
+    return new CallbackProperty(this.getCenter.bind(this), false);
   }
 
   getRadiusPoint(): Cartesian3 {
-    return this._radiusPoint ? this._radiusPoint.getPosition() : undefined;
+    return this._radiusPoint.getPosition();
   }
 
   dispose() {

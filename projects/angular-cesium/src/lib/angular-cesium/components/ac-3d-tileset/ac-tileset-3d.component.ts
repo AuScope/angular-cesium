@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { Cesium3DTileset, PrimitiveCollection, Cesium3DTileStyle } from 'cesium';
 import { CesiumService } from '../../services/cesium/cesium.service';
 import { Checker } from '../../utils/checker';
 
@@ -15,21 +16,23 @@ import { Checker } from '../../utils/checker';
  *  ```
  */
 @Component({
-  selector: 'ac-3d-tile-layer',
-  template: '',
+    selector: 'ac-3d-tile-layer',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
   /**
    * refer to cesium docs for details https://cesiumjs.org/Cesium/Build/Documentation/Cesium3DTileset.html
    */
   @Input()
-  options: { url?: string } = {};
+  options: { url: any } = { url: null };
 
   /**
    * index (optional) - The index to add the layer at. If omitted, the layer will added on top of all existing layers.
    */
   @Input()
-  index: Number;
+  index!: Number;
 
   /**
    * show (optional) - Determines if the map layer is shown.
@@ -54,13 +57,14 @@ export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
       throw new Error('Options must have a url');
     }
 
-    this._3dtilesCollection = new Cesium.PrimitiveCollection();
+    this._3dtilesCollection = new PrimitiveCollection();
     this.cesiumService.getScene().primitives.add(this._3dtilesCollection);
 
+
     if (this.show) {
-      this.tilesetInstance = this._3dtilesCollection.add(new Cesium.Cesium3DTileset(this.options), this.index);
+      this.tilesetInstance = this._3dtilesCollection.add(Cesium3DTileset.fromUrl(this.options.url), this.index);
       if (this.style) {
-        this.tilesetInstance.style = new Cesium.Cesium3DTileStyle(this.style);
+        this.tilesetInstance.style = new Cesium3DTileStyle(this.style);
       }
     }
   }
@@ -73,9 +77,9 @@ export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
         if (this.tilesetInstance) {
           this._3dtilesCollection.add(this.tilesetInstance, this.index);
         } else {
-          this.tilesetInstance = this._3dtilesCollection.add(new Cesium.Cesium3DTileset(this.options), this.index);
+          this.tilesetInstance = this._3dtilesCollection.add(Cesium3DTileset.fromUrl(this.options.url), this.index);
           if (this.style) {
-            this.tilesetInstance.style = new Cesium.Cesium3DTileStyle(this.style);
+            this.tilesetInstance.style = new Cesium3DTileStyle(this.style);
           }
         }
       } else if (this.tilesetInstance) {
@@ -85,7 +89,7 @@ export class AcTileset3dComponent implements OnInit, OnChanges, OnDestroy {
     if (changes['style'] && !changes['style'].isFirstChange()) {
       const styleValue = changes['style'].currentValue;
       if (this.tilesetInstance) {
-        this.tilesetInstance.style = new Cesium.Cesium3DTileStyle(this.style);
+        this.tilesetInstance.style = new Cesium3DTileStyle(this.style);
       }
     }
   }

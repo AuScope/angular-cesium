@@ -1,0 +1,67 @@
+import { isTranslucent } from './Util';
+import * as Cesium from 'cesium'; // For Internal Cesium classes not exported from public API
+import { Matrix4 } from 'cesium';
+/**
+ * This is the default implementation of a primitive, all primitives extend this class.
+ */
+export abstract class Primitive{
+	protected _show:boolean;
+	protected _modelMatrix: any;
+	protected _renderState: any;
+	protected _drawCommand: any;
+	protected _points: any;
+	protected _indicesArray!: number[];
+	protected _boundingVolume: any;
+	protected _dirty = true;
+	protected _lastMode: any;
+	protected _color: number[];
+	protected _vertexArray: any;
+	protected _shaderProgram: any;
+
+	constructor(options: {show?: boolean, color?: number[]}) {
+		this._show = options.show ?? true;
+		this._color = options.color || [0.0, 0.0, 0.0, 1.0];
+
+		this._modelMatrix = Matrix4.clone(Matrix4.IDENTITY);
+		this._drawCommand = new (Cesium as any).DrawCommand({owner: this});
+	}
+
+	get color(): number[] {
+		return this._color;
+	}
+
+	get show(): boolean {
+		return this._show;
+	}
+
+    set color(value: number[]) {
+		this._color = value;
+
+		this._dirty = true;
+	}
+
+	set show(value: boolean) {
+		this._show = value;
+	}
+
+	public isTranslucent(){
+		return isTranslucent(this._color);
+	}
+
+	protected shouldRender() {
+		return this._show;
+	}
+
+    protected setupDrawCommand(drawCommand: any, vertexArray: any, primitiveType: any, translucent: boolean = false,
+        debugShowBoundingVolume: boolean = false) {
+		drawCommand.modelMatrix = this._modelMatrix;
+		drawCommand.renderState = this._renderState;
+		drawCommand.shaderProgram = this._shaderProgram;
+		drawCommand.boundingVolume = this._boundingVolume;
+		drawCommand.pass = translucent ? (Cesium as any).Pass.TRANSLUCENT : (Cesium as any).Pass.OPAQUE;
+
+		drawCommand.debugShowBoundingVolume = debugShowBoundingVolume;
+		drawCommand.primitiveType = primitiveType;
+		drawCommand.vertexArray = vertexArray;
+	}
+}

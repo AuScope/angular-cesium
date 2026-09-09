@@ -1,7 +1,7 @@
+import { Cartesian3, Math as cMath, CallbackProperty } from 'cesium';
 import { AcEntity } from '../../angular-cesium/models/ac-entity';
 import { EditPoint } from './edit-point';
 import { AcLayerComponent } from '../../angular-cesium/components/ac-layer/ac-layer.component';
-import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { CoordinateConverter } from '../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { PointProps } from './point-edit-options';
 import { HippodromeEditOptions, HippodromeProps } from './hippodrome-edit-options';
@@ -10,12 +10,12 @@ import { defaultLabelProps, LabelProps } from './label-props';
 
 export class EditableHippodrome extends AcEntity {
   private positions: EditPoint[] = [];
-  private movingPoint: EditPoint;
+  private movingPoint?: EditPoint;
   private done = false;
   private _enableEdit = true;
-  private _defaultPointProps: PointProps;
-  private _hippodromeProps: HippodromeProps;
-  private lastDraggedToPosition: Cartesian3;
+  private _defaultPointProps!: PointProps;
+  private _hippodromeProps!: HippodromeProps;
+  private lastDraggedToPosition?: Cartesian3;
   private _labels: LabelProps[] = [];
 
   constructor(
@@ -127,7 +127,7 @@ export class EditableHippodrome extends AcEntity {
       this.updatePointsLayer(...this.positions);
       this.updateHippdromeLayer();
       this.done = true;
-      this.movingPoint = null;
+      this.movingPoint = undefined;
     }
   }
 
@@ -137,19 +137,19 @@ export class EditableHippodrome extends AcEntity {
     const firstP = this.getRealPoints()[0];
     const secP = this.getRealPoints()[1];
 
-    const midPointCartesian3 = Cesium.Cartesian3.lerp(firstP.getPosition(), secP.getPosition(), 0.5, new Cesium.Cartesian3());
+    const midPointCartesian3 = Cartesian3.lerp(firstP.getPosition(), secP.getPosition(), 0.5, new Cartesian3());
     const bearingDeg = this.coordinateConverter.bearingToCartesian(firstP.getPosition(), secP.getPosition());
 
-    const upAzimuth = Cesium.Math.toRadians(bearingDeg) - Math.PI / 2;
+    const upAzimuth = cMath.toRadians(bearingDeg) - Math.PI / 2;
     this.createMiddleEditablePoint(midPointCartesian3, upAzimuth);
-    const downAzimuth = Cesium.Math.toRadians(bearingDeg) + Math.PI / 2;
+    const downAzimuth = cMath.toRadians(bearingDeg) + Math.PI / 2;
     this.createMiddleEditablePoint(midPointCartesian3, downAzimuth);
   }
 
   private createMiddleEditablePoint(midPointCartesian3: any, azimuth: number) {
     const upEditCartesian3 = GeoUtilsService.pointByLocationDistanceAndAzimuth(
       midPointCartesian3,
-      this.hippodromeProps.width / 2,
+      (this.hippodromeProps.width ?? 0) / 2,
       azimuth,
       true,
     );
@@ -172,7 +172,7 @@ export class EditableHippodrome extends AcEntity {
   private changeWidthByNewPoint(toPosition: Cartesian3) {
     const firstP = this.getRealPoints()[0];
     const secP = this.getRealPoints()[1];
-    const midPointCartesian3 = Cesium.Cartesian3.lerp(firstP.getPosition(), secP.getPosition(), 0.5, new Cesium.Cartesian3());
+    const midPointCartesian3 = Cartesian3.lerp(firstP.getPosition(), secP.getPosition(), 0.5, new Cartesian3());
 
     const bearingDeg = this.coordinateConverter.bearingToCartesian(midPointCartesian3, toPosition);
     let normalizedBearingDeb = bearingDeg;
@@ -195,7 +195,7 @@ export class EditableHippodrome extends AcEntity {
     }
 
     const distanceMeters = Math.abs(GeoUtilsService.distance(midPointCartesian3, toPosition));
-    const radiusWidth = Math.sin(Cesium.Math.toRadians(fixedBearingDeg)) * distanceMeters;
+    const radiusWidth = Math.sin(cMath.toRadians(fixedBearingDeg)) * distanceMeters;
 
     this.hippodromeProps.width = Math.abs(radiusWidth) * 2;
     this.createHeightEditPoints();
@@ -244,16 +244,18 @@ export class EditableHippodrome extends AcEntity {
 
   addLastPoint(position: Cartesian3) {
     this.done = true;
-    this.removePosition(this.movingPoint); // remove movingPoint
-    this.movingPoint = null;
+    if (this.movingPoint) {
+      this.removePosition(this.movingPoint); // remove movingPoint
+    }
+    this.movingPoint = undefined;
   }
 
   getRealPositions(): Cartesian3[] {
     return this.getRealPoints().map(position => position.getPosition());
   }
 
-  getRealPositionsCallbackProperty() {
-    return new Cesium.CallbackProperty(this.getRealPositions.bind(this), false);
+  getRealPositionsCallbackProperty(): CallbackProperty {
+    return new CallbackProperty(this.getRealPositions.bind(this), false);
   }
 
   getRealPoints(): EditPoint[] {
@@ -261,7 +263,7 @@ export class EditableHippodrome extends AcEntity {
   }
 
   getWidth(): number {
-    return this.hippodromeProps.width;
+    return this.hippodromeProps.width ?? 0;
   }
 
   getPositions(): Cartesian3[] {

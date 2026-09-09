@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Cartesian3 } from 'cesium';
 import {
   CameraService,
   CesiumService,
@@ -10,21 +11,23 @@ import {
   RangeAndBearingComponent,
   RectanglesEditorService,
   ZoomToRectangleService
-} from 'angular-cesium';
+} from '@auscope/angular-cesium';
 
 @Component({
-  selector: 'toolbar-example',
-  templateUrl: 'toolbar-example.component.html',
-  styleUrls: ['toolbar-example.scss'],
-  providers: [
-    ZoomToRectangleService,
-    CirclesEditorService,
-    EllipsesEditorService,
-    PolygonsEditorService,
-    RectanglesEditorService,
-    HippodromeEditorService,
-    PointsEditorService,
-  ],
+    selector: 'toolbar-example',
+    templateUrl: 'toolbar-example.component.html',
+    styleUrls: ['toolbar-example.scss'],
+    providers: [
+        ZoomToRectangleService,
+        CirclesEditorService,
+        EllipsesEditorService,
+        PolygonsEditorService,
+        RectanglesEditorService,
+        HippodromeEditorService,
+        PointsEditorService,
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class ToolbarExampleComponent implements OnInit {
   rnb: PolylineEditorObservable;
@@ -60,7 +63,7 @@ export class ToolbarExampleComponent implements OnInit {
   }
 
   goHome() {
-    this.cameraService.cameraFlyTo({ destination: Cesium.Cartesian3.fromDegrees(35.21, 31.77, 200000) });
+    this.cameraService.cameraFlyTo({ destination: Cartesian3.fromDegrees(35.21, 31.77, 200000) });
   }
 
   drawCircle() {

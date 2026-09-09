@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EntityOnMapComponent } from '../../services/entity-on-map/entity-on-map.component';
 import { PointDrawerService } from '../../services/drawers/point-drawer/point-drawer.service';
 import { MapLayersService } from '../../services/map-layers/map-layers.service';
@@ -21,8 +21,10 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  */
 
 @Component({
-  selector: 'ac-point',
-  template: '',
+    selector: 'ac-point',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcPointComponent extends EntityOnMapComponent {
 

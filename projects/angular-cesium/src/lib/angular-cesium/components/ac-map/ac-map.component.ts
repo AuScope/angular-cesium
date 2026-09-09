@@ -1,7 +1,6 @@
-import { DOCUMENT } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+
+import { AfterViewInit, Component, ElementRef, Inject, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, DOCUMENT, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumService } from '../../services/cesium/cesium.service';
-import { ConfigurationService } from '../../cesium-enhancements/ConfigurationService';
 import { SceneMode } from '../../models/scene-mode.enum';
 import { CameraService } from '../../services/camera/camera.service';
 import { ContextMenuService } from '../../services/context-menu/context-menu.service';
@@ -39,33 +38,37 @@ import { ScreenshotService } from '../../services/screenshot/screenshot.service'
  * </ac-map>
  */
 @Component({
-  selector: 'ac-map',
-  template: `
-    <ac-default-plonter *ngIf="!disableDefaultPlonter"></ac-default-plonter>
+    selector: 'ac-map',
+    template: `
+    @if (!disableDefaultPlonter) {
+      <ac-default-plonter></ac-default-plonter>
+    }
     <ac-context-menu-wrapper></ac-context-menu-wrapper>
     <ng-content></ng-content>
-  `,
-  providers: [
-    CesiumService,
-    BillboardDrawerService,
-    CesiumEventBuilder,
-    KeyboardControlService,
-    MapEventsManagerService,
-    PlonterService,
-    LabelDrawerService,
-    PolylineDrawerService,
-    PolylinePrimitiveDrawerService,
-    EllipseDrawerService,
-    PointDrawerService,
-    ArcDrawerService,
-    CzmlDrawerService,
-    PolygonDrawerService,
-    MapLayersService,
-    CameraService,
-    ScreenshotService,
-    ContextMenuService,
-    CoordinateConverter,
-  ],
+    `,
+    providers: [
+        CesiumService,
+        BillboardDrawerService,
+        CesiumEventBuilder,
+        KeyboardControlService,
+        MapEventsManagerService,
+        PlonterService,
+        LabelDrawerService,
+        PolylineDrawerService,
+        PolylinePrimitiveDrawerService,
+        EllipseDrawerService,
+        PointDrawerService,
+        ArcDrawerService,
+        CzmlDrawerService,
+        PolygonDrawerService,
+        MapLayersService,
+        CameraService,
+        ScreenshotService,
+        ContextMenuService,
+        CoordinateConverter,
+    ],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestroy {
   /**
@@ -79,7 +82,7 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
    * default: 'default-map-id-[index]'
    */
   @Input()
-  mapId: string;
+  mapId!: string;
 
   /**
    * flyTo options according to https://cesiumjs.org/Cesium/Build/Documentation/Camera.html?classFilter=cam#flyTo
@@ -91,14 +94,14 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
    * Sets the map's SceneMode
    */
   @Input()
-  sceneMode: SceneMode;
+  sceneMode!: SceneMode;
 
   /**
    * Optional - the container element's id in which the map's canvas will be appended to.
    * If not supplied - the container element will be the parent element of ac-map;
    */
   @Input()
-  containerId: string;
+  containerId!: string;
 
   private mapContainer: HTMLElement;
 
@@ -106,7 +109,7 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
     private _cesiumService: CesiumService,
     private _cameraService: CameraService,
     private _elemRef: ElementRef,
-    @Inject(DOCUMENT) private document,
+    @Inject(DOCUMENT) private document: any,
     private mapsManagerService: MapsManagerService,
     private billboardDrawerService: BillboardDrawerService,
     private labelDrawerService: LabelDrawerService,
@@ -119,7 +122,6 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
     private mapEventsManager: MapEventsManagerService,
     private keyboardControlService: KeyboardControlService,
     private mapLayersService: MapLayersService,
-    private configurationService: ConfigurationService,
     private screenshotService: ScreenshotService,
     public contextMenuService: ContextMenuService,
     private coordinateConverter: CoordinateConverter,
@@ -128,7 +130,7 @@ export class AcMapComponent implements OnChanges, OnInit, AfterViewInit, OnDestr
     this.mapContainer.style.width = '100%';
     this.mapContainer.style.height = '100%';
     this.mapContainer.className = 'map-container';
-    this._cesiumService.init(this.mapContainer, this);
+    this._cesiumService.init(this.mapContainer);
     this._cameraService.init(this._cesiumService);
     this.mapEventsManager.init();
     this.billboardDrawerService.init();

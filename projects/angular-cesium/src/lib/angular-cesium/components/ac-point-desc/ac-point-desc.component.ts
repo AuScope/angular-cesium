@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { PointDrawerService } from '../../services/drawers/point-drawer/point-drawer.service';
@@ -23,9 +23,11 @@ import { CesiumProperties } from '../../services/cesium-properties/cesium-proper
  *  ```
  */
 @Component({
-  selector: 'ac-point-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcPointDescComponent)}],
+    selector: 'ac-point-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcPointDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcPointDescComponent extends BasicDesc {
 

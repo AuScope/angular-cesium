@@ -1,18 +1,18 @@
 import { map } from 'rxjs/operators';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AcLayerComponent, AcNotification, ActionType, CesiumEvent, MapEventsManagerService, PickOptions } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 
 @Component({
-  selector: 'entities-with-arrays-example',
-  template: `
+    selector: 'entities-with-arrays-example',
+    template: `
       <ac-layer acFor="let track of tracks$" [show]="show" [context]="this" [store]="true">
           <ac-point-desc props="{
                     position: track.position,
                     pixelSize: 20,
                     color: track.color,
-                    outlineColor: Cesium.Color.RED,
+                    outlineColor: Color.RED,
                 }">
           </ac-point-desc>
 
@@ -21,7 +21,7 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
                     position: arrayItem.pos,
                     pixelSize: 10,
                     color: track.color,
-                    outlineColor: Cesium.Color.RED,
+                    outlineColor: Color.RED,
                     outlineWidth: 2
                 }">
               </ac-point-desc>
@@ -30,7 +30,7 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
                       position: innerArrayItem.pos,
                       pixelSize: 10,
                       color: track.color,
-                      outlineColor: Cesium.Color.BLUE,
+                      outlineColor: Color.BLUE,
                       outlineWidth: 2
                   }">
                   </ac-point-desc>
@@ -39,6 +39,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
       </ac-layer>
 
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class EntitiesWithArraysExampleComponent implements OnInit, OnChanges {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

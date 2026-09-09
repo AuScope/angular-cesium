@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Color, Cartesian2, Cartesian3 } from 'cesium';
 import { CoordinateConverter } from '../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { EditActions } from '../../models/edit-actions.enum';
 import { PolylineEditorObservable } from '../../models/polyline-editor-observable';
@@ -23,7 +24,7 @@ import { PolylinesEditorService } from '../../services/entity-editors/polyline-e
  * ```
  * \@ViewChild('rangeAndBearing', {static: false}) private rangeAndBearing: RangeAndBearingComponent; // Get R&B reference
  *  // ...
- * this.rangeAndBearing.create({style: { pointProps: { pixelSize: 12 } }, bearingLabelsStyle: { fillColor: Cesium.Color.GREEN } });
+ * this.rangeAndBearing.create({style: { pointProps: { pixelSize: 12 } }, bearingLabelsStyle: { fillColor: Color.GREEN } });
  * ```
  *
  * my-component.html
@@ -33,12 +34,13 @@ import { PolylinesEditorService } from '../../services/entity-editors/polyline-e
  *
  */
 @Component({
-  selector: 'range-and-bearing',
-  template: `
+    selector: 'range-and-bearing',
+    template: `
     <polylines-editor></polylines-editor>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PolylinesEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [PolylinesEditorService],
+    standalone: false
 })
 export class RangeAndBearingComponent {
   @Input() lineEditOptions?: PolylineEditOptions = {};
@@ -94,8 +96,11 @@ export class RangeAndBearingComponent {
           (labels, position, index, array) => {
             if (index !== 0) {
               const previousPosition = array[index - 1];
+              if (!position || !previousPosition) {
+                throw new Error('Invalid position');
+              }
               const bearing = this.coordinateConverter.bearingToCartesian(previousPosition, position);
-              const distance = Cesium.Cartesian3.distance(previousPosition, position) / 1000;
+              const distance = Cartesian3.distance(previousPosition, position) / 1000;
               labels.push(
                 {
                   text:
@@ -104,14 +109,14 @@ export class RangeAndBearingComponent {
                     `${bearing.toFixed(2)}°`,
                   scale: 0.2,
                   font: '80px Helvetica',
-                  pixelOffset: new Cesium.Cartesian2(-20, -8),
-                  position: new Cesium.Cartesian3(
+                  pixelOffset: new Cartesian2(-20, -8),
+                  position: new Cartesian3(
                     (position.x + previousPosition.x) / 2,
                     (position.y + previousPosition.y) / 2,
                     (position.z + previousPosition.z) / 2,
                   ),
-                  fillColor: Cesium.Color.WHITE,
-                  outlineColor: Cesium.Color.WHITE,
+                  fillColor: Color.WHITE,
+                  outlineColor: Color.WHITE,
                   showBackground: true,
                   ...(this.labelsStyle as any),
                   ...(labelsStyle as any),
@@ -125,10 +130,10 @@ export class RangeAndBearingComponent {
                     `${(totalDistance + distance).toFixed(2)} Km`,
                   scale: 0.2,
                   font: '80px Helvetica',
-                  pixelOffset: new Cesium.Cartesian2(-35, -8),
+                  pixelOffset: new Cartesian2(-35, -8),
                   position: position,
-                  fillColor: Cesium.Color.WHITE,
-                  outlineColor: Cesium.Color.WHITE,
+                  fillColor: Color.WHITE,
+                  outlineColor: Color.WHITE,
                   showBackground: true,
                   ...(this.labelsStyle as any),
                   ...(labelsStyle as any),
@@ -147,10 +152,10 @@ export class RangeAndBearingComponent {
               text: (distanceStringFn && distanceStringFn(0)) || (this.distanceStringFn && this.distanceStringFn(0)) || `0 Km`,
               scale: 0.2,
               font: '80px Helvetica',
-              pixelOffset: new Cesium.Cartesian2(-20, -8),
+              pixelOffset: new Cartesian2(-20, -8),
               position: positions[0],
-              fillColor: Cesium.Color.WHITE,
-              outlineColor: Cesium.Color.WHITE,
+              fillColor: Color.WHITE,
+              outlineColor: Color.WHITE,
               showBackground: true,
               ...(this.labelsStyle as any),
               ...(labelsStyle as any),

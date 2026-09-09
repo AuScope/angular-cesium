@@ -1,10 +1,10 @@
 import { fromEvent as observableFromEvent, Observable, Subject } from 'rxjs';
 
 import { map, merge, takeUntil, tap } from 'rxjs/operators';
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable, DOCUMENT } from '@angular/core';
+
+import { Cartesian3 } from 'cesium';
 import { Vec2 } from '../../angular-cesium/models/vec2';
-import { Cartesian3 } from '../../angular-cesium/models/cartesian3';
 import { CoordinateConverter } from '../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { MapsManagerService } from '../../angular-cesium/services/maps-manager/maps-manager.service';
 
@@ -23,9 +23,9 @@ export interface IconDragEvent {
 @Injectable()
 export class DraggableToMapService {
 
-  private coordinateConverter: CoordinateConverter;
-  private dragObservable: Observable<IconDragEvent>;
-  private stopper: Subject<any>;
+  private coordinateConverter!: CoordinateConverter;
+  private dragObservable?: Observable<IconDragEvent>;
+  private stopper?: Subject<any>;
   private mainSubject = new Subject<IconDragEvent>();
 
   constructor(@Inject(DOCUMENT) private document: any, private mapsManager: MapsManagerService) {
@@ -43,7 +43,7 @@ export class DraggableToMapService {
       }
     }
     this.cancel();
-    const imgElement = document.createElement('img');
+    const imgElement: any = document.createElement('img');
     imgElement.src = imageSrc;
     imgElement.style.position = 'fixed';
     imgElement.style.visibility = 'hidden';
@@ -59,7 +59,7 @@ export class DraggableToMapService {
     document.body.appendChild(imgElement);
 
     this.createDragObservable();
-    this.dragObservable.subscribe(
+    this.dragObservable?.subscribe(
       (e) => {
         imgElement.style.visibility = 'visible';
         imgElement.style.left = e.screenPosition.x - imgElement.clientWidth / 2 + 'px';

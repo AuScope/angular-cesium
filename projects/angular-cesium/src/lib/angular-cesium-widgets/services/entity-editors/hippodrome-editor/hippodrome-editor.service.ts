@@ -1,5 +1,6 @@
 import { publish, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Color, ClassificationType, ShadowMode, Cartesian3 } from 'cesium';
 import { MapEventsManagerService } from '../../../../angular-cesium/services/map-events-mananger/map-events-manager';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CesiumEvent } from '../../../../angular-cesium/services/map-events-mananger/consts/cesium-event.enum';
@@ -10,7 +11,7 @@ import { DisposableObservable } from '../../../../angular-cesium/services/map-ev
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { EditPoint } from '../../../models/edit-point';
 import { CameraService } from '../../../../angular-cesium/services/camera/camera.service';
-import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
+//import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { HippodromeEditOptions } from '../../../models/hippodrome-edit-options';
 import { HippodromeManagerService } from './hippodrome-manager.service';
 import { HippodromeEditorObservable } from '../../../models/hippodrome-editor-oboservable';
@@ -27,18 +28,18 @@ export const DEFAULT_HIPPODROME_OPTIONS: HippodromeEditOptions = {
   allowDrag: true,
   hippodromeProps: {
     fill: true,
-    material: Cesium.Color.CORNFLOWERBLUE.withAlpha(0.4),
+    material: Color.CORNFLOWERBLUE.withAlpha(0.4),
     outline: true,
     width: 200000.0,
     outlineWidth: 1,
-    outlineColor: Cesium.Color.WHITE.withAlpha(0.8),
-    classificationType: Cesium.ClassificationType.BOTH,
+    outlineColor: Color.WHITE.withAlpha(0.8),
+    classificationType: ClassificationType.BOTH,
     zIndex: 0,
-    shadows: Cesium.ShadowMode.DISABLED,
+    shadows: ShadowMode.DISABLED,
   },
   pointProps: {
-    color: Cesium.Color.WHITE,
-    outlineColor: Cesium.Color.BLACK.withAlpha(0.2),
+    color: Color.WHITE,
+    outlineColor: Color.BLACK.withAlpha(0.2),
     outlineWidth: 1,
     pixelSize: 13,
     virtualPointPixelSize: 8,
@@ -84,12 +85,12 @@ export const DEFAULT_HIPPODROME_OPTIONS: HippodromeEditOptions = {
  */
 @Injectable()
 export class HippodromeEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<HippodromeEditUpdate>();
   private updatePublisher = publish<HippodromeEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private hippodromeManager: HippodromeManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private hippodromeManager!: HippodromeManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
 
   init(mapEventsManager: MapEventsManagerService,
@@ -136,7 +137,10 @@ export class HippodromeEditorService {
       this.updateSubject.next(changeMode);
       clientEditSubject.next(changeMode);
       if (this.observablesMap.has(id)) {
-        this.observablesMap.get(id).forEach(registration => registration.dispose());
+        const observable = this.observablesMap.get(id);
+        if (observable) {
+          observable.forEach(registration => registration.dispose());
+        }
       }
       this.observablesMap.delete(id);
       this.editHippodrome(id, eventPriority, clientEditSubject, hippodromeOptions, editorObservable);
@@ -268,7 +272,7 @@ export class HippodromeEditorService {
     });
 
     pointDragRegistration.pipe(
-      tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+      tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({movement: {endPosition, drop}, entities}) => {
         const position = this.coordinateConverter.screenToCartesian3(endPosition);
         if (!position) {
@@ -295,7 +299,7 @@ export class HippodromeEditorService {
 
     if (shapeDragRegistration) {
       shapeDragRegistration
-        .pipe(tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop)))
+        .pipe(tap(({movement: {drop}}) => this.hippodromeManager.get(id).enableEdit && this.cameraService.enableInputs(drop ?? false)))
         .subscribe(({movement: {startPosition, endPosition, drop}, entities}) => {
           const endDragPosition = this.coordinateConverter.screenToCartesian3(endPosition);
           const startDragPosition = this.coordinateConverter.screenToCartesian3(startPosition);

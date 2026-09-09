@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { CesiumProperties } from '../../services/cesium-properties/cesium-properties.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -24,9 +24,11 @@ import { LabelPrimitiveDrawerService } from '../../services/drawers/label-primit
  */
 
 @Component({
-  selector: 'ac-label-primitive-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcLabelPrimitiveDescComponent)}],
+    selector: 'ac-label-primitive-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcLabelPrimitiveDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcLabelPrimitiveDescComponent extends BasicDesc {
 

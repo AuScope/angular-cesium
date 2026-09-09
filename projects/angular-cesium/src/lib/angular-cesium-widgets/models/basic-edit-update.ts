@@ -5,7 +5,7 @@ import { LabelProps } from './label-props';
 export interface BasicEditUpdate<T> {
   id: string;
   editMode: EditModes;
-  editAction: EditActions;
+  editAction: EditActions | null;
   labelsRenderFn?: (update: T, labels: LabelProps[]) => LabelProps[];
   updateLabels?: LabelProps[];
 }

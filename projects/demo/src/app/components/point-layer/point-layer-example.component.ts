@@ -1,23 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Color } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'point-layer-example',
-  template: `
+    selector: 'point-layer-example',
+    template: `
       <ac-layer acFor="let point of entities$" [context]="this" [show]="show">
           <ac-point-desc props="{
               position: point.position,
               pixelSize : 10,
-              outlineColor: Cesium.Color.CORNFLOWERBLUE,
+              outlineColor: Color.CORNFLOWERBLUE,
               outlineWidth: 2,
            }">
           </ac-point-desc>
       </ac-layer>
   `,
-  styleUrls: [],
+    styleUrls: [],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class PointLayerExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;

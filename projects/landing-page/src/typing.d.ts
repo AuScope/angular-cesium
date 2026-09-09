@@ -1,1 +1,1 @@
-declare var Cesium;
+import * as Cesium from 'cesium';

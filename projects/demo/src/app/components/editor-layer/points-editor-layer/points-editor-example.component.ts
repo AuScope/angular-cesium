@@ -1,24 +1,19 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import {
-  CameraService,
-  CesiumEvent,
-  CesiumService,
-  EditActions,
+import { Color, Cartesian3 } from 'cesium';
+import { EditActions,
   LabelProps,
-  MapEventsManagerService, MapsManagerService,
-  PickOptions,
   PointEditorObservable,
   PointEditUpdate,
   PointsEditorService
-} from 'angular-cesium';
-import { defaultLabelProps } from 'projects/angular-cesium/src/public_api';
+} from '../../../../../../angular-cesium/dist';
 
 @Component({
-  selector: 'points-editor-example',
-  templateUrl: 'points-editor-example.component.html',
-  styleUrls: ['./points-editor-example.component.css'],
-  providers: [PointsEditorService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'points-editor-example',
+    templateUrl: 'points-editor-example.component.html',
+    styleUrls: ['./points-editor-example.component.css'],
+    providers: [PointsEditorService],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class PointsEditorExampleComponent implements OnInit {
   counter = 0;
@@ -27,11 +22,7 @@ export class PointsEditorExampleComponent implements OnInit {
   tileset: any;
   tilesLocation = {longitude: 0.5433407074863252, latitude: 0.523107775892968, height: 450};
 
-  constructor(private pointEditor: PointsEditorService,
-              private cesiumService: CesiumService,
-              private camService: CameraService,
-              private m: MapsManagerService,
-              private mapsManager: MapEventsManagerService) {
+  constructor(private pointEditor: PointsEditorService) {
   }
 
   ngOnInit(): void {
@@ -70,11 +61,11 @@ export class PointsEditorExampleComponent implements OnInit {
     if (this.editing$) {
       this.stopEdit();
     }
-    const initialPos = Cesium.Cartesian3.fromDegrees(-80, 35);
+    const initialPos = Cartesian3.fromDegrees(-80, 35);
     this.editing$ = this.pointEditor.edit(initialPos, {
       pointProps: {
-        color: Cesium.Color.WHITE.withAlpha(0.5),
-        outlineColor: Cesium.Color.BLACK.withAlpha(0.5),
+        color: Color.WHITE.withAlpha(0.5),
+        outlineColor: Color.BLACK.withAlpha(0.5),
         outlineWidth: 1,
         pixelSize: 10,
         show: true,
@@ -87,8 +78,8 @@ export class PointsEditorExampleComponent implements OnInit {
       newLabels.push({
         text: `Point (${update.position.x},${update.position.y})`,
         scale: 0.6,
-        eyeOffset: new Cesium.Cartesian3(10, 10, -1000),
-        fillColor: Cesium.Color.BLUE,
+        eyeOffset: new Cartesian3(10, 10, -1000),
+        fillColor: Color.BLUE,
       });
       return newLabels;
     });
@@ -97,7 +88,7 @@ export class PointsEditorExampleComponent implements OnInit {
         return this.editing$.updateLabels(
           this.editing$.getLabels().map(label => {
             label.text += '*';
-            label.fillColor = Cesium.Color.RED;
+            label.fillColor = Color.RED;
             label.showBackground = true;
             return label;
           })
@@ -142,7 +133,7 @@ export class PointsEditorExampleComponent implements OnInit {
       // Only effects if in edit mode
       // update current point
       const point = this.editing$.getCurrentPoint();
-      point.setPosition(Cesium.Cartesian3.fromDegrees(20, 20));
+      point.setPosition(Cartesian3.fromDegrees(20, 20));
       console.log("pos: "+point.getPosition())
       const newUpdatedPoints = {
         position: point.getPosition(),

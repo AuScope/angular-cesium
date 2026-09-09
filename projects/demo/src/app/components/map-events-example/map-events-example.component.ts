@@ -1,7 +1,8 @@
 import { from as observableFrom, Observable } from 'rxjs';
 
 import { filter, map, tap } from 'rxjs/operators';
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Color, Cartesian3 } from 'cesium';
 import {
   AcEntity,
   AcLayerComponent,
@@ -15,10 +16,12 @@ import {
 } from 'angular-cesium';
 
 @Component({
-  selector: 'map-events-example',
-  templateUrl: 'map-events-example.component.html',
-  styleUrls: ['map-events-example.component.css'],
-  providers: [CoordinateConverter],
+    selector: 'map-events-example',
+    templateUrl: 'map-events-example.component.html',
+    styleUrls: ['map-events-example.component.css'],
+    providers: [CoordinateConverter],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class MapEventsExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;
@@ -36,8 +39,8 @@ export class MapEventsExampleComponent implements OnInit {
       entity: AcEntity.create({
         id: '0',
         name: 'click me',
-        color: Cesium.Color.BLUE,
-        position: Cesium.Cartesian3.fromDegrees(-95, 40),
+        color: Color.BLUE,
+        position: Cartesian3.fromDegrees(-95, 40),
       }),
     };
     const track2: AcNotification = {
@@ -46,8 +49,8 @@ export class MapEventsExampleComponent implements OnInit {
       entity: AcEntity.create({
         id: '1',
         name: 'choose me',
-        color: Cesium.Color.AQUA,
-        position: Cesium.Cartesian3.fromDegrees(-85, 35),
+        color: Color.AQUA,
+        position: Cartesian3.fromDegrees(-85, 35),
       }),
     };
     const track10: AcNotification = {
@@ -56,8 +59,8 @@ export class MapEventsExampleComponent implements OnInit {
       entity: AcEntity.create({
         id: '10',
         name: 'click me now please!',
-        color: Cesium.Color.BLUE,
-        position: Cesium.Cartesian3.fromDegrees(-84, 35),
+        color: Color.BLUE,
+        position: Cartesian3.fromDegrees(-84, 35),
       }),
     };
     const track11: AcNotification = {
@@ -66,8 +69,8 @@ export class MapEventsExampleComponent implements OnInit {
       entity: AcEntity.create({
         id: '11',
         name: 'choose me too :)',
-        color: Cesium.Color.CORNFLOWERBLUE,
-        position: Cesium.Cartesian3.fromDegrees(-86, 35.5),
+        color: Color.CORNFLOWERBLUE,
+        position: Cartesian3.fromDegrees(-86, 35.5),
       }),
     };
     const track3: AcNotification = {
@@ -76,8 +79,8 @@ export class MapEventsExampleComponent implements OnInit {
       entity: AcEntity.create({
         id: '2',
         name: 'click me too',
-        color: Cesium.Color.DARKBLUE,
-        position: Cesium.Cartesian3.fromDegrees(-84, 35),
+        color: Color.DARKBLUE,
+        position: Cartesian3.fromDegrees(-84, 35),
       }),
     };
     const track4: AcNotification = {
@@ -86,8 +89,8 @@ export class MapEventsExampleComponent implements OnInit {
       entity: AcEntity.create({
         id: '3',
         name: 'Drag me',
-        color: Cesium.Color.BLUE,
-        position: Cesium.Cartesian3.fromDegrees(-110, 40),
+        color: Color.BLUE,
+        position: Cartesian3.fromDegrees(-110, 40),
       }),
     };
 
@@ -216,7 +219,7 @@ export class MapEventsExampleComponent implements OnInit {
       )
       .subscribe(entity => {
         console.log('click3', 'toggle color');
-        entity.color = entity.color === Cesium.Color.GREEN ? Cesium.Color.BLUE : Cesium.Color.GREEN;
+        entity.color = entity.color === Color.GREEN ? Color.BLUE : Color.GREEN;
         this.layer.update(entity, entity.id);
       });
   }

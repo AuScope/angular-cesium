@@ -1,11 +1,14 @@
 import { from as observableFrom, Observable } from 'rxjs';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Cartesian3 } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
 @Component({
-  selector: 'label-layer-example',
-  templateUrl: 'label-layer-example.component.html',
-  styleUrls: ['label-layer-example.component.css']
+    selector: 'label-layer-example',
+    templateUrl: 'label-layer-example.component.html',
+    styleUrls: ['label-layer-example.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class LabelLayerExampleComponent implements OnInit, AfterViewInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;
@@ -17,12 +20,12 @@ export class LabelLayerExampleComponent implements OnInit, AfterViewInit {
     const base1: AcNotification = {
       id: '0',
       actionType: ActionType.ADD_UPDATE,
-      entity: {name: 'base alpha', position: Cesium.Cartesian3.fromRadians(1.0, 1.0), show: true}
+      entity: {name: 'base alpha', position: Cartesian3.fromRadians(1.0, 1.0), show: true}
     };
     const base2 = {
       id: '1',
       actionType: ActionType.ADD_UPDATE,
-      entity: {name: 'base beta', position: Cesium.Cartesian3.fromRadians(1.2, 1.2), show: true}
+      entity: {name: 'base beta', position: Cartesian3.fromRadians(1.2, 1.2), show: true}
     };
     const baseArray = [base1, base2];
     this.bases$ = observableFrom(baseArray);

@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'models-layer-example',
-  template: `
+    selector: 'models-layer-example',
+    template: `
     <ac-layer acFor="let track of entities$" [context]="this">
       <ac-model-desc props="{
                               position: track.position,
@@ -17,6 +17,8 @@ import { map } from 'rxjs/operators';
       </ac-model-desc>
     </ac-layer>
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class ModelsLayerExampleComponent implements OnInit {
 

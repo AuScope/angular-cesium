@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -40,23 +39,25 @@ import { BasicContextMenu } from '../../models/basic-context-menu';
 @Component({
   selector: 'ac-context-menu-wrapper',
   template: `
-    <ac-html *ngIf="contextMenuService.showContextMenu" [props]="{position: contextMenuService.position}">
+  @if (contextMenuService.showContextMenu) {
+    <ac-html [props]="{position: contextMenuService.position}">
       <ng-template #contextMenuContainer></ng-template>
     </ac-html>
+  }
   `,
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class AcContextMenuWrapperComponent implements OnInit, OnDestroy {
 
-  private contextMenuChangeSubscription: Subscription;
-  private contextMenuOpenSubscription: Subscription;
+  @ViewChild('contextMenuContainer', { read: ViewContainerRef }) viewContainerRef!: ViewContainerRef;
 
-  @ViewChild('contextMenuContainer', { read: ViewContainerRef }) viewContainerRef: ViewContainerRef;
+  private contextMenuChangeSubscription!: Subscription;
+  private contextMenuOpenSubscription!: Subscription;
 
   constructor(public contextMenuService: ContextMenuService,
-              private cd: ChangeDetectorRef,
-              private componentFactoryResolver: ComponentFactoryResolver) {
+              private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -64,10 +65,11 @@ export class AcContextMenuWrapperComponent implements OnInit, OnDestroy {
       this.contextMenuService.contextMenuChangeNotifier.subscribe(() => this.cd.detectChanges());
     this.contextMenuOpenSubscription =
       this.contextMenuService.onOpen.subscribe(() => {
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.contextMenuService.content as any);
         this.viewContainerRef.clear();
-        const componentRef = this.viewContainerRef.createComponent(componentFactory);
-        (componentRef.instance as BasicContextMenu).data = this.contextMenuService.options.data;
+        const componentRef = this.viewContainerRef.createComponent(this.contextMenuService.content as any);
+        if (this.contextMenuService.options) {
+          (componentRef.instance as BasicContextMenu).data = this.contextMenuService.options.data;
+        }
         this.cd.detectChanges();
       });
   }

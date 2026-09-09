@@ -1,4 +1,5 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
+import { buildModuleUrl, TileMapServiceImageryProvider } from 'cesium';
 import { CesiumService } from '../../services/cesium/cesium.service';
 import { Checker } from '../../utils/checker';
 import { MapLayerProviderOptions } from '../../models';
@@ -18,8 +19,10 @@ import { MapLayerProviderOptions } from '../../models';
  *  ```
  */
 @Component({
-  selector: 'ac-map-layer-provider',
-  template: '',
+    selector: 'ac-map-layer-provider',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcMapLayerProviderComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -39,7 +42,7 @@ export class AcMapLayerProviderComponent implements OnInit, OnChanges, OnDestroy
    * index (optional) - The index to add the layer at. If omitted, the layer will added on top of all existing layers.
    */
   @Input()
-  index: Number;
+  index!: Number;
 
   /**
    * show (optional) - Determines if the map layer is shown.
@@ -74,9 +77,9 @@ export class AcMapLayerProviderComponent implements OnInit, OnChanges, OnDestroy
   }
 
   private createOfflineMapProvider() {
-    return Cesium.createTileMapServiceImageryProvider({
-      url: Cesium.buildModuleUrl('Assets/Textures/NaturalEarthII')
-    });
+    return TileMapServiceImageryProvider.fromUrl(
+        buildModuleUrl('Assets/Textures/NaturalEarthII')
+    );
   }
 
   ngOnInit() {

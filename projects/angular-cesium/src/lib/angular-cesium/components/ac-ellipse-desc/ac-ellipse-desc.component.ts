@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumProperties } from '../../services/cesium-properties/cesium-properties.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
@@ -25,9 +25,11 @@ import { EllipseDrawerService } from '../../services/drawers/ellipse-drawer/elli
  *  ```
  */
 @Component({
-  selector: 'ac-ellipse-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcEllipseDescComponent)}],
+    selector: 'ac-ellipse-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcEllipseDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcEllipseDescComponent extends BasicDesc {
   constructor(ellipseDrawer: EllipseDrawerService, layerService: LayerService,

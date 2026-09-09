@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -24,9 +24,11 @@ import { CorridorDrawerService } from '../../services/drawers/corridor-dawer/cor
  *  ```
  */
 @Component({
-  selector: 'ac-corridor-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcCorridorDescComponent)}],
+    selector: 'ac-corridor-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcCorridorDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcCorridorDescComponent extends BasicDesc {
 

@@ -1,23 +1,29 @@
-<ac-map-layer-provider *ngIf="appSettingsService.showMapLayer"
-                       [provider]="MapLayerProviderOptions.ArcGisMapServer"
+@if (appSettingsService.showMapLayer) {
+  <ac-map-layer-provider
+    [provider]="MapLayerProviderOptions.ArcGisMapServer"
                        [options]="{
                                 url : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
                             }">
-</ac-map-layer-provider>
+  </ac-map-layer-provider>
+}
 
-<ac-map-layer-provider #blackmarble *ngIf="appSettingsService.showMapLayer" [provider]="MapLayerProviderOptions.MapTileService" [alpha]="0.5"
+@if (appSettingsService.showMapLayer) {
+  <ac-map-layer-provider #blackmarble [provider]="MapLayerProviderOptions.MapTileService" [alpha]="0.5"
                        [options]="{
                                 url :  '//cesiumjs.org/tilesets/imagery/blackmarble',
                                 maximumLevel : 8,
                                 flipXY : true
                             }">
-</ac-map-layer-provider>
-<ac-map-layer-provider *ngIf="appSettingsService.showMapLayer" [provider]="MapLayerProviderOptions.SingleTileImagery"
+  </ac-map-layer-provider>
+}
+@if (appSettingsService.showMapLayer) {
+  <ac-map-layer-provider [provider]="MapLayerProviderOptions.SingleTileImagery"
                        [options]="{
-                                url : 'assets/angular_cesium.png',
-                                rectangle : Cesium.Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)
+                                url : 'assets/angular_png',
+                                rectangle : Rectangle.fromDegrees(-75.0, 28.0, -67.0, 29.75)
                             }">
-</ac-map-layer-provider>
+  </ac-map-layer-provider>
+}
 
 <ac-map-terrain-provider [provider]="MapTerrainProviderOptions.WorldTerrain"
                          [options]="{
@@ -29,7 +35,7 @@
 
 <!--More examples -->
 <!--<ac-map-layer-provider *ngIf="appSettingsService.showMapLayer"-->
-                       <!--[provider]="MapLayerProviderOptions.OpenStreetMap"-->
+<!--[provider]="MapLayerProviderOptions.OpenStreetMap"-->
                        <!--[options]="{-->
                                    <!--url : 'https://a.tile.openstreetmap.org/'-->
                             <!--}">-->
@@ -38,8 +44,8 @@
                        <!--[provider]="MapLayerProviderOptions.BingMaps"-->
                        <!--[options]="{-->
                                     <!--url : 'https://dev.virtualearth.net',-->
-                                    <!--key : Cesium.BingMapsApi.defaultKey,-->
-                                    <!--mapStyle : Cesium.BingMapsStyle.AERIAL-->
+                                    <!--key : BingMapsApi.defaultKey,-->
+                                    <!--mapStyle : BingMapsStyle.AERIAL-->
                             <!--}">-->
 <!--</ac-map-layer-provider>-->
 
@@ -47,8 +53,8 @@
                        <!--[provider]="MapLayerProviderOptions.BingMaps"-->
                        <!--[options]="{-->
                                     <!--url : 'https://dev.virtualearth.net',-->
-                                    <!--key : Cesium.BingMapsApi.defaultKey,-->
-                                    <!--mapStyle : Cesium.BingMapsStyle.AERIAL-->
+                                    <!--key : BingMapsApi.defaultKey,-->
+                                    <!--mapStyle : BingMapsStyle.AERIAL-->
                             <!--}">-->
 <!--</ac-map-layer-provider>-->
 <!--<ac-map-layer-provider *ngIf="appSettingsService.showMapLayer"-->

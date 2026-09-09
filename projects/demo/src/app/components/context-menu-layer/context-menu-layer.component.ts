@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CesiumEvent, ContextMenuService, CoordinateConverter, MapEventsManagerService, PickOptions } from 'angular-cesium';
 import { ContextMenuData, MyCustomContextMenuComponent } from './context-menu/my-custom-context-menu.component';
 
 @Component({
-  selector: 'context-menu-layer',
-  templateUrl: 'context-menu-layer.component.html',
-  providers: [CoordinateConverter]
+    selector: 'context-menu-layer',
+    templateUrl: 'context-menu-layer.component.html',
+    providers: [CoordinateConverter],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 
 export class ContextMenuLayerComponent implements OnInit {

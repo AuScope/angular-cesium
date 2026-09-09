@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Cartesian3 } from 'cesium';
 import {
   CameraService,
   CesiumService, EditActions, LabelProps,
@@ -10,10 +11,12 @@ import {
 } from 'angular-cesium';
 
 @Component({
-  selector: 'rectangle-editor-example',
-  templateUrl: './rectangle-editor-example.component.html',
-  styleUrls: ['./rectangle-editor-example.component.css'],
-  providers: [RectanglesEditorService]
+    selector: 'rectangle-editor-example',
+    templateUrl: './rectangle-editor-example.component.html',
+    styleUrls: ['./rectangle-editor-example.component.css'],
+    providers: [RectanglesEditorService],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class RectangleEditorExampleComponent implements OnInit {
 
@@ -56,8 +59,8 @@ export class RectangleEditorExampleComponent implements OnInit {
       this.stopEdit();
     }
     const initialPos = [
-      Cesium.Cartesian3.fromDegrees(-80, 35),
-      Cesium.Cartesian3.fromDegrees(-90, 33)];
+      Cartesian3.fromDegrees(-80, 35),
+      Cartesian3.fromDegrees(-90, 33)];
     this.editing$ = this.rectangleEditor.edit(initialPos, {
       polylineProps: {
         width: 3,

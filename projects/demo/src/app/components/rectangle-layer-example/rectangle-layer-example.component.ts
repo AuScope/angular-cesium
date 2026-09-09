@@ -1,10 +1,11 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Rectangle, Color } from 'cesium';
 import { AcEntity, AcLayerComponent, AcNotification, ActionType } from 'angular-cesium';
 
 @Component({
-  selector: 'rectangle-layer-example',
-  template: `
+    selector: 'rectangle-layer-example',
+    template: `
       <ac-layer acFor="let rectangle of rectangles$" [context]="this" [show]="true">
           <ac-rectangle-desc props="{
               coordinates: rectangle.coordinates,
@@ -20,6 +21,8 @@ import { AcEntity, AcLayerComponent, AcNotification, ActionType } from 'angular-
 
 
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class RectangleLayerExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;
@@ -29,7 +32,7 @@ export class RectangleLayerExampleComponent implements OnInit {
   initialValue = {
     id: '0',
     entity: new AcEntity({
-      coordinates: new Cesium.Rectangle(
+      coordinates: new Rectangle(
         -1.88496,
         0.436332,
         -1.74533,
@@ -37,9 +40,9 @@ export class RectangleLayerExampleComponent implements OnInit {
       ),
       extrudedHeight: 0,
       height: 0,
-      material: Cesium.Color.ORANGE.withAlpha(0.5),
+      material: Color.ORANGE.withAlpha(0.5),
       outline: true,
-      outlineColor: Cesium.Color.BLACK
+      outlineColor: Color.BLACK
     }),
     actionType: ActionType.ADD_UPDATE
   };

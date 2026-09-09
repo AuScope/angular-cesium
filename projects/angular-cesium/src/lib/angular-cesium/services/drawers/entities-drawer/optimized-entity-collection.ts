@@ -4,17 +4,16 @@ export class OptimizedEntityCollection {
   private _isSuspended = false;
   private _isHardSuspend = false;
   private _suspensionTimeout: any;
-  private _onEventSuspensionCallback: { once: boolean, callback: Function };
-  private _onEventResumeCallback: { once: boolean, callback: Function };
+  private _onEventSuspensionCallback!: { once: boolean, callback: Function } | undefined;
+  private _onEventResumeCallback!: { once: boolean, callback: Function } | undefined;
 
   constructor(private entityCollection: any, collectionSize = -1, updateRate = -1) {
     this._updateRate = updateRate;
     this._collectionSize = collectionSize;
-
   }
 
-  setShow(show: boolean) {
-    this.entityCollection.show = show;
+  get collectionSize(): number {
+    return this._collectionSize;
   }
 
   get isSuspended(): boolean {
@@ -29,12 +28,12 @@ export class OptimizedEntityCollection {
     this._updateRate = value;
   }
 
-  get collectionSize(): number {
-    return this._collectionSize;
-  }
-
   set collectionSize(value: number) {
     this._collectionSize = value;
+  }
+
+  setShow(show: boolean) {
+    this.entityCollection.show = show;
   }
 
   collection() {

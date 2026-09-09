@@ -1,9 +1,10 @@
+import { Cartesian3 } from 'cesium';
 import { CoordinateConverter } from './../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { AcLayerComponent } from './../../../../angular-cesium/components/ac-layer/ac-layer.component';
 import { Injectable } from '@angular/core';
-import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { PolygonEditOptions } from '../../../models/polygon-edit-options';
 import { EditablePolyline } from '../../../models/editable-polyline';
+import { DEFAULT_POLYLINE_OPTIONS } from './polylines-editor.service';
 
 @Injectable()
 export class PolylinesManagerService {
@@ -16,14 +17,18 @@ export class PolylinesManagerService {
       editPolylinesLayer,
       editPointsLayer,
       coordinateConverter,
-      polylineOptions,
+      polylineOptions ?? DEFAULT_POLYLINE_OPTIONS,
       positions);
     this.polylines.set(id, editablePolyline
     );
   }
 
   get(id: string): EditablePolyline {
-    return this.polylines.get(id);
+    const polyline = this.polylines.get(id);
+    if (!polyline) {
+      throw new Error(`Polyline '${id}' not found`);
+    }
+    return polyline;
   }
 
   clear() {

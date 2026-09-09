@@ -82,15 +82,16 @@ import { EditableRectangle } from '../../models/editable-rectangle';
   `,
   providers: [CoordinateConverter, RectanglesManagerService],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false
 })
 export class RectanglesEditorComponent implements OnDestroy {
-  private editLabelsRenderFn: (update: RectangleEditUpdate, labels: LabelProps[]) => LabelProps[];
-  public Cesium = Cesium;
+  @ViewChild('editRectanglesLayer') private editRectanglesLayer!: AcLayerComponent;
+  @ViewChild('editPointsLayer') private editPointsLayer!: AcLayerComponent;
+
   public editPoints$ = new Subject<AcNotification>();
   public editRectangles$ = new Subject<AcNotification>();
 
-  @ViewChild('editRectanglesLayer') private editRectanglesLayer: AcLayerComponent;
-  @ViewChild('editPointsLayer') private editPointsLayer: AcLayerComponent;
+  private editLabelsRenderFn!: ((update: RectangleEditUpdate, labels: LabelProps[]) => LabelProps[]) | undefined;
 
   constructor(
     private rectanglesEditor: RectanglesEditorService,
@@ -108,16 +109,6 @@ export class RectanglesEditorComponent implements OnDestroy {
       this.cesiumService
     );
     this.startListeningToEditorUpdates();
-  }
-
-  private startListeningToEditorUpdates() {
-    this.rectanglesEditor.onUpdate().subscribe((update: RectangleEditUpdate) => {
-      if (update.editMode === EditModes.CREATE || update.editMode === EditModes.CREATE_OR_EDIT) {
-        this.handleCreateUpdates(update);
-      } else if (update.editMode === EditModes.EDIT) {
-        this.handleEditUpdates(update);
-      }
-    });
   }
 
   getLabelId(element: any, index: number): string {
@@ -187,8 +178,8 @@ export class RectanglesEditorComponent implements OnDestroy {
       case EditActions.DISPOSE: {
         const rectangle = this.rectanglesManager.get(update.id);
         if (rectangle) {
-          rectangle.dispose();
           this.removeEditLabels(rectangle);
+          rectangle.dispose();
         }
         this.editLabelsRenderFn = undefined;
         break;
@@ -230,7 +221,7 @@ export class RectanglesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_POINT: {
         const rectangle = this.rectanglesManager.get(update.id);
-        if (rectangle && rectangle.enableEdit) {
+        if (rectangle && rectangle.enableEdit && update.updatedPosition && update.updatedPoint) {
           rectangle.movePoint(update.updatedPosition, update.updatedPoint);
           this.renderEditLabels(rectangle, update);
         }
@@ -262,7 +253,7 @@ export class RectanglesEditorComponent implements OnDestroy {
       }
       case EditActions.DRAG_SHAPE: {
         const rectangle = this.rectanglesManager.get(update.id);
-        if (rectangle && rectangle.enableEdit) {
+        if (rectangle && rectangle.enableEdit && update.draggedPosition && update.updatedPosition) {
           rectangle.moveShape(update.draggedPosition, update.updatedPosition);
           this.renderEditLabels(rectangle, update);
         }
@@ -293,6 +284,16 @@ export class RectanglesEditorComponent implements OnDestroy {
 
   getPointShow(point: EditPoint) {
     return point.show && (point.isVirtualEditPoint() ? point.props.showVirtual : point.props.show);
+  }
+
+  private startListeningToEditorUpdates() {
+    this.rectanglesEditor.onUpdate().subscribe((update: RectangleEditUpdate) => {
+      if (update.editMode === EditModes.CREATE || update.editMode === EditModes.CREATE_OR_EDIT) {
+        this.handleCreateUpdates(update);
+      } else if (update.editMode === EditModes.EDIT) {
+        this.handleEditUpdates(update);
+      }
+    });
   }
 }
 

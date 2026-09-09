@@ -4,11 +4,20 @@
  * entity= new AcEntity({
  *  	id: 0,
  *  	name: 'click me',
- *  	position: Cesium.Cartesian3.fromRadians(0.5, 0.5),
+ *  	position: Cartesian3.fromRadians(0.5, 0.5),
  * });
  * ```
  */
 export class AcEntity {
+  [key: string]: any;
+
+  /**
+   * Creates entity from a json
+   * @param json (Optional) entity object
+   */
+  constructor(json?: any) {
+    Object.assign(this, json);
+  }
 
   /**
    * Creates entity from a json
@@ -20,13 +29,5 @@ export class AcEntity {
       return Object.assign(new AcEntity(), json);
     }
     return new AcEntity();
-  }
-
-  /**
-   * Creates entity from a json
-   * @param json (Optional) entity object
-   */
-  constructor(json?: any) {
-    Object.assign(this, json);
   }
 }

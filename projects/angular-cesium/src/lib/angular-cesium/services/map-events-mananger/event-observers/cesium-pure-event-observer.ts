@@ -3,9 +3,9 @@ import { CesiumEvent } from '../consts/cesium-event.enum';
 import { CesiumEventModifier } from '../consts/cesium-event-modifier.enum';
 
 export class CesiumPureEventObserver {
-  public observer: Observable<any>;
+  public observer!: Observable<any>;
 
-  constructor(protected event: CesiumEvent, protected modifier: CesiumEventModifier) {
+  constructor(protected event: CesiumEvent, protected modifier: CesiumEventModifier | undefined) {
   }
 
   init(eventsHandler: any): Observable<any> {

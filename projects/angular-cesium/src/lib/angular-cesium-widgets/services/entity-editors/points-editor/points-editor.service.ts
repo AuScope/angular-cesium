@@ -1,5 +1,6 @@
 import { publish, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Color, Cartesian3, Cartesian2 } from 'cesium';
 import { MapEventsManagerService } from '../../../../angular-cesium/services/map-events-mananger/map-events-manager';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CesiumEvent } from '../../../../angular-cesium/services/map-events-mananger/consts/cesium-event.enum';
@@ -10,7 +11,6 @@ import { DisposableObservable } from '../../../../angular-cesium/services/map-ev
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
 import { EditPoint } from '../../../models/edit-point';
 import { CameraService } from '../../../../angular-cesium/services/camera/camera.service';
-import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
 import { PointsManagerService } from './points-manager.service';
 import { LabelProps } from '../../../models/label-props';
 import { generateKey } from '../../utils';
@@ -25,8 +25,8 @@ export const DEFAULT_POINT_OPTIONS: PointEditOptions = {
   dragPointEvent: CesiumEvent.LEFT_CLICK_DRAG,
   allowDrag: true,
   pointProps: {
-    color: Cesium.Color.WHITE.withAlpha(0.95),
-    outlineColor: Cesium.Color.BLACK.withAlpha(0.5),
+    color: Color.WHITE.withAlpha(0.95),
+    outlineColor: Color.BLACK.withAlpha(0.5),
     outlineWidth: 1,
     pixelSize: 10,
     show: true,
@@ -69,14 +69,14 @@ export const DEFAULT_POINT_OPTIONS: PointEditOptions = {
  */
 @Injectable()
 export class PointsEditorService {
-  private mapEventsManager: MapEventsManagerService;
+  private mapEventsManager!: MapEventsManagerService;
   private updateSubject = new Subject<PointEditUpdate>();
   private updatePublisher = publish<PointEditUpdate>()(this.updateSubject); // TODO maybe not needed
-  private coordinateConverter: CoordinateConverter;
-  private cameraService: CameraService;
-  private pointManager: PointsManagerService;
+  private coordinateConverter!: CoordinateConverter;
+  private cameraService!: CameraService;
+  private pointManager!: PointsManagerService;
   private observablesMap = new Map<string, DisposableObservable<any>[]>();
-  private cesiumScene;
+  private cesiumScene!: any;
 
   init(mapEventsManager: MapEventsManagerService,
        coordinateConverter: CoordinateConverter,
@@ -94,17 +94,6 @@ export class PointsEditorService {
 
   onUpdate(): Observable<PointEditUpdate> {
     return this.updatePublisher;
-  }
-
-  private screenToPosition(cartesian2) {
-    const cartesian3 = this.coordinateConverter.screenToCartesian3(cartesian2);
-
-    // If cartesian3 is undefined then the point inst on the globe
-    if (cartesian3) {
-      const ray = this.cameraService.getCamera().getPickRay(cartesian2);
-      return this.cesiumScene.globe.pick(ray, this.cesiumScene);
-    }
-    return cartesian3;
   }
 
   create(options = DEFAULT_POINT_OPTIONS, eventPriority = 100): PointEditorObservable {
@@ -125,7 +114,11 @@ export class PointsEditorService {
       pointOptions: pointOptions,
     });
 
-    const finishCreation = (position: Cartesian3) => {
+    const finishCreation = (position?: Cartesian3 | null) => {
+      if (position == null) {
+        return false;
+      }
+
       return this.switchToEditMode(
         id,
         clientEditSubject,
@@ -135,7 +128,7 @@ export class PointsEditorService {
         editorObservable,
         true
       );
-    };
+    }
 
     const mouseMoveRegistration = this.mapEventsManager.register({
       event: CesiumEvent.MOUSE_MOVE,
@@ -174,43 +167,6 @@ export class PointsEditorService {
     return editorObservable;
   }
 
-  private switchToEditMode(id,
-                           clientEditSubject,
-                           position: Cartesian3,
-                           eventPriority,
-                           pointOptions,
-                           editorObservable,
-                           finishedCreate: boolean) {
-    const update = {
-      id,
-      position: position,
-      editMode: EditModes.CREATE_OR_EDIT,
-      updatedPosition: position,
-      editAction: EditActions.ADD_LAST_POINT,
-    };
-    this.updateSubject.next(update);
-    clientEditSubject.next({
-      ...update,
-      position: position,
-      point: this.getPoint(id),
-    });
-
-    const changeMode = {
-      id,
-      editMode: EditModes.CREATE,
-      editAction: EditActions.CHANGE_TO_EDIT,
-    };
-    this.updateSubject.next(changeMode);
-    clientEditSubject.next(changeMode);
-    if (this.observablesMap.has(id)) {
-      this.observablesMap.get(id).forEach(registration => registration.dispose());
-    }
-    this.observablesMap.delete(id);
-    this.editPoint(id, position, eventPriority, clientEditSubject, pointOptions, editorObservable);
-    finishedCreate = true;
-    return finishedCreate;
-  }
-
   edit(position: Cartesian3, options = DEFAULT_POINT_OPTIONS, priority = 100): PointEditorObservable {
     const id = generateKey();
     const pointOptions = this.setOptions(options);
@@ -241,6 +197,54 @@ export class PointsEditorService {
     );
   }
 
+  private screenToPosition(cartesian2: any) {
+    const cartesian3 = this.coordinateConverter.screenToCartesian3(cartesian2);
+
+    // If cartesian3 is undefined then the point inst on the globe
+    if (cartesian3) {
+      const ray = this.cameraService.getCamera().getPickRay(cartesian2);
+      return this.cesiumScene.globe.pick(ray, this.cesiumScene);
+    }
+    return cartesian3;
+  }
+
+  private switchToEditMode(id: any,
+                           clientEditSubject: any,
+                           position: Cartesian3,
+                           eventPriority: any,
+                           pointOptions: any,
+                           editorObservable: any,
+                           finishedCreate: boolean) {
+    const update = {
+      id,
+      position: position,
+      editMode: EditModes.CREATE_OR_EDIT,
+      updatedPosition: position,
+      editAction: EditActions.ADD_LAST_POINT,
+    };
+    this.updateSubject.next(update);
+    clientEditSubject.next({
+      ...update,
+      position: position,
+      point: this.getPoint(id),
+    });
+
+    const changeMode = {
+      id,
+      editMode: EditModes.CREATE,
+      editAction: EditActions.CHANGE_TO_EDIT,
+    };
+    this.updateSubject.next(changeMode);
+    clientEditSubject.next(changeMode);
+    if (this.observablesMap.has(id)) {
+      this.observablesMap.get(id)?.forEach(registration => registration.dispose());
+    }
+    this.observablesMap.delete(id);
+    this.editPoint(id, position, eventPriority, clientEditSubject, pointOptions, editorObservable);
+    finishedCreate = true;
+    return finishedCreate;
+  }
+
   private editPoint(id: string,
                        position: Cartesian3,
                        priority: number,
@@ -267,7 +271,7 @@ export class PointsEditorService {
     });
 
     pointDragRegistration.pipe(
-      tap(({ movement: { drop } }) => this.cameraService.enableInputs(drop)))
+      tap(({ movement: { drop } }) => this.cameraService.enableInputs(drop ?? false)))
       .subscribe(({ movement: { endPosition, drop }, entities }) => {
         const updatedPosition = this.screenToPosition(endPosition);
         if (!updatedPosition) {
@@ -302,7 +306,7 @@ export class PointsEditorService {
   }
 
 
-  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position: Cartesian3) => boolean)
+  private createEditorObservable(observableToExtend: any, id: string, finishCreation?: (position?: Cartesian3) => boolean)
                                                                                                     : PointEditorObservable {
     observableToExtend.dispose = () => {
       const observables = this.observablesMap.get(id);
@@ -371,7 +375,7 @@ export class PointsEditorService {
         throw new Error('Points editor error edit(): cannot call finishCreation() on edit');
       }
 
-      return finishCreation(null);
+      return finishCreation(undefined);
     };
 
     observableToExtend.getCurrentPoint = () => this.getPoint(id);

@@ -6,7 +6,7 @@ import { AcBillboardComponent } from './components/ac-billboard/ac-billboard.com
 import { AcBillboardDescComponent } from './components/ac-billborad-desc/ac-billborad-desc.component';
 import { AcEllipseDescComponent } from './components/ac-ellipse-desc/ac-ellipse-desc.component';
 import { AcPolylineDescComponent } from './components/ac-polyline-desc/ac-polyline-desc.component';
-import { Angular2ParseModule, PIPES_CONFIG } from 'angular2parse';
+import { Angular2ParseModule, PIPES_CONFIG } from '@auscope/angular2parse';
 import { PixelOffsetPipe } from './pipes/pixel-offset/pixel-offset.pipe';
 import { RadiansToDegreesPipe } from './pipes/radians-to-degrees/radians-to-degrees.pipe';
 import { JsonMapper } from './services/json-mapper/json-mapper.service';
@@ -51,8 +51,6 @@ import { AcBillboardPrimitiveDescComponent } from './components/ac-billboard-pri
 import { AcLabelPrimitiveDescComponent } from './components/ac-label-primitive-desc/ac-label-primitive-desc.component';
 import { AcPolylinePrimitiveDescComponent } from './components/ac-polyline-primitive-desc/ac-polyline-primitive-desc.component';
 import { ModuleConfiguration } from './models/module-options';
-import { ANGULAR_CESIUM_CONFIG, ConfigurationService } from './cesium-enhancements/ConfigurationService';
-import { CesiumExtender } from '../cesium-extender/extender';
 import { AcHtmlDescComponent } from './components/ac-html-desc/ac-html-desc.component';
 import { AcHtmlDirective } from './directives/ac-html/ac-html.directive';
 import { AcHtmlContainerDirective } from './directives/ac-html-container/ac-html-container.directive';
@@ -183,15 +181,10 @@ export class AngularCesiumModule {
     return {
       ngModule: AngularCesiumModule,
       providers: [
-        JsonMapper, CesiumProperties, GeoUtilsService, ViewerFactory, MapsManagerService, ConfigurationService,
-        {provide: ANGULAR_CESIUM_CONFIG, useValue: config},
+        JsonMapper, CesiumProperties, GeoUtilsService, ViewerFactory, MapsManagerService,
         {provide: PIPES_CONFIG, multi: true, useValue: config && config.customPipes || []},
         {provide: PIPES_CONFIG, multi: true, useValue: PARSE_PIPES_CONFIG_MAP},
       ],
     };
-  }
-
-  constructor() {
-    CesiumExtender.extend();
   }
 }

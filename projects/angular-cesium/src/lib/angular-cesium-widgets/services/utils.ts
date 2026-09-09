@@ -8,9 +8,9 @@ export function generateKey(length = 12): string {
   return id;
 }
 
-export function debounce(func, wait) {
-  let timeout;
-  return function (...args) {
+export function debounce(func: any, wait: any) {
+  let timeout: ReturnType<typeof setTimeout>;
+  return function (this: any, ...args: any[]) {
     const context = this;
     clearTimeout(timeout);
     timeout = setTimeout(() => func.apply(context, args), wait);

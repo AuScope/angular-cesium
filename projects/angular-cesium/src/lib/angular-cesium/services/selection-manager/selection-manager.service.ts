@@ -48,7 +48,7 @@ export interface SelectionOptions {
 export class SelectionManagerService {
   selectedEntitiesItems$: BehaviorSubject<AcEntity[]> = new BehaviorSubject<AcEntity[]>([]);
   selectedEntitySubject$: Subject<AcEntity> = new Subject<AcEntity>();
-  private mapEventsManagerService: MapEventsManagerService;
+  private mapEventsManagerService!: MapEventsManagerService;
 
   constructor(private mapsManager: MapsManagerService) {
   }
@@ -74,31 +74,8 @@ export class SelectionManagerService {
     }
   }
 
-  private addToSelected(entity: AcEntity, addSelectedIndicator: boolean) {
-    if (addSelectedIndicator) {
-      entity['selected'] = true;
-    }
-
-    const current = this.selectedEntities();
-    this.selectedEntitySubject$.next(entity);
-    this.selectedEntitiesItems$.next([...current, entity]);
-  }
-
-  private removeSelected(entity: AcEntity, addSelectedIndicator: boolean) {
-    if (addSelectedIndicator) {
-      entity['selected'] = false;
-    }
-
-    const current = this.selectedEntities();
-    const entityIndex = current.indexOf(entity);
-    if (entityIndex !== -1) {
-      current.splice(entityIndex, 1);
-      this.selectedEntitiesItems$.next(current);
-      this.selectedEntitySubject$.next(entity);
-    }
-  }
-
-  initSelection(selectionOptions?: SelectionOptions, addSelectedIndicator = true, eventPriority?: number, mapId?: string) {
+  initSelection(selectionOptions: SelectionOptions = { event: CesiumEvent.LEFT_CLICK },
+      addSelectedIndicator = true, eventPriority?: number, mapId?: string) {
     const mapComponent = this.mapsManager.getMap(mapId);
     if (!mapComponent) {
       return;
@@ -125,5 +102,29 @@ export class SelectionManagerService {
         const entity = entities[0];
         this.toggleSelection(entity, addSelectedIndicator);
       });
+  }
+
+  private addToSelected(entity: AcEntity, addSelectedIndicator: boolean) {
+    if (addSelectedIndicator) {
+      entity['selected'] = true;
+    }
+
+    const current = this.selectedEntities();
+    this.selectedEntitySubject$.next(entity);
+    this.selectedEntitiesItems$.next([...current, entity]);
+  }
+
+  private removeSelected(entity: AcEntity, addSelectedIndicator: boolean) {
+    if (addSelectedIndicator) {
+      entity['selected'] = false;
+    }
+
+    const current = this.selectedEntities();
+    const entityIndex = current.indexOf(entity);
+    if (entityIndex !== -1) {
+      current.splice(entityIndex, 1);
+      this.selectedEntitiesItems$.next(current);
+      this.selectedEntitySubject$.next(entity);
+    }
   }
 }

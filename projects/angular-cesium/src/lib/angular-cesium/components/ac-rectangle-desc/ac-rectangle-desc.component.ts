@@ -1,4 +1,4 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -24,9 +24,11 @@ import { RectangleDrawerService } from '../../services/drawers/rectangle-dawer/r
  *  ```
  */
 @Component({
-  selector: 'ac-rectangle-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcRectangleDescComponent)}],
+    selector: 'ac-rectangle-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcRectangleDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcRectangleDescComponent extends BasicDesc {
 

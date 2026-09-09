@@ -11,11 +11,12 @@ export class AcHtmlContext {
 }
 
 @Directive({
-  selector: '[acHtml]',
+    selector: '[acHtml]',
+    standalone: false
 })
 export class AcHtmlDirective implements OnInit {
 
-  private _views = new Map<any, { viewRef: any, context: any }>();
+  private _views: any = new Map<any, { viewRef: any, context: any }>();
 
   constructor(
     private _templateRef: TemplateRef<AcHtmlContext>,
@@ -28,17 +29,6 @@ export class AcHtmlDirective implements OnInit {
 
   ngOnInit() {
 
-  }
-
-  private _handleView(id: any, primitive: any, entity: any) {
-    if (!this._views.has(id) && primitive.show) {
-      const context = new AcHtmlContext(id, {$implicit: entity});
-      const viewRef = this._viewContainerRef.createEmbeddedView(this._templateRef, context);
-      this._views.set(id, {viewRef, context});
-      this._changeDetector.detectChanges();
-    }  else if (this._views.has(id) && primitive.show) {
-      this._changeDetector.detectChanges();
-    }
   }
 
   addOrUpdate(id: any, primitive: any) {
@@ -63,5 +53,16 @@ export class AcHtmlDirective implements OnInit {
     this._views.delete(id);
     this._acHtmlManager.remove(id);
     primitive.element = null;
+  }
+
+  private _handleView(id: any, primitive: any, entity: any) {
+    if (!this._views.has(id) && primitive.show) {
+      const context = new AcHtmlContext(id, {$implicit: entity});
+      const viewRef = this._viewContainerRef.createEmbeddedView(this._templateRef, context);
+      this._views.set(id, {viewRef, context});
+      this._changeDetector.detectChanges();
+    }  else if (this._views.has(id) && primitive.show) {
+      this._changeDetector.detectChanges();
+    }
   }
 }

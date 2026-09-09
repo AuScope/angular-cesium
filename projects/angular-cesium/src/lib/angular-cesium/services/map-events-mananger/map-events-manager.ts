@@ -2,6 +2,7 @@ import { merge, Observable, of as observableOf, Subject } from 'rxjs';
 
 import { filter, map, mergeMap, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Entity } from 'cesium';
 import { CesiumService } from '../cesium/cesium.service';
 import { CesiumEventBuilder } from './cesium-event-builder';
 import { EventRegistrationInput, PickConfiguration } from './event-registration-input';
@@ -13,7 +14,7 @@ import { UtilsService } from '../../utils/utils.service';
 import { CesiumDragDropHelper } from './event-observers/cesium-drag-drop-helper';
 
 class Registration {
-  constructor(public observable: Observable<EventResult>,
+  constructor(public observable: Observable<EventResult> | undefined,
               public  stopper: Subject<any>,
               public  priority: number,
               public  isPaused: boolean) {
@@ -77,6 +78,10 @@ export class MapEventsManagerService {
       throw new Error('CesiumService has not been initialized yet - MapEventsManagerService must be injected  under ac-map');
     }
 
+    if (input.event === undefined) {
+      throw new Error('MapEventsManagerService: event is required to register');
+    }
+
     input.pick = input.pick || PickOptions.NO_PICK;
     input.priority = input.priority || 0;
     input.pickConfig = input.pickConfig || {};
@@ -95,7 +100,13 @@ export class MapEventsManagerService {
     const eventRegistration = this.createEventRegistration(input);
     const registrationObservable: any = eventRegistration.observable;
     registrationObservable.dispose = () => this.disposeObservable(eventRegistration, eventName);
-    this.eventRegistrations.get(eventName).push(eventRegistration);
+
+    let registrations = this.eventRegistrations.get(eventName);
+    if (registrations === undefined) {
+      registrations = [];
+      this.eventRegistrations.set(eventName, registrations);
+    }
+    registrations.push(eventRegistration);
 
     this.sortRegistrationsByPriority(eventName);
     return <DisposableObservable<EventResult>>registrationObservable;
@@ -104,6 +115,9 @@ export class MapEventsManagerService {
   private disposeObservable(eventRegistration: Registration, eventName: string) {
     eventRegistration.stopper.next(1);
     const registrations = this.eventRegistrations.get(eventName);
+    if (registrations === undefined) {
+      return;
+    }
     const index = registrations.indexOf(eventRegistration);
     if (index !== -1) {
       registrations.splice(index, 1);
@@ -113,6 +127,9 @@ export class MapEventsManagerService {
 
   private sortRegistrationsByPriority(eventName: string) {
     const registrations = this.eventRegistrations.get(eventName);
+    if (registrations === undefined) {
+      return;
+    }
     registrations.sort((a, b) => b.priority - a.priority);
     if (registrations.length === 0) {
       return;
@@ -127,14 +144,17 @@ export class MapEventsManagerService {
   }
 
   private createEventRegistration({
-                                    event,
-                                    modifier,
-                                    entityType,
-                                    pick: pickOption,
-                                    priority,
-                                    pickFilter,
-                                    pickConfig,
-                                  }: EventRegistrationInput): Registration {
+    event,
+    modifier,
+    entityType,
+    pick: pickOption = PickOptions.NO_PICK,
+    priority = 0,
+    pickFilter,
+    pickConfig = {},
+  }: EventRegistrationInput): Registration {
+    if (event === undefined) {
+      throw new Error('MapEventsManagerService: event is required to register');
+    }
     const cesiumEventObservable = this.eventBuilder.get(event, modifier);
     const stopper = new Subject<any>();
 
@@ -167,16 +187,21 @@ export class MapEventsManagerService {
   }
 
   private createDragEvent({
-                            event,
-                            modifier,
-                            entityType,
-                            pick: pickOption,
-                            priority,
-                            pickFilter,
-                            pickConfig,
-                          }: EventRegistrationInput): Observable<EventResult> {
+    event,
+    modifier,
+    entityType,
+    pick: pickOption,
+    priority,
+    pickFilter,
+    pickConfig,
+  }: EventRegistrationInput): Observable<EventResult> {
+    if (event === undefined) {
+      throw new Error('MapEventsManagerService: event is required to register');
+    }
     const { mouseDownEvent, mouseUpEvent } = CesiumDragDropHelper.getDragEventTypes(event);
-
+    if (mouseDownEvent === undefined || mouseUpEvent === undefined) {
+      throw new Error('MapEventsManagerService: event is not a drag event');
+    }
     const mouseUpObservable = this.eventBuilder.get(mouseUpEvent);
     const mouseMoveObservable = this.eventBuilder.get(CesiumEvent.MOUSE_MOVE);
 
@@ -190,6 +215,9 @@ export class MapEventsManagerService {
       pickConfig,
     });
 
+    if (mouseDownRegistration.observable === undefined) {
+      throw new Error('MapEventsManagerService: mouseDownRegistration.observable is undefined');
+    }
     const dropSubject = new Subject<EventResult>();
     const dragObserver = mouseDownRegistration.observable.pipe(mergeMap(e => {
       let lastMove: any = null;
@@ -245,19 +273,19 @@ export class MapEventsManagerService {
 
     // Picks can be cesium entity or cesium primitive
     if (picks) {
-      picks = picks.map((pick: any) => pick.id && pick.id instanceof Cesium.Entity ? pick.id : pick.primitive);
+      picks = picks.map((pick: any) => pick.id && pick.id instanceof Entity ? pick.id : pick.primitive);
     }
 
     return { movement: movement, cesiumEntities: picks };
   }
 
-  private addEntities(picksAndMovement: any, entityType: any, pickOption: PickOptions, pickFilter?: (any) => boolean): EventResult {
+  private addEntities(picksAndMovement: any, entityType: any, pickOption: PickOptions, pickFilter?: (any: any) => boolean): EventResult {
 
     if (picksAndMovement.cesiumEntities === null) {
       picksAndMovement.entities = null;
       return picksAndMovement;
     }
-    let entities = [];
+    let entities: any = [];
     if (pickOption !== PickOptions.NO_PICK) {
       if (entityType) {
         entities = picksAndMovement.cesiumEntities.map((pick: any) => pick.acEntity).filter((acEntity: any) => {

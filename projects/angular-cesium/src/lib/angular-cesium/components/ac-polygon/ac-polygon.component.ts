@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { PolygonDrawerService } from '../../services/drawers/polygon-drawer/polygon-drawer.service';
 import { EntityOnMapComponent } from '../../services/entity-on-map/entity-on-map.component';
 import { MapLayersService } from '../../services/map-layers/map-layers.service';
@@ -22,8 +22,10 @@ import { MapLayersService } from '../../services/map-layers/map-layers.service';
  *  ```
  */
 @Component({
-  selector: 'ac-polygon',
-  template: '',
+    selector: 'ac-polygon',
+    template: '',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcPolygonComponent extends EntityOnMapComponent {
   constructor(polygonDrawer: PolygonDrawerService, mapLayers: MapLayersService) {

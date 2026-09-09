@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Cartesian3 } from '../../../../angular-cesium/models/cartesian3';
+import { Cartesian3 } from 'cesium';
 import { EditableHippodrome } from '../../../models/editable-hippodrome';
 import { HippodromeEditOptions } from '../../../models/hippodrome-edit-options';
 import { AcLayerComponent } from '../../../../angular-cesium/components/ac-layer/ac-layer.component';
 import { CoordinateConverter } from '../../../../angular-cesium/services/coordinate-converter/coordinate-converter.service';
+import { DEFAULT_HIPPODROME_OPTIONS } from './hippodrome-editor.service';
 
 @Injectable()
 export class HippodromeManagerService {
@@ -17,13 +18,17 @@ export class HippodromeManagerService {
       editHippodromeLayer,
       editPointsLayer,
       coordinateConverter,
-      hippodromeEditOptions,
+      hippodromeEditOptions ?? DEFAULT_HIPPODROME_OPTIONS,
       positions);
     this.hippodromes.set(id, editableHippodrome);
   }
 
   get(id: string): EditableHippodrome {
-    return this.hippodromes.get(id);
+    const hippodrome = this.hippodromes.get(id);
+    if (!hippodrome) {
+      throw new Error('Missing hippodrome');
+    }
+    return hippodrome;
   }
 
   clear() {

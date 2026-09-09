@@ -1,4 +1,4 @@
-import { Component, forwardRef, OnInit } from '@angular/core';
+import { Component, forwardRef, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { ComputationCache } from '../../services/computation-cache/computation-cache.service';
@@ -23,9 +23,11 @@ import { ModelDrawerService } from '../../services/drawers/model-drawer/model-dr
  *  ```
  */
 @Component({
-  selector: 'ac-model-desc',
-  template: '',
-  providers: [{provide: BasicDesc, useExisting: forwardRef(() => AcModelDescComponent)}],
+    selector: 'ac-model-desc',
+    template: '',
+    providers: [{ provide: BasicDesc, useExisting: forwardRef(() => AcModelDescComponent) }],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcModelDescComponent extends BasicDesc implements OnInit {
 

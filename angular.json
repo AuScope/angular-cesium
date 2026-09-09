@@ -11,13 +11,16 @@
       "schematics": {},
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:ng-packagr",
           "options": {
-            "aot": true,
-            "outputPath": "dist/angular-cesium-demo",
+	        "project": "projects/angular-cesium/ng-package.json",
+            "outputPath": {
+              "base": "dist/angular-cesium-demo"
+            },
             "index": "projects/demo/src/index.html",
-            "main": "projects/demo/src/main.ts",
-            "polyfills": "projects/demo/src/polyfills.ts",
+            "polyfills": [
+              "projects/demo/src/polyfills.ts"
+            ],
             "tsConfig": "projects/demo/tsconfig.app.json",
             "assets": [
               "projects/demo/src/favicon.ico",
@@ -25,7 +28,7 @@
               {
                 "glob": "**/*",
                 "input": "./node_modules/cesium/Build/Cesium",
-                "output": "./assets/cesium"
+                "output": "./assets/Cesium"
               }
             ],
             "styles": [
@@ -33,13 +36,31 @@
               "projects/demo/src/app/utils/loading.css",
               "./node_modules/cesium/Build/Cesium/Widgets/widgets.css"
             ],
-            "scripts": [
-              "./node_modules/cesium/Build/Cesium/Cesium.js"
-            ],
             "allowedCommonJsDependencies": [
               "geodesy",
-              "util"
-            ]
+              "util",
+              "json-string-mapper",
+              "lodash",
+              "primitive-primitives",
+              "when",
+              "dompurify",
+              "protobufjs/dist/minimal/protobuf.js",
+              "mersenne-twister",
+              "earcut",
+              "rbush",
+              "urijs",
+              "bitmap-sdf",
+              "grapheme-splitter",
+              "nosleep.js",
+              "http",
+              "https",
+              "url"
+            ],
+            "extractLicenses": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true,
+            "browser": "projects/demo/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -53,10 +74,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -69,23 +87,24 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-cesium-demo:build"
+            "buildTarget": "angular-cesium-demo:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-cesium-demo:build:production"
+              "buildTarget": "angular-cesium-demo:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-cesium-demo:build"
+            "buildTarget": "angular-cesium-demo:build"
           }
         },
         "test": {
@@ -96,17 +115,7 @@
             "tsConfig": "projects/demo/src/tsconfig.spec.json",
             "karmaConfig": "projects/demo/src/karma.conf.js",
             "styles": ["projects/demo/src/styles.css"],
-            "scripts": [
-              "./node_modules/cesium/Build/Cesium/Cesium.js"
-            ],
             "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"]
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": ["projects/demo/tsconfig.app.json", "projects/demo/tsconfig.spec.json"],
-            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -126,13 +135,6 @@
             "production": {
               "devServerTarget": "angular-cesium-demo:serve:production"
             }
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -162,16 +164,6 @@
             "tsConfig": "projects/angular-cesium/tsconfig.spec.json",
             "karmaConfig": "projects/angular-cesium/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/angular-cesium/tsconfig.lib.json",
-              "projects/angular-cesium/tsconfig.spec.json"
-            ],
-            "exclude": ["**/node_modules/**"]
-          }
         }
       }
     },
@@ -187,14 +179,16 @@
       "prefix": "",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/landing-page",
+            "outputPath": {
+              "base": "dist/landing-page"
+            },
             "index": "projects/landing-page/src/index.html",
-            "main": "projects/landing-page/src/main.ts",
-            "polyfills": "projects/landing-page/src/polyfills.ts",
+            "polyfills": [
+              "projects/landing-page/src/polyfills.ts"
+            ],
             "tsConfig": "projects/landing-page/tsconfig.app.json",
-              "aot": true,
             "assets": [
               "projects/landing-page/src/favicon.ico",
               "projects/landing-page/src/assets",
@@ -208,7 +202,11 @@
               "projects/landing-page/src/styles.scss",
               "./node_modules/cesium/Build/Cesium/Widgets/widgets.css"
             ],
-            "scripts": ["./node_modules/cesium/Build/Cesium/Cesium.js"]
+            "extractLicenses": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true,
+            "browser": "projects/landing-page/src/main.ts"
           },
           "configurations": {
             "production": {
@@ -223,8 +221,6 @@
               "sourceMap": false,
               "namedChunks": false,
               "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -238,23 +234,24 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "landing-page:build"
+            "buildTarget": "landing-page:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "landing-page:build:production"
+              "buildTarget": "landing-page:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "landing-page:build"
+            "buildTarget": "landing-page:build"
           }
         },
         "test": {
@@ -274,19 +271,6 @@
             "scripts": []
           }
         },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/landing-page/tsconfig.app.json",
-              "projects/landing-page/tsconfig.spec.json",
-              "projects/landing-page/e2e/tsconfig.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
@@ -302,5 +286,33 @@
       }
     }
   },
-  "defaultProject": "angular-cesium-demo"
+  "cli": {
+    "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
+    }
+  }
 }

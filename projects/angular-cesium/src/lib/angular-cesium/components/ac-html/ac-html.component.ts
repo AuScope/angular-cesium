@@ -1,4 +1,5 @@
-import { Component, DoCheck, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Component, DoCheck, ElementRef, Input, OnDestroy, OnInit, Renderer2, ChangeDetectionStrategy } from '@angular/core';
+import { SceneTransforms } from 'cesium';
 import { CesiumService } from '../../services/cesium/cesium.service';
 
 /**
@@ -13,19 +14,21 @@ import { CesiumService } from '../../services/cesium/cesium.service';
  */
 
 @Component({
-  selector: 'ac-html',
-  template: `<ng-content></ng-content>`,
-  styles: [`:host {
+    selector: 'ac-html',
+    template: `<ng-content></ng-content>`,
+    styles: [`:host {
                 position: absolute;
                 z-index: 100;
-				}`]
+				}`],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class AcHtmlComponent implements DoCheck, OnDestroy, OnInit {
 
-
   @Input() props: any;
+  preRenderEventListener!: () => void;
+
   private isDraw = false;
-  preRenderEventListener: () => void;
 
   constructor(private cesiumService: CesiumService, private elementRef: ElementRef, private renderer: Renderer2) {
   }
@@ -38,7 +41,7 @@ export class AcHtmlComponent implements DoCheck, OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.cesiumService.getMap().getMapContainer().appendChild(this.elementRef.nativeElement);
+    this.cesiumService.getMapContainer().appendChild(this.elementRef.nativeElement);
     if (this.props.show === false) {
       this.hideElement();
     }
@@ -60,7 +63,7 @@ export class AcHtmlComponent implements DoCheck, OnDestroy, OnInit {
     if (!this.isDraw) {
       this.isDraw = true;
       this.preRenderEventListener = () => {
-        const screenPosition = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.cesiumService.getScene(),
+        const screenPosition = SceneTransforms.worldToWindowCoordinates(this.cesiumService.getScene(),
           this.props.position);
         this.setScreenPosition(screenPosition);
       };

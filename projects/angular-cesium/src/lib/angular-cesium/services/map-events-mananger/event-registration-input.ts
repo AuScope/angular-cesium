@@ -16,11 +16,11 @@ export interface PickConfiguration {
  * ```
  */
 export interface EventRegistrationInput {
-  event: CesiumEvent;
+  event: CesiumEvent | undefined;
   modifier?: CesiumEventModifier;
   entityType?: any;
   priority?: number;
   pick?: PickOptions;
-  pickFilter?: (any) => boolean;
+  pickFilter?: (any: any) => boolean;
   pickConfig?: PickConfiguration;
 }

@@ -1,12 +1,12 @@
 import { from, Observable } from 'rxjs';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AcNotification, ActionType } from 'angular-cesium';
 import { map } from 'rxjs/operators';
 import { MockDataProviderService } from '../../utils/services/dataProvider/mock-data-provider.service';
 
 @Component({
-  selector: 'billboard-layer-example',
-  template: `
+    selector: 'billboard-layer-example',
+    template: `
     <ac-layer acFor="let entity of entities$" [context]="this" [debug]="true">
       <ac-billboard-desc props="{ position: entity.position,
                             image : 'https://preview.ibb.co/cpDuwF/angular_cesium.png',
@@ -15,6 +15,8 @@ import { MockDataProviderService } from '../../utils/services/dataProvider/mock-
       </ac-billboard-desc>
     </ac-layer>
   `,
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class BillboardLayerExampleComponent implements OnInit {
 

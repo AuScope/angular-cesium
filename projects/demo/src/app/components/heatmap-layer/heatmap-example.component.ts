@@ -1,12 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Cartesian3, Rectangle } from 'cesium';
 import { AcLayerComponent, AcNotification, ActionType, CesiumService, CoordinateConverter } from 'angular-cesium';
 import { Subject } from 'rxjs';
 // import { CesiumHeatMapMaterialCreator } from 'angular-cesium';
 
 @Component({
-  selector: 'heatmap-example',
-  templateUrl: 'heatmap-example.component.html',
-  providers: [CoordinateConverter]
+    selector: 'heatmap-example',
+    templateUrl: 'heatmap-example.component.html',
+    providers: [CoordinateConverter],
+    changeDetection: ChangeDetectionStrategy.Eager,
+    standalone: false
 })
 export class HeatmapExampleComponent implements OnInit {
   @ViewChild(AcLayerComponent) layer: AcLayerComponent;
@@ -14,9 +17,9 @@ export class HeatmapExampleComponent implements OnInit {
   entities$: Subject<AcNotification> = new Subject();
   Cesium = Cesium;
   show = true;
-  rect = Cesium.Rectangle.fromDegrees(-120, 35, -90, 40);
+  rect = Rectangle.fromDegrees(-120, 35, -90, 40);
   circleRadius = 500000;
-  circleCenter = Cesium.Cartesian3.fromDegrees(-100, 24);
+  circleCenter = Cartesian3.fromDegrees(-100, 24);
 
   circleHeatMapMaterial: any;
   rectHeatMapMaterial: any;

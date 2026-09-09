@@ -14,7 +14,7 @@ import {
 import { AcNotification } from '../../models/ac-notification';
 import { Subject, Subscription } from 'rxjs';
 import { IDescription } from '../../models/description';
-import * as _get from 'lodash.get';
+import { get } from 'lodash';
 import { AcLayerComponent } from '../ac-layer/ac-layer.component';
 import { LayerService } from '../../services/layer-service/layer-service.service';
 import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
@@ -35,7 +35,7 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
  *        position: innerArrayItem.pos,
  *        pixelSize: 10,
  *        color: getTrackColor(track),
- *        outlineColor: Cesium.Color.BLUE,
+ *        outlineColor: Color.BLUE,
  *        outlineWidth: 1
  *      }">
  *      </ac-point-desc>
@@ -46,8 +46,8 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
  */
 
 @Component({
-  selector: 'ac-array-desc',
-  template: `
+    selector: 'ac-array-desc',
+    template: `
     <ac-layer #layer [acFor]="getAcForString()"
               [context]="layerService.context"
               [options]="layerService.options"
@@ -56,25 +56,28 @@ import { BasicDesc } from '../../services/basic-desc/basic-desc.service';
       <ng-content #content></ng-content>
     </ac-layer>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class AcArrayDescComponent implements OnChanges, OnInit, AfterContentInit, OnDestroy, IDescription {
 
-  @Input() acFor: string;
+  @Input() acFor!: string;
 
-  @Input() idGetter: (item: any, index: number) => string;
+  @Input() idGetter?: (item: any, index: number) => string;
 
   @Input() show = true;
-  @ViewChild('layer', {static: true}) private layer: AcLayerComponent;
+  @ViewChild('layer', {static: true}) private layer!: AcLayerComponent;
   @ContentChildren(BasicDesc, {descendants: false}) private basicDescs: any;
   @ContentChildren(AcArrayDescComponent, {descendants: false}) private arrayDescs: any;
+
+  entityName!: string;
+  arrayPath!: string;
+  arrayObservable$ = new Subject<AcNotification>();
+
   private entitiesMap = new Map<string, string[]>();
-  private layerServiceSubscription: Subscription;
+  private layerServiceSubscription!: Subscription;
   private id = 0;
   private readonly acForRgx = /^let\s+.+\s+of\s+.+$/;
-  entityName: string;
-  arrayPath: string;
-  arrayObservable$ = new Subject<AcNotification>();
 
   constructor(public layerService: LayerService, private cd: ChangeDetectorRef) {
   }
@@ -127,7 +130,6 @@ export class AcArrayDescComponent implements OnChanges, OnInit, AfterContentInit
   }
 
   draw(context: any, id: string, contextEntity: any) {
-    const get = _get;
     const entitiesArray: any[] = get(context, this.arrayPath);
     if (!entitiesArray) {
       return;

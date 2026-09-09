@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Ellipsoid, SceneMode, Cartographic } from 'cesium';
 import { AcMapComponent } from '../../components/ac-map/ac-map.component';
 
 /**
@@ -39,11 +40,6 @@ export class MapsManagerService {
     return this._Maps.delete(id);
   }
 
-  private generateDefaultId(): string {
-    this.defaultIdCounter++;
-    return 'default-map-id-' + this.defaultIdCounter;
-  }
-
   /**
    * Binds multiple 2D map's cameras together.
    * @param mapsConfiguration - binding options.
@@ -68,7 +64,7 @@ export class MapsManagerService {
       const options = masterMapConfig.options;
       const masterCamera = masterMap.getCameraService().getCamera();
       const masterCameraCartographic = masterCamera.positionCartographic;
-      masterCamera.percentageChanged = options.sensitivity || DEFAULT_SENSITIVITY;
+      masterCamera.percentageChanged = options?.sensitivity || DEFAULT_SENSITIVITY;
       const removeCallback = masterCamera.changed.addEventListener(() => {
         maps.forEach(slaveMapConfig => {
           const slaveMap = slaveMapConfig.map;
@@ -79,13 +75,14 @@ export class MapsManagerService {
 
           const slaveCamera = slaveMap.getCameraService().getCamera();
           const slaveCameraCartographic = slaveCamera.positionCartographic;
-          const position = Cesium.Ellipsoid.WGS84.cartographicToCartesian({
-            longitude: masterCameraCartographic.longitude,
-            latitude: masterCameraCartographic.latitude,
-            height: slaveMapOptions.bindZoom ? masterCameraCartographic.height : slaveCameraCartographic.height,
-          });
+          const position = Ellipsoid.WGS84.cartographicToCartesian(
+            new Cartographic(
+                masterCameraCartographic.longitude,
+                masterCameraCartographic.latitude,
+                slaveMapOptions?.bindZoom ? masterCameraCartographic.height : slaveCameraCartographic.height)
+          );
 
-          if (slaveMap.getCesiumViewer().scene.mode !== Cesium.SceneMode.MORPHING) {
+          if (slaveMap.getCesiumViewer().scene.mode !== SceneMode.MORPHING) {
             slaveCamera.setView({
               destination: position,
               orientation: {
@@ -106,5 +103,10 @@ export class MapsManagerService {
   unsyncMapsCameras() {
     this.eventRemoveCallbacks.forEach(removeCallback => removeCallback());
     this.eventRemoveCallbacks = [];
+  }
+
+  private generateDefaultId(): string {
+    this.defaultIdCounter++;
+    return 'default-map-id-' + this.defaultIdCounter;
   }
 }

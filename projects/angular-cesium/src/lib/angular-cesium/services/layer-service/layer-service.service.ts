@@ -5,10 +5,10 @@ import { LayerOptions } from '../../models/layer-options';
 @Injectable()
 export class LayerService {
   private _context: any;
-  private _options: LayerOptions;
-  private _show: boolean;
-  private _zIndex: number;
-  private _entityName: string;
+  private _options!: LayerOptions;
+  private _show!: boolean;
+  private _zIndex!: number;
+  private _entityName!: string;
   private _cache = true;
   private descriptions: IDescription[] = [];
   private layerUpdate = new EventEmitter();
@@ -17,12 +17,24 @@ export class LayerService {
     return this._cache;
   }
 
-  set cache(value: boolean) {
-    this._cache = value;
-  }
-
   get zIndex(): number {
     return this._zIndex;
+  }
+
+  get show(): boolean {
+    return this._show;
+  }
+
+  get options(): LayerOptions {
+    return this._options;
+  }
+
+  get context(): any {
+    return this._context;
+  }
+
+  set cache(value: boolean) {
+    this._cache = value;
   }
 
   set zIndex(value: number) {
@@ -32,10 +44,6 @@ export class LayerService {
     this._zIndex = value;
   }
 
-  get show(): boolean {
-    return this._show;
-  }
-
   set show(value: boolean) {
     if (value !== this._show) {
       this.layerUpdate.emit();
@@ -43,17 +51,9 @@ export class LayerService {
     this._show = value;
   }
 
-  get options(): LayerOptions {
-    return this._options;
-  }
-
   set options(value: LayerOptions) {
     this._options = value;
     this.layerUpdate.emit();
-  }
-
-  get context(): any {
-    return this._context;
   }
 
   set context(context) {

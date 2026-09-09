@@ -1,4 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
+import { Cartographic, Rectangle } from 'cesium';
 import { MapsManagerService } from '../../angular-cesium/services/maps-manager/maps-manager.service';
 import { CameraService } from '../../angular-cesium/services/camera/camera.service';
 import { CesiumService } from '../../angular-cesium/services/cesium/cesium.service';
@@ -57,14 +58,8 @@ export enum MouseButtons {
 
 @Injectable()
 export class ZoomToRectangleService {
-  constructor(
-    private mapsManager: MapsManagerService,
-    @Optional() cameraService: CameraService,
-    @Optional() cesiumService: CesiumService,
-  ) {}
-
-  private cameraService: CameraService;
-  private cesiumService: CesiumService;
+  private cameraService!: CameraService;
+  private cesiumService!: CesiumService;
 
   private mapsZoomElements = new Map<string, ZoomData>();
   private defaultOptions = {
@@ -77,6 +72,12 @@ export class ZoomToRectangleService {
     keepRotation: true,
     mouseButton: MouseButtons.LEFT,
   };
+
+  constructor(
+    private mapsManager: MapsManagerService,
+    @Optional() cameraService: CameraService,
+    @Optional() cesiumService: CesiumService,
+  ) {}
 
   init(cesiumService: CesiumService, cameraService: CameraService) {
     this.cameraService = cameraService;
@@ -105,11 +106,14 @@ export class ZoomToRectangleService {
     let cameraService = this.cameraService;
     let mapContainer;
     let map;
-    if (this.cesiumService) {
+    if (!mapId) {
+      map = this.mapsManager.getMap();
+      if (!map) {
+        throw new Error(`Map not found`);
+      }
+      mapId = map.getId();
       mapContainer = this.cesiumService.getViewer().container;
-      map = this.cesiumService.getMap();
-    }
-    if (mapId) {
+    } else {
       map = this.mapsManager.getMap(mapId);
       if (!map) {
         throw new Error(`Map not found with id: ${mapId}`);
@@ -131,7 +135,7 @@ export class ZoomToRectangleService {
     container.style.left = '0';
     mapContainer.appendChild(container);
     const mapZoomData: ZoomData = { container };
-    this.mapsZoomElements.set(mapId || this.cesiumService.getMap().getId(), mapZoomData);
+    this.mapsZoomElements.set(mapId, mapZoomData);
     let mouse = {
       endX: 0,
       endY: 0,
@@ -209,7 +213,7 @@ export class ZoomToRectangleService {
       }
     };
 
-    const resetOnEscapePress = e => {
+    const resetOnEscapePress = (e: any) => {
       if (e.keyCode === finalOptions.resetKeyCode && borderElement) {
         borderElement.remove();
         borderElement = undefined;
@@ -226,11 +230,18 @@ export class ZoomToRectangleService {
     mapZoomData.resetOnEscapePressFunc = resetOnEscapePress;
   }
 
-  disable(mapId?: string) {
-    if (!this.cesiumService && !mapId) {
-      throw new Error('If the service was not initialized with CesiumService, mapId must be provided');
+  public disable(mapId?: string) {
+    if (!this.mapsManager && !mapId) {
+      throw new Error('If the service was not initialized with MapsManager, mapId must be provided');
     }
-    const data = this.mapsZoomElements.get(mapId || this.cesiumService.getMap().getId());
+    if (!mapId) {
+      const map = this.mapsManager.getMap();
+      if (!map) {
+        throw new Error('Map not found');
+      }
+      mapId = map.getId();
+    }
+    const data = this.mapsZoomElements.get(mapId);
     if (data) {
       data.container.remove();
       if (data.borderElement) {
@@ -246,8 +257,8 @@ export class ZoomToRectangleService {
   private zoomCameraToRectangle(
     cameraService: CameraService,
     positions: { endX: number; endY: number; startX: number; startY: number },
-    animationDuration,
-    options,
+    animationDuration: any,
+    options: any,
   ): boolean {
     const camera = cameraService.getCamera();
     const cartesian1 = camera.pickEllipsoid({ x: positions.startX, y: positions.startY });
@@ -255,10 +266,10 @@ export class ZoomToRectangleService {
     if (!cartesian1 || !cartesian2) {
       return false;
     }
-    const cartographic1 = Cesium.Cartographic.fromCartesian(cartesian1);
-    const cartographic2 = Cesium.Cartographic.fromCartesian(cartesian2);
+    const cartographic1 = Cartographic.fromCartesian(cartesian1);
+    const cartographic2 = Cartographic.fromCartesian(cartesian2);
     cameraService.cameraFlyTo({
-      destination: new Cesium.Rectangle(
+      destination: new Rectangle(
         Math.min(cartographic1.longitude, cartographic2.longitude),
         Math.min(cartographic1.latitude, cartographic2.latitude),
         Math.max(cartographic1.longitude, cartographic2.longitude),
